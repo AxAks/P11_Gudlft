@@ -75,6 +75,7 @@ def purchase_places():
 def display_points():
     pass
 
+
 @app.route('/logout')
 def logout():
     """
