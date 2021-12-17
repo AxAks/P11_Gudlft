@@ -40,8 +40,14 @@ def show_summary():
     """
 
     """
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html', club=club, competitions=competitions)
+
+    club = [club for club in clubs if club['email'] == request.form['email']]
+    if len(club) > 0:
+        club = club[0]
+        return render_template('welcome.html', club=club, competitions=competitions)
+    else:
+        flash("Sorry, that email wasn't found.Please Try Again!")
+        return redirect(url_for('index'))
 
 
 @app.route('/book/<competition>/<club>')
@@ -50,7 +56,8 @@ def book(competition, club):
 
     """
     found_club = [c for c in clubs if c['name'] == club][0]
-    found_competition = [c for c in competitions if c['name'] == competition][0]
+    found_competition = [
+        c for c in competitions if c['name'] == competition][0]
     if found_club and found_competition:
         return render_template('booking.html', club=found_club, competition=found_competition)
     else:
@@ -63,10 +70,12 @@ def purchase_places():
     """
 
     """
-    competition = [c for c in competitions if c['name'] == request.form['competition']][0]
+    competition = [c for c in competitions if c['name']
+                   == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     places_required = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
+    competition['numberOfPlaces'] = int(
+        competition['numberOfPlaces']) - places_required
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
