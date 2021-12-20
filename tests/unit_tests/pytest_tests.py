@@ -31,9 +31,9 @@ def test_show_summary_registered_user():
     must pass
     """
     # si l'adresse est dans la base : OK
+    # si l'adresse n'est pas dans la base : NOK
 
-    email = "john@simplylift.co" #'unregistered_user@testclub.com'
-    #  show_summary()
+    email = "john@simplylift.co"
     registered_emails = [club['email'] for club in clubs]
     assert email in registered_emails
 
@@ -43,12 +43,12 @@ def test_show_summary_unregistered_user():
     TDD : Tests with an unregistered email
     must fail
     """
+    # si l'adresse est dans la base : OK
     # si l'adresse n'est pas dans la base : NOK
 
     email = 'unregistered_user@testclub.com'
-    # show_summary()
     registered_emails = [club['email'] for club in clubs]
-    assert email in registered_emails
+    assert email not in registered_emails
 
 
 def test_show_summary_malformed_email_address():
