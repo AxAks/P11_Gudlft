@@ -1,7 +1,7 @@
-from server import load_competitions, load_clubs, show_summary
+from server import load_competitions, load_clubs, find_club
 
-competitions = load_competitions()  # à retirer de la partie test plus tard ? à tester aussi ?
-clubs = load_clubs()  # à retirer de la partie test plus tard ? à tester aussi ?
+competitions = load_competitions()  # à retirer de la partie test plus tard ? à tester aussi ?
+clubs = load_clubs()  # à retirer de la partie test plus tard ? à tester aussi ?
 
 
 def test_load_clubs():
@@ -27,27 +27,25 @@ def test_index():
 
 def test_show_summary_registered_user():
     """
-    TDD : Tests with a registered email
-    must pass
+    Checks that an email is registered
     """
     # si l'adresse est dans la base : OK
     # si l'adresse n'est pas dans la base : NOK
 
     email = "john@simplylift.co"
     registered_emails = [club['email'] for club in clubs]
+    find_club(email)
     assert email in registered_emails
 
 
 def test_show_summary_unregistered_user():
     """
-    TDD : Tests with an unregistered email
-    must fail
+    Checks that an email is not registered
     """
-    # si l'adresse est dans la base : OK
-    # si l'adresse n'est pas dans la base : NOK
 
     email = 'unregistered_user@testclub.com'
     registered_emails = [club['email'] for club in clubs]
+    find_club(email)
     assert email not in registered_emails
 
 

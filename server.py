@@ -1,4 +1,6 @@
 import json
+from typing import Union, Dict
+
 from flask import Flask, render_template, request, redirect, flash, url_for
 
 
@@ -40,12 +42,18 @@ def show_summary():
     """
 
     """
-    try:
-        club = [club for club in clubs if club['email'] == request.form['email']][0]
+    club = find_club(email=request.form['email'])
+    if club:
         return render_template('welcome.html', club=club, competitions=competitions)
-    except IndexError:
+    else:
         flash("Email not found")
         return redirect(url_for('index'))
+
+
+def find_club(email: str) -> Union[Dict, None]:
+    for club in clubs:
+        if email == club['email']:
+            return club
 
 
 @app.route('/book/<competition>/<club>')
