@@ -40,9 +40,10 @@ def index():
 @app.route('/show_summary', methods=['POST'])
 def show_summary():
     """
-
+    Redirects the user to their account summary page if the entered email is correct
     """
-    club = find_club(email=request.form['email'])
+    email = extract_email_from_request(request)
+    club = find_club(email)
     if club:
         return render_template('welcome.html', club=club, competitions=competitions)
     else:
@@ -50,7 +51,18 @@ def show_summary():
         return redirect(url_for('index'))
 
 
+def extract_email_from_request(request):
+    """
+    Enables to get the entered email from the request
+    """
+    email = request.form['email']
+    return email
+
+
 def find_club(email: str) -> Union[Dict, None]:
+    """
+    Searches a club whose registered contact email matches the email given as parameter
+    """
     for club in clubs:
         if email == club['email']:
             return club
