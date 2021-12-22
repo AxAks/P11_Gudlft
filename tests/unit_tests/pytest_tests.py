@@ -67,7 +67,7 @@ def test_show_summary_not_an_email():
 
 def test_book():
     """
-
+    TDD : When a place for a competition is bought, the number of points is deduced
     """
     pass
 
