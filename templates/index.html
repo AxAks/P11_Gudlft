@@ -6,8 +6,15 @@
 </head>
 <body>
     <h1>Welcome to the GUDLFT Registration Portal!</h1>
+
     Please enter your secretary email to continue:
-        {% with messages = get_flashed_messages() %}
+
+    <form action="show_summary" method="post">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id=""/>
+        <button type="submit">Enter</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul class=flashes>
         {% for message in messages %}
@@ -16,10 +23,5 @@
         </ul>
       {% endif %}
     {% endwith %}
-    <form action="show_summary" method="post">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id=""/>
-        <button type="submit">Enter</button>
-    </form>
 </body>
 </html>

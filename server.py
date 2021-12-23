@@ -4,29 +4,22 @@ from typing import Union, Dict
 from flask import Flask, render_template, request, redirect, flash, url_for
 
 
-def load_clubs():
+def load_database(db_file):
     """
-
+    Loads all the objects instances from the database file needed by the program at once
     """
-    with open('clubs.json') as c:
-        list_of_clubs = json.load(c)['clubs']
-        return list_of_clubs
-
-
-def load_competitions():
-    """
-
-    """
-    with open('competitions.json') as comps:
-        list_of_competitions = json.load(comps)['competitions']
-        return list_of_competitions
+    with open(db_file) as db:
+        database = json.load(db)
+        return database
 
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
-competitions = load_competitions()
-clubs = load_clubs()
+gudlft_database = load_database('gudlft_db.json')
+
+competitions = gudlft_database['competitions']
+clubs = gudlft_database['clubs']
 
 
 @app.route('/')
@@ -42,16 +35,16 @@ def show_summary():
     """
     Redirects the user to their account summary page if the entered email is correct
     """
-    email = extract_email_from_request(request)
+    email = extract_email_from_request()
     club = find_club(email)
     if club:
         return render_template('welcome.html', club=club, competitions=competitions)
     else:
-        flash("Email not found")
+        flash("The entered Email could not be found, please retry")
         return redirect(url_for('index'))
 
 
-def extract_email_from_request(request):
+def extract_email_from_request():
     """
     Enables to get the entered email from the request
     """
