@@ -1,22 +1,9 @@
-import json
+
 from typing import Union, Dict
 
-from flask import Flask, render_template, request, redirect, flash, url_for
+from config import app, gudlft_database
+from flask import render_template, request, redirect, flash, url_for
 
-
-def load_database(db_file: str) -> Dict:
-    """
-    Loads all the objects instances from the database file needed by the program at once
-    """
-    with open(db_file) as db:
-        database = json.load(db)
-        return database
-
-
-app = Flask(__name__)
-app.secret_key = 'something_special'
-
-gudlft_database = load_database('gudlft_db.json')
 
 competitions = gudlft_database['competitions']
 clubs = gudlft_database['clubs']

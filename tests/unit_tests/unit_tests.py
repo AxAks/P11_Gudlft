@@ -8,37 +8,33 @@ TDD approach :
 """
 
 import pytest
-from server import load_database, find_club, extract_email_from_request
+import config
+from server import find_club, extract_email_from_request
 
-"""
-@pytest.fixture
+
+@pytest.fixture   # simulation de client pour les requests, à revoir ...
 def client():
-    db_fd, db_path = tempfile.mkstemp()
-    app = create_app({'TESTING': True, 'DATABASE': db_path})
-
-    with app.test_client() as client:
-        with app.app_context():
-            init_db()
+    tested_app = config.app
+    test_db = 'tests/db_for_tests.json'
+    with tested_app.test_client() as client:
+        with tested_app.app_context():
+            config.load_database(test_db)
         yield client
-
-    os.close(db_fd)
-    os.unlink(db_path)
-"""
 
 
 def test_load_clubs():
     """
     Checks that the list of clubs can be loaded from a json database file
     """
-    list_of_clubs = load_database('tests/db_for_tests.json')['clubs']  # test pas tres pertinent, à revoir
+    list_of_clubs = config.load_database('tests/db_for_tests.json')['clubs']  # test pas tres pertinent, à revoir
     assert list_of_clubs is not None
 
 
-def test_load_competitions(): # test pas tres pertinent, à revoir
+def test_load_competitions(client): # test pas tres pertinent, à revoir
     """
     Checks that the list of competitions can be loaded from a json database file
     """
-    competitions = load_database('tests/db_for_tests.json')['competitions']
+    competitions = config.load_database('tests/db_for_tests.json')['competitions']
     assert competitions is not None
 
 
