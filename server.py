@@ -4,7 +4,7 @@ from typing import Union, Dict
 from flask import Flask, render_template, request, redirect, flash, url_for
 
 
-def load_database(db_file):
+def load_database(db_file: str) -> Dict:
     """
     Loads all the objects instances from the database file needed by the program at once
     """
@@ -25,7 +25,7 @@ clubs = gudlft_database['clubs']
 @app.route('/')
 def index():
     """
-
+    Displays to the website homepage
     """
     return render_template('index.html')
 
@@ -34,13 +34,14 @@ def index():
 def show_summary():
     """
     Redirects the user to their account summary page if the entered email is correct
+    or asks to retry with a valid address
     """
     email = extract_email_from_request()
     club = find_club(email)
     if club:
         return render_template('welcome.html', club=club, competitions=competitions)
     else:
-        flash("The entered Email could not be found, please retry")
+        flash("The entered email could not be found, please enter a registered email")
         return redirect(url_for('index'))
 
 
@@ -64,6 +65,7 @@ def find_club(email: str) -> Union[Dict, None]:
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
     """
+    leads the user to the ticket booking page for a given competition
 
     """
     found_club = [c for c in clubs if c['name'] == club][0]
@@ -78,7 +80,7 @@ def book(competition, club):
 @app.route('/purchase_places', methods=['POST'])
 def purchase_places():
     """
-
+    Enables the user to buy tickets for a given competition
     """
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
@@ -88,14 +90,17 @@ def purchase_places():
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
-# TODO: Add route for points display
+# TODO: Add route for points display (no need to be logged, on the homepage)
 def display_points():
+    """
+
+    """
     pass
 
 
 @app.route('/logout')
 def logout():
     """
-
+    Enables the user to logout and be redirected to the homepage
     """
     return redirect(url_for('index'))
