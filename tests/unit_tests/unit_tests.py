@@ -47,7 +47,7 @@ def test_index():
 
 def test_show_summary_registered_user():
     """
-    Checks that a registered email if found
+    Checks that a registered email is found
     """
     # si l'adresse est dans la base : OK
     # si l'adresse n'est pas dans la base : NOK
