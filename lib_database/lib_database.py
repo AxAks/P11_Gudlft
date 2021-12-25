@@ -1,5 +1,5 @@
 """
-Lib for
+Lib for functions related to database queries
 """
 from typing import Union, Dict
 
@@ -15,14 +15,6 @@ def get_club_by_email(email: str) -> Union[Dict, None]:
             return club
 
 
-def get_competition_by_name(competition_name: str):
-    """
-    Enables to get a competition infos from its name
-    """
-    competition = [comp for comp in competitions if comp['name'] == competition_name][0]
-    return competition
-
-
 def get_club_by_name(name: str) -> Union[Dict, None]:
     """
     Enables to get a club infos from its name
@@ -30,3 +22,12 @@ def get_club_by_name(name: str) -> Union[Dict, None]:
     for club in clubs:
         if name == club['name']:
             return club
+
+
+def get_competition_by_name(competition_name: str) -> Union[Dict, None]:
+    """
+    Enables to get a competition infos from its name
+    """
+    for competition in competitions:
+        if competition_name == competition['name']:
+            return competition

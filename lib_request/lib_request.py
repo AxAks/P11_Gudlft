@@ -24,7 +24,7 @@ def extract_club_name(request):
     return request.form['club']
 
 
-def extract__required_places(request):
+def extract_required_places(request):
     """
     Enables to get from the request the requested amount places to purchase for a competition
     While purchasing

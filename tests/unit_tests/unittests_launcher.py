@@ -9,15 +9,11 @@ TDD approach :
 
 import pytest
 
-import config, utils
+import config
+import utils
 
-from unittest_database \
-    import test_load_clubs, test_load_competitions, \
-    test_a_registered_email_should_return_a_club, test_an_unregistered_email_should_return_none, \
-    test_an_unregistered_email_should_return_none, test_a_malformed_email_address_should_not_be_accepted
-
-from unittest_requests \
-    import test_no_email_should_not_be_accepted
+from unittest_database import *
+from unittest_requests import *
 
 
 """
@@ -39,6 +35,7 @@ def test_index():
     """
 
     """
+    assert True is False
     pass
 
 
@@ -46,6 +43,7 @@ def test_book():
     """
 
     """
+    assert True is False
     pass
 
 
@@ -54,6 +52,14 @@ def test_purchase_places():
     TDD : When a place for a competition is bought, the number of points is deduced
     """
 
+
+def test_():
+    assert True is False
+    pass
+
+
+def test_():
+    assert True is False
     pass
 
 
@@ -61,6 +67,7 @@ def test_display_points():
     """
 
     """
+    assert True is False
     pass
 
 
@@ -68,4 +75,5 @@ def test_logout():
     """
 
     """
+    assert True is False
     pass

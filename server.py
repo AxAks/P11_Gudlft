@@ -7,7 +7,7 @@ from config import app, competitions, clubs
 from flask import render_template, request, redirect, flash, url_for
 
 from lib_request.lib_request import extract_club_email, extract_competition_name, \
-    extract_club_name, extract__required_places
+    extract_club_name, extract_required_places
 from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name
 
 
@@ -55,11 +55,17 @@ def purchase_places():
     Enables the user to buy tickets for a given competition
     """
     competition_name = extract_competition_name(request)
-    competition = get_competition_by_name(competition_name)
     club_name = extract_club_name(request)
+    places_required_as_int = extract_required_places(request)
+
+    competition = get_competition_by_name(competition_name)
+    total_places_as_int = int(competition['numberOfPlaces'])
     club = get_club_by_name(club_name)
-    places_required = extract__required_places(request)
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
+
+    competition['numberOfPlaces'] = total_places_as_int - places_required_as_int
+
+    # TODO save into database file (json dump)
+
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
