@@ -10,4 +10,6 @@ app.secret_key = 'something_special'
 
 gudlft_database = load_database('gudlft_db.json')
 
+competitions = gudlft_database['competitions']
+clubs = gudlft_database['clubs']
 

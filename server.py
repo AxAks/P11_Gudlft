@@ -1,12 +1,14 @@
+"""
+Main File
+containing flask routing functions
+"""
 
-from typing import Union, Dict
-
-from config import app, gudlft_database
+from config import app, competitions, clubs
 from flask import render_template, request, redirect, flash, url_for
 
-
-competitions = gudlft_database['competitions']
-clubs = gudlft_database['clubs']
+from lib_request.lib_request import extract_club_email, extract_competition_name, \
+    extract_club_name, extract__required_places
+from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name
 
 
 @app.route('/')
@@ -23,30 +25,13 @@ def show_summary():
     Redirects the user to their account summary page if the entered email is correct
     or asks to retry with a valid address
     """
-    email = extract_email_from_request()
-    club = find_club(email)
+    email = extract_club_email(request)
+    club = get_club_by_email(email)
     if club:
         return render_template('welcome.html', club=club, competitions=competitions)
     else:
         flash("The entered email could not be found, please enter a registered email")
         return redirect(url_for('index'))
-
-
-def extract_email_from_request():
-    """
-    Enables to get the entered email from the request
-    """
-    email = request.form['email']
-    return email
-
-
-def find_club(email: str) -> Union[Dict, None]:
-    """
-    Searches a club whose registered contact email matches the email given as parameter
-    """
-    for club in clubs:
-        if email == club['email']:
-            return club
 
 
 @app.route('/book/<competition>/<club>')
@@ -69,12 +54,15 @@ def purchase_places():
     """
     Enables the user to buy tickets for a given competition
     """
-    competition = [c for c in competitions if c['name'] == request.form['competition']][0]
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
-    places_required = int(request.form['places'])
+    competition_name = extract_competition_name(request)
+    competition = get_competition_by_name(competition_name)
+    club_name = extract_club_name(request)
+    club = get_club_by_name(club_name)
+    places_required = extract__required_places(request)
     competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
+
 
 
 # TODO: Add route for points display (no need to be logged, on the homepage)
