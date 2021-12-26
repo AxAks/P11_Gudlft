@@ -51,6 +51,26 @@ def test_purchase_places():
     """
     TDD : When a place for a competition is bought, the number of points is deduced
     """
+    club = {
+      "name": "Simply Lift",
+      "email": "john@simplylift.co",
+      "points": "13"
+    }
+    competition = {
+      "name": "Spring Festival",
+      "date": "2020-03-27 10:00:00",
+      "numberOfPlaces": "25"
+    }
+
+    places_required_as_int = 6
+    total_places_as_int = 25
+    total_points_as_int = 13
+
+    remaining_places_for_competition = total_places_as_int - places_required_as_int
+    remaining_points_for_club = total_points_as_int - places_required_as_int
+
+    assert remaining_places_for_competition == 19
+    assert remaining_points_for_club == 7
 
 
 def test_():
