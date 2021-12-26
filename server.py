@@ -38,16 +38,16 @@ def show_summary():
         return redirect(url_for('index'))
 
 
-@app.route('/book/<competition>/<club>')
-def book(competition, club):
+@app.route('/book/<competition_name>/<club_name>')
+def book(competition_name, club_name):
     """
     leads the user to the ticket booking page for a given competition
 
     """
-    found_club = [c for c in clubs if c['name'] == club][0]
-    found_competition = [c for c in competitions if c['name'] == competition][0]
-    if found_club and found_competition:
-        return render_template('booking.html', club=found_club, competition=found_competition)
+    club = get_club_by_name(club_name)
+    competition = get_competition_by_name(competition_name)
+    if club and competition:
+        return render_template('booking.html', club=club, competition=competition)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
