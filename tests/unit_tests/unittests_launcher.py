@@ -28,7 +28,7 @@ def client():
     test_db = 'tests/db_for_tests.json'
     with tested_app.test_client() as client:
         with tested_app.app_context():
-            utils.load_database(test_db)
+            utils.load(test_db)
         yield client
 
 

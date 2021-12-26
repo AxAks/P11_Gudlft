@@ -2,14 +2,14 @@
 Tests file for researches in database
 """
 from lib_database.lib_database import get_club_by_email, get_club_by_name
-from utils import load_database
+from utils import load
 
 
 def test_load_clubs():
     """
     Checks that the list of clubs can be loaded from a json database file
     """
-    list_of_clubs = load_database('tests/db_for_tests.json')['clubs']  # test pas tres pertinent, à revoir
+    list_of_clubs = load('tests/db_for_tests.json')['clubs']  # test pas tres pertinent, à revoir
     assert list_of_clubs is not None
 
 
@@ -17,7 +17,7 @@ def test_load_competitions(client): # test pas tres pertinent, à revoir
     """
     Checks that the list of competitions can be loaded from a json database file
     """
-    competitions = load_database('tests/db_for_tests.json')['competitions']
+    competitions = load('tests/db_for_tests.json')['competitions']
     assert competitions is not None
 
 

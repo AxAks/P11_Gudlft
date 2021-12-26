@@ -4,7 +4,7 @@ containing flask routing functions
 """
 
 from config import app, db_path, gudlft_database, competitions, clubs
-from utils import save_database
+from utils import save
 
 from flask import render_template, request, redirect, flash, url_for
 
@@ -83,7 +83,7 @@ def purchase_places():
 
         update_club_points_for_db(club)
         update_competition_places_for_db(competition)
-        save_database(gudlft_database, db_path)
+        save(gudlft_database, db_path)
         flash('Great-booking complete!')
 
     return render_template('welcome.html', club=club, competitions=competitions)
