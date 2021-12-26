@@ -10,7 +10,8 @@ from flask import render_template, request, redirect, flash, url_for
 
 from lib_request.lib_request import extract_club_email, extract_competition_name,\
     extract_club_name, extract_required_places
-from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name
+from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name, \
+    update_club_points_for_db, update_competition_places_for_db
 
 
 @app.route('/')
@@ -65,24 +66,22 @@ def purchase_places():
     total_places_as_int = int(competition['numberOfPlaces'])
     total_points_as_int = int(club['points'])
 
-    if total_places_as_int - places_required_as_int < 0:
+    enough_places = total_places_as_int - places_required_as_int >= 0
+    enough_points = total_points_as_int - places_required_as_int >= 0
+    booking_possible = enough_places and enough_points
+
+    if not enough_places:
         flash('You cannot purchase this amount of place. There are not enough places left!')
 
-    if total_points_as_int - places_required_as_int < 0:
+    if not enough_points:
         flash('You cannot purchase this amount of place. You do not have enough points!')
 
-    if (total_places_as_int - places_required_as_int >= 0) and (total_points_as_int - places_required_as_int >= 0):
-        competition['numberOfPlaces'] = total_places_as_int - places_required_as_int
+    if booking_possible:
         club['points'] = total_points_as_int - places_required_as_int
+        competition['numberOfPlaces'] = total_places_as_int - places_required_as_int
 
-        for club_in_db in gudlft_database['clubs']:
-            if club_in_db['name'] == club['name']:
-                club_in_db['points'] = str(club['points'])
-
-        for competition_in_db in gudlft_database['competitions']:
-            if competition_in_db['name'] == competition['name']:
-                competition_in_db['numberOfPlaces'] = str(competition['numberOfPlaces'])
-
+        update_club_points_for_db(club)
+        update_competition_places_for_db(competition)
         save_database(gudlft_database, db_path)
         flash('Great-booking complete!')
 

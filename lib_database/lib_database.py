@@ -3,7 +3,7 @@ Lib for functions related to database queries
 """
 from typing import Union, Dict
 
-from config import clubs, competitions
+from config import gudlft_database, clubs, competitions
 
 
 def get_club_by_email(email: str) -> Union[Dict, None]:
@@ -31,3 +31,15 @@ def get_competition_by_name(competition_name: str) -> Union[Dict, None]:
     for competition in competitions:
         if competition_name == competition['name']:
             return competition
+
+
+def update_competition_places_for_db(competition):
+    for competition_in_db in gudlft_database['competitions']:
+        if competition_in_db['name'] == competition['name']:
+            competition_in_db['numberOfPlaces'] = str(competition['numberOfPlaces'])
+
+
+def update_club_points_for_db(club):
+    for club_in_db in gudlft_database['clubs']:
+        if club_in_db['name'] == club['name']:
+            club_in_db['points'] = str(club['points'])
