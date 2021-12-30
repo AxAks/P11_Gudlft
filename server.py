@@ -3,7 +3,7 @@ Main File
 containing flask routing functions
 """
 
-from config import app, db_path, gudlft_database, competitions
+from config import app, db_path, gudlft_database, competitions, clubs
 from utils import save
 
 from flask import render_template, request, redirect, flash, url_for
@@ -90,11 +90,12 @@ def purchase_places():
 
 
 # TODO: Add route for points display (no need to be logged, on the homepage)
+@app.route('/display_points', methods=['GET'])
 def display_points():
     """
-
+    diplays a page with showing points for all registered clubs
     """
-    pass
+    return render_template('clubs_points.html', clubs=clubs)
 
 
 @app.route('/logout')

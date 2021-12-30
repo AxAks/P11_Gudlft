@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Points Table</title>
+</head>
+<body>
+
+    {% block title %} Public points table by club {% endblock %}
+    {% include 'layouts/_nav.html' %}
+    {% block content %}
+
+    <ul>
+        {% for club in clubs %}
+            <li>
+                {{ club.name }}: {{ club.points }} points
+            </li>
+        {% endfor %}
+    </ul>
+    {% endblock %}
+</body>
+</html>
