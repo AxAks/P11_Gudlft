@@ -64,7 +64,7 @@ def purchase_places():
 
     competition = get_competition_by_name(competition_name)
     club = get_club_by_name(club_name)
-    total_places_as_int = int(competition['numberOfPlaces'])
+    total_places_as_int = int(competition['number_of_places'])
     total_points_as_int = int(club['points'])
 
     has_enough_places = check_competition_places(places_required_as_int, total_places_as_int)
@@ -79,7 +79,7 @@ def purchase_places():
 
     if booking_is_possible:
         club['points'] = total_points_as_int - places_required_as_int
-        competition['numberOfPlaces'] = total_places_as_int - places_required_as_int
+        competition['number_of_places'] = total_places_as_int - places_required_as_int
 
         update_club_points_for_db(club)
         update_competition_places_for_db(competition)
