@@ -13,4 +13,3 @@ gudlft_database = load(db_path)
 
 competitions = gudlft_database['competitions']
 clubs = gudlft_database['clubs']
-

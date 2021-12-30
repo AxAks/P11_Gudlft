@@ -3,7 +3,7 @@ Main File
 containing flask routing functions
 """
 
-from config import app, db_path, gudlft_database, competitions, clubs
+from config import app, db_path, gudlft_database, competitions
 from utils import save
 
 from flask import render_template, request, redirect, flash, url_for

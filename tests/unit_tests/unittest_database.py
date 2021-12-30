@@ -9,11 +9,11 @@ def test_load_clubs():
     """
     Checks that the list of clubs can be loaded from a json database file
     """
-    list_of_clubs = load('tests/db_for_tests.json')['clubs']  # test pas tres pertinent, à revoir
+    list_of_clubs = load('tests/db_for_tests.json')['clubs']  #   test pas tres pertinent, à revoir
     assert list_of_clubs is not None
 
 
-def test_load_competitions(client): # test pas tres pertinent, à revoir
+def test_load_competitions(client):  #  test pas tres pertinent, à revoir
     """
     Checks that the list of competitions can be loaded from a json database file
     """
@@ -37,7 +37,7 @@ def test_an_unregistered_email_should_return_none():
     assert get_club_by_email(email) is None
 
 
-def test_a_malformed_email_address_should_not_be_accepted(): # ??
+def test_a_malformed_email_address_should_not_be_accepted():  # ??
     """
 
     """

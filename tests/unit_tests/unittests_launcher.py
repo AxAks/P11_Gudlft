@@ -13,8 +13,8 @@ import config
 import utils
 from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible
 
-from unittest_database import *
-from unittest_requests import *
+from unittest_database import *  # à modifier
+from unittest_requests import *  # à modifier
 
 
 """
