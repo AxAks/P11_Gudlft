@@ -93,7 +93,7 @@ def purchase_places():
 @app.route('/display_points', methods=['GET'])
 def display_points():
     """
-    diplays a page with showing points for all registered clubs
+    Displays a page with showing points for all registered clubs
     """
     return render_template('clubs_points.html', clubs=clubs)
 
