@@ -9,13 +9,12 @@ TDD approach :
 from flask import url_for
 from werkzeug.utils import redirect
 
-from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible
 from server import logout
 
 from tests.conftest import client
-from unittest_database import *  # à modifier
-from unittest_requests import *  # à modifier
-from unittest_purchase_places import *  # à modifier
+from unittest_database import *  # à modifier
+from unittest_requests import *  # à modifier
+from unittest_purchase_places import *  # à modifier
 
 """
 Extraire chaque tests dans un fichier nommé séparé, au fur et a mesure

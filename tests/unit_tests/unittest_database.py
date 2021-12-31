@@ -10,7 +10,7 @@ def test_load_clubs():
     Checks that the list of clubs can be loaded from a json database file
     """
     list_of_clubs = load('tests/db_for_tests.json')['clubs']  #   test pas tres pertinent, à revoir
-    assert list_of_clubs is not None
+    assert len(list_of_clubs) == 3
 
 
 def test_load_competitions(client):  #  test pas tres pertinent, à revoir
@@ -18,7 +18,7 @@ def test_load_competitions(client):  #  test pas tres pertinent, à revoir
     Checks that the list of competitions can be loaded from a json database file
     """
     competitions = load('tests/db_for_tests.json')['competitions']
-    assert competitions is not None
+    assert len(competitions) == 2
 
 
 def test_a_registered_email_should_return_a_club():
@@ -26,7 +26,7 @@ def test_a_registered_email_should_return_a_club():
     Checks that a registered email is found
     """
     email = "john@simplylift.co"
-    assert get_club_by_email(email) is not None
+    assert len(get_club_by_email(email)) == 1
 
 
 def test_an_unregistered_email_should_return_none():
@@ -37,21 +37,12 @@ def test_an_unregistered_email_should_return_none():
     assert get_club_by_email(email) is None
 
 
-def test_a_malformed_email_address_should_not_be_accepted():  # ??
-    """
-
-    """
-    assert True is False
-    email = 'malformed_address@testclub.co'
-    pass
-
-
 def test_a_registered_club_name_should_return_the_matching_club():
     """
     Checks that a registered club name returns the club
     """
     club_name = "Iron Temple"
-    assert get_club_by_name(club_name) is not None
+    assert len(get_club_by_name(club_name)) == 1
 
 
 def test_an_unregistered_club_name_should_return_none():
