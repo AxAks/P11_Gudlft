@@ -76,7 +76,7 @@ def purchase_places():
     has_enough_places = check_competition_places(places_required_as_int, total_places_as_int)
     has_enough_points = check_club_points(places_required_as_int, total_points_as_int)
     competition_is_in_the_future = check_competition_date(competition_date)
-    booking_is_possible = check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future) # in past should be false
+    booking_is_possible = check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future)
 
     if not has_enough_places:
         flash('You cannot purchase this amount of place. There are not enough places left!')
