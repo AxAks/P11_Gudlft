@@ -103,6 +103,12 @@ def test_places_nok_points_nok_should_return_false():
     assert check_booking_possible(has_enough_places, has_enough_points) is False
 
 
+def test_competition_date_in_past():
+    has_enough_places = False
+    has_enough_points = False
+    assert check_booking_possible(has_enough_places, has_enough_points) is False
+
+
 def test_display_points():
     """
 
