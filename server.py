@@ -20,7 +20,7 @@ def index():
     """
     Displays to the website homepage
     """
-    return render_template('index.html')
+    return render_template('index.html', clubs=clubs) # clubs : tests
 
 
 @app.route('/show_summary', methods=['POST'])

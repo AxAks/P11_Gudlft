@@ -16,6 +16,14 @@
             <input type="email" name="email" id=""/>
             <button type="submit">Enter</button>
         </form>
+        <p>Public points table by club</p> <!-- Test ! -->
+        <ul>
+        {% for club in clubs %}
+            <li>
+                {{ club.name }}: {{ club.points }} points
+            </li>
+        {% endfor %}
+    </ul>
     {% endblock %}
 
 </body>
