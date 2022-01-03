@@ -8,8 +8,8 @@ TDD approach :
 """
 import pytest
 from datetime import datetime
-import config
-import utils
+
+from tests.conftest import client
 from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible, \
     check_competition_date
 
@@ -22,22 +22,12 @@ Extraire chaque tests dans un fichier nommé séparé, au fur et a mesure
 """
 
 
-@pytest.fixture  # simulation de client pour les requests, à revoir ...
-def client():
-    tested_app = config.app
-    test_db = 'tests/db_for_tests.json'
-    with tested_app.test_client() as client:
-        with tested_app.app_context():
-            utils.load(test_db)
-        yield client
-
-
-def test_index():
+def test_index(client):
     """
 
     """
-    assert True is False
-    pass
+    response = client.get('/')
+    assert response.status_code == 200
 
 
 def test_book():
@@ -82,13 +72,13 @@ def test_not_enough_points_for_club_should_return_false():
 def test_competition_date_in_the_future_should_return_true():
     now = datetime.strptime("2022-01-02 09:00:00", "%Y-%m-%d %H:%M:%S")
     competition_date = datetime.strptime("2022-03-12 10:00:00", "%Y-%m-%d %H:%M:%S")
-    assert check_competition_date(competition_date) is True  # il faut mocker le now ...
+    assert check_competition_date(competition_date, now) is True
 
 
 def test_competition_date_in_the_past_should_return_false():
     now = datetime.strptime("2022-01-02 09:00:00", "%Y-%m-%d %H:%M:%S")
     competition_date = datetime.strptime("2022-01-01 10:00:00", "%Y-%m-%d %H:%M:%S")
-    assert check_competition_date(competition_date) is False  # il faut mocker le now ...
+    assert check_competition_date(competition_date, now) is False
 
 
 def test_places_ok_points_ok_competition_date_ok_should_return_true():
@@ -155,9 +145,9 @@ def test_display_points():
     pass
 
 
-def test_logout():
+def test_logout(client):
     """
 
     """
-    assert True is False
-    pass
+    response = client.get('/logout')
+    assert response.status_code == 200

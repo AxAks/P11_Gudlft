@@ -4,11 +4,11 @@ Temp Lib for functions that need to be sorted
 from datetime import datetime, timedelta
 
 
-def check_competition_date(competition_date):
+def check_competition_date(competition_date, now=datetime.now()):
     """
     Checks that the competition is in the future
     """
-    return competition_date - datetime.now() > timedelta(0)
+    return competition_date - now > timedelta(0)
 
 
 def check_competition_places(places_required_as_int, total_places_as_int):
