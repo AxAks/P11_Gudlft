@@ -12,9 +12,8 @@ from datetime import datetime
 from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible, \
     check_competition_date
 
-from .unittest_database import *  # à modifier
-from .unittest_requests import *  # à modifier
-
+from .unittest_database import *  #  à modifier
+from .unittest_requests import *  #  à modifier
 
 """
 Extraire chaque tests dans un fichier nommé séparé, au fur et a mesure
@@ -27,6 +26,8 @@ def test_index(client):
     """
     response = client.get('/')
     assert response.status_code == 200
+    response_decode = response.data.decode()
+    assert 'GUDLFT Registration Portal!' in response_decode
 
 
 def test_show_summary(client):
@@ -34,15 +35,20 @@ def test_show_summary(client):
 
     """
     response = client.post('/show_summary', data={'email': 'john@simplylift.co'})
+    response_decode = response.data.decode()
     assert response.status_code == 200
+    assert 'Welcome, john@simplylift.co' in response_decode
 
 
-def test_book():
+def test_book(client):
     """
 
     """
-    assert True is False
-    pass
+    response = client.get('/book/<competition_name>/<club_name>',
+                          data={'competition_name': 'Spring Festival', 'club_name': 'Iron Temple'})
+    response_decode = response.data.decode()
+    assert response.status_code == 200
+    assert 'Places availables' in response_decode and 'Spring Festival' in response_decode
 
 
 def test_purchase_places():
@@ -157,4 +163,7 @@ def test_logout(client):
 
     """
     response = client.get('/logout')
-    assert response.status_code == 200
+    response_decode = response.data.decode()
+
+    assert response.status_code == 302
+    assert 'redirected automatically to target URL: <a href="/">/</a>' in response_decode

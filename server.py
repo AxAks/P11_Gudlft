@@ -22,6 +22,7 @@ from lib_database.lib_database import get_club_by_email, get_competition_by_name
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
+
 @app.route('/')
 def index():
     """
