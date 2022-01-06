@@ -48,14 +48,18 @@ def test_book(client):
                           data={'competition_name': 'Spring Festival', 'club_name': 'Iron Temple'})
     response_decode = response.data.decode()
     assert response.status_code == 200
-    assert 'Places availables' in response_decode and 'Spring Festival' in response_decode
+    assert 'Places' in response_decode
 
 
-def test_purchase_places():
+def test_purchase_places(client):
     """
     TDD : When a place for a competition is bought, the number of points is deduced
     """
-    assert False is True
+    response = client.post('/purchase_places',
+                           data={'competition': 'Fall Classic', 'club': 'Iron Temple', 'places': 2})
+    response_decode = response.data.decode()
+    assert response.status_code == 200
+    assert 'Welcome, admin@irontemple.com' in response_decode
 
 
 def test_enough_places_in_competition_should_return_true():
