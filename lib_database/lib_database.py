@@ -1,10 +1,10 @@
 """
 Lib for functions related to database queries
 """
-from typing import Union, Dict
+from typing import Union, Dict, List
 
 
-def get_club_by_email(email: str, clubs) -> Union[Dict, None]:
+def get_club_by_email(email: str, clubs: List[Dict]) -> Union[Dict, None]:
     """
     Searches a club whose registered contact email matches the email given as parameter
     """
@@ -13,7 +13,7 @@ def get_club_by_email(email: str, clubs) -> Union[Dict, None]:
             return club
 
 
-def get_club_by_name(name: str, clubs) -> Union[Dict, None]:
+def get_club_by_name(name: str, clubs: List[Dict]) -> Union[Dict, None]:
     """
     Enables to get a club infos from its name
     """
@@ -22,7 +22,7 @@ def get_club_by_name(name: str, clubs) -> Union[Dict, None]:
             return club
 
 
-def get_competition_by_name(competition_name: str, competitions) -> Union[Dict, None]:
+def get_competition_by_name(competition_name: str, competitions: List[Dict]) -> Union[Dict, None]:
     """
     Enables to get a competition infos from its name
     """
