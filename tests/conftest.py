@@ -19,7 +19,7 @@ def client(app):
 
 
 @pytest.fixture
-def test_club():  # j'arrive pas à l'utiliser
+def test_club():
     """
     Returns a lambda club for tests purpose
     """
@@ -34,7 +34,7 @@ def test_club():  # j'arrive pas à l'utiliser
 
 
 @pytest.fixture
-def test_competition():  # j'arrive pas à l'utiliser
+def test_competition():
     """
     Returns a lambda competition for tests purpose
     """
@@ -46,3 +46,11 @@ def test_competition():  # j'arrive pas à l'utiliser
         },
     ]
     return competitions
+
+
+@pytest.fixture
+def test_required_places():
+    """
+    Returns a lambda amount of required places for tests purpose
+    """
+    return '6'

@@ -10,7 +10,7 @@ import pytest
 from datetime import datetime
 
 from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible, \
-    check_competition_date
+    check_competition_date, is_email_blank
 
 from .unittest_database import *  #  à modifier
 from .unittest_requests import *  #  à modifier
@@ -56,7 +56,7 @@ def test_purchase_places(client):
     TDD : When a place for a competition is bought, the number of points is deduced
     """
     response = client.post('/purchase_places',
-                           data={'competition': 'Fall Classic', 'club': 'Iron Temple', 'places': 2})
+                           data={'competition': 'Fall Classic', 'club': 'Iron Temple', 'places': '2'})
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, admin@irontemple.com' in response_decode

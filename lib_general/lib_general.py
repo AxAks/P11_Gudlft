@@ -4,6 +4,13 @@ Temp Lib for functions that need to be sorted
 from datetime import datetime, timedelta
 
 
+def is_email_blank(email):
+    """
+    Checks an email address has been entered
+    """
+    return email == ''
+
+
 def check_competition_date(competition_date, now=datetime.now()):
     """
     Checks that the competition is in the future

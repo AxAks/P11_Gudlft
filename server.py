@@ -12,7 +12,7 @@ from utils import save
 from flask import render_template, request, redirect, flash, url_for
 
 from lib_general.lib_general import check_competition_places, check_club_points, check_booking_possible, \
-    check_competition_date
+    check_competition_date, is_email_blank
 from lib_request.lib_request import extract_club_email, extract_competition_name,\
     extract_club_name, extract_required_places
 from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name, \
@@ -38,12 +38,16 @@ def show_summary():
     or asks to retry with a valid address
     """
     email = extract_club_email(request)
+    if is_email_blank(email):
+        flash("Please enter a valid email")
+        return redirect(url_for('index'))
     club = get_club_by_email(email, clubs)
-    if club:
-        return render_template('welcome.html', club=club, competitions=competitions)
-    else:
+    if not club:
         flash("The entered email could not be found, please enter a registered email")
         return redirect(url_for('index'))
+    else:
+        return render_template('welcome.html', club=club, competitions=competitions)
+
 
 
 @app.route('/book/<competition_name>/<club_name>')
