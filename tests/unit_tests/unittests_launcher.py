@@ -9,12 +9,11 @@ TDD approach :
 import pytest
 from datetime import datetime
 
-from tests.conftest import client
 from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible, \
     check_competition_date
 
-from unittest_database import *  # à modifier
-from unittest_requests import *  # à modifier
+from .unittest_database import *  # à modifier
+from .unittest_requests import *  # à modifier
 
 
 """
@@ -27,6 +26,14 @@ def test_index(client):
 
     """
     response = client.get('/')
+    assert response.status_code == 200
+
+
+def test_show_summary(client):
+    """
+
+    """
+    response = client.post('/show_summary', data={'email': 'john@simplylift.co'})
     assert response.status_code == 200
 
 

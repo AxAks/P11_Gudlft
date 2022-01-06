@@ -2,17 +2,17 @@
 Tests Conf File for pytest
 """
 import pytest
-
-import config
-import utils
+import server
 
 
-@pytest.fixture()  # simulation de client pour les requests, à revoir ...
-def client():
-    tested_app = config.app
-    test_db = 'tests/db_for_tests.json'
-    with tested_app.test_client() as client:
-        with tested_app.app_context():
-            utils.load(test_db)
-        yield client()
+@pytest.fixture
+def app():
+    tested_app = server.app
+    with tested_app.app_context():
+        yield tested_app
 
+
+@pytest.fixture
+def client(app):
+    with app.test_client() as client:
+        yield client

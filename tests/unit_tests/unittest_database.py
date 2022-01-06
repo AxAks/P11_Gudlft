@@ -37,15 +37,6 @@ def test_an_unregistered_email_should_return_none():
     assert get_club_by_email(email) is None
 
 
-def test_a_malformed_email_address_should_not_be_accepted():  # ??
-    """
-
-    """
-    assert True is False
-    email = 'malformed_address@testclub.co'
-    pass
-
-
 def test_a_registered_club_name_should_return_the_matching_club():
     """
     Checks that a registered club name returns the club

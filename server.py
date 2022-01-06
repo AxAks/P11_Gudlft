@@ -2,9 +2,11 @@
 Main File
 containing flask routing functions
 """
-from datetime import datetime
 
-from config import app, db_path, gudlft_database, competitions
+from flask import Flask
+
+from datetime import datetime
+from config import db_path, gudlft_database, competitions
 from utils import save
 
 from flask import render_template, request, redirect, flash, url_for
@@ -16,6 +18,9 @@ from lib_request.lib_request import extract_club_email, extract_competition_name
 from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name, \
     update_club_points_for_db, update_competition_places_for_db
 
+
+app = Flask(__name__)
+app.secret_key = 'something_special'
 
 @app.route('/')
 def index():
