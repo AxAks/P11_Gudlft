@@ -12,7 +12,7 @@ from utils import save
 from flask import render_template, request, redirect, flash, url_for
 
 from lib_general.lib_general import check_competition_places, check_club_points, check_booking_possible, \
-    check_competition_date, is_email_blank
+    check_competition_date, is_email_blank, check_required_places_amount
 from lib_request.lib_request import extract_club_email, extract_competition_name,\
     extract_club_name, extract_required_places
 from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name, \
@@ -85,13 +85,19 @@ def purchase_places():
     has_enough_places = check_competition_places(places_required_as_int, total_places_as_int)
     has_enough_points = check_club_points(places_required_as_int, total_points_as_int)
     competition_is_in_the_future = check_competition_date(competition_date)
-    booking_is_possible = check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future)
+    places_required_is_below_limit = check_required_places_amount(places_required_as_int)
+
+    booking_is_possible = check_booking_possible(has_enough_places, has_enough_points,
+                                                 competition_is_in_the_future, places_required_is_below_limit)
+
+    if not places_required_is_below_limit:
+        flash('You cannot purchase this amount of places. It is over the purchase limit per club for a competition!')
 
     if not has_enough_places:
-        flash('You cannot purchase this amount of place. There are not enough places left!')
+        flash('You cannot purchase this amount of places. There are not enough places left!')
 
     if not has_enough_points:
-        flash('You cannot purchase this amount of place. You do not have enough points!')
+        flash('You cannot purchase this amount of places. You do not have enough points!')
 
     if not competition_is_in_the_future:
         flash('You cannot purchase places for this competition. The competition is over!')

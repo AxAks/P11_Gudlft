@@ -10,7 +10,7 @@ import pytest
 from datetime import datetime
 
 from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible, \
-    check_competition_date, is_email_blank
+    check_competition_date, is_email_blank, check_required_places_amount
 
 from .unittest_database import *  #  à modifier
 from .unittest_requests import *  #  à modifier
@@ -98,60 +98,227 @@ def test_competition_date_in_the_past_should_return_false():
     assert check_competition_date(competition_date, now) is False
 
 
-def test_places_ok_points_ok_competition_date_ok_should_return_true():
+def test_places_required_below_limit_should_return_true():
+    """
+
+    """
+    places_required_as_int = 12
+    limit = 12
+    assert check_required_places_amount(places_required_as_int, limit) is True
+
+
+def test_places_required_above_limit_should_return_false():
+    """
+
+    """
+    places_required_as_int = 13
+    limit = 12
+    assert check_required_places_amount(places_required_as_int, limit) is False
+
+
+def test_places_ok_points_ok_competition_date_ok_places_below_limit_ok_should_return_true():
+    """
+    Must return True when every argument is true
+    """
     has_enough_places = True
     has_enough_points = True
     competition_is_in_the_future = True
-    assert check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future) is True
+    places_required_is_below_limit = True
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is True
 
 
-def test_places_ok_points_ok_competition_date_nok_should_return_false():
+def test_places_ok_points_ok_competition_date_nok_places_below_limit_ok_should_return_false():
+    """
+    Must return false when every argument is true but competition date
+    """
     has_enough_places = True
     has_enough_points = True
     competition_is_in_the_future = False
-    assert check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future) is False
+    places_required_is_below_limit = True
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
 
 
-def test_places_ok_points_nok_competition_date_ok_should_return_false():
+def test_places_ok_points_nok_competition_date_ok_places_below_limit_ok_should_return_false():
+    """
+    Must return false when every argument is true but amount of club points
+    """
     has_enough_places = True
     has_enough_points = False
     competition_is_in_the_future = True
-    assert check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future) is False
+    places_required_is_below_limit = True
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
 
 
-def test_places_nok_points_ok_competition_date_ok_should_return_false():
+def test_places_nok_points_ok_competition_date_ok_places_below_limit_ok_should_return_false():
+    """
+    Must return false when every argument is true but amount of available places in competition
+    """
     has_enough_places = False
     has_enough_points = True
     competition_is_in_the_future = True
-    assert check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future) is False
+    places_required_is_below_limit = True
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
 
 
-def test_places_nok_points_nok_competition_date_ok_should_return_false():
+def test_places_nok_points_nok_competition_date_ok_places_below_limit_ok_should_return_false():
+    """
+    Must return false when every argument is true except:
+     - amount of club points
+     - amount of available places in competition
+    """
     has_enough_places = False
     has_enough_points = False
     competition_is_in_the_future = True
-    assert check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future) is False
+    places_required_is_below_limit = True
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
 
 
-def test_places_nok_points_ok_competition_date_nok_should_return_false():
+def test_places_nok_points_ok_competition_date_nok_places_below_limit_ok_should_return_false():
+    """
+    Must return false when every argument is true except:
+     - amount of available places in competition
+     - valid competition date
+    """
     has_enough_places = False
     has_enough_points = True
     competition_is_in_the_future = False
-    assert check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future) is False
+    places_required_is_below_limit = True
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
 
 
-def test_places_ok_points_nok_competition_date_nok_should_return_false():
+def test_places_ok_points_nok_competition_date_nok_places_below_limit_ok_should_return_false():
+    """
+    Must return false when every argument is true except:
+     - amount of club points
+     - valid competition date
+    """
     has_enough_places = True
     has_enough_points = False
     competition_is_in_the_future = False
-    assert check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future) is False
+    places_required_is_below_limit = True
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
 
 
-def test_places_nok_points_nok_competition_date_nok_should_return_false():
+def test_places_nok_points_nok_competition_date_nok_places_below_limit_ok_should_return_false():
+    """
+    Must return false when only the argument in limitation in places requested is true
+    """
     has_enough_places = False
     has_enough_points = False
     competition_is_in_the_future = False
-    assert check_booking_possible(has_enough_places, has_enough_points, competition_is_in_the_future) is False
+    places_required_is_below_limit = True
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
+
+
+def test_places_ok_points_ok_competition_date_ok_places_below_limit_nok_should_return_false():
+    """
+    Must return false when every argument is true except:
+     - the limitation in places requested
+    """
+    has_enough_places = True
+    has_enough_points = True
+    competition_is_in_the_future = True
+    places_required_is_below_limit = False
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
+
+
+def test_places_ok_points_ok_competition_date_nok_places_below_limit_nok_should_return_false():
+    """
+    Must return false when every argument is true except:
+    - valid competition date
+    - the limitation in places requested
+    """
+    has_enough_places = True
+    has_enough_points = True
+    competition_is_in_the_future = False
+    places_required_is_below_limit = False
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
+
+
+def test_places_ok_points_nok_competition_date_ok_places_below_limit_nok_should_return_false():
+    """
+    Must return false when every argument is true except:
+    - clubs points
+    - the limitation in places requested
+    """
+    has_enough_places = True
+    has_enough_points = False
+    competition_is_in_the_future = True
+    places_required_is_below_limit = False
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
+
+
+def test_places_nok_points_ok_competition_date_ok_places_below_limit_nok_should_return_false():
+    """
+    Must return false when every argument is true except:
+    - available places in competition
+    - the limitation in places requested
+    """
+    has_enough_places = False
+    has_enough_points = True
+    competition_is_in_the_future = True
+    places_required_is_below_limit = False
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
+
+
+def test_places_nok_points_nok_competition_date_ok_places_below_limit_nok_should_return_false():
+    """
+    Must return false when only the argument of competition date is true
+    """
+    has_enough_places = False
+    has_enough_points = False
+    competition_is_in_the_future = True
+    places_required_is_below_limit = False
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
+
+
+def test_places_nok_points_ok_competition_date_nok_places_below_limit_nok_should_return_false():
+    """
+    Must return false when only the argument in clubs points is true
+    """
+    has_enough_places = False
+    has_enough_points = True
+    competition_is_in_the_future = False
+    places_required_is_below_limit = False
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
+
+
+def test_places_ok_points_nok_competition_date_nok_places_below_limit_nok_should_return_false():
+    """
+    Must return false when only the argument in available places in competition is true
+    """
+    has_enough_places = True
+    has_enough_points = False
+    competition_is_in_the_future = False
+    places_required_is_below_limit = False
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
+
+
+def test_places_nok_points_nok_competition_date_nok_places_below_limit_nok_should_return_false():
+    """
+    Must return false when all arguments are false
+    """
+    has_enough_places = False
+    has_enough_points = False
+    competition_is_in_the_future = False
+    places_required_is_below_limit = False
+    assert check_booking_possible(has_enough_places, has_enough_points,
+                                  competition_is_in_the_future, places_required_is_below_limit) is False
 
 
 def test_display_points():
@@ -159,7 +326,6 @@ def test_display_points():
 
     """
     assert True is False
-    pass
 
 
 def test_logout(client):
