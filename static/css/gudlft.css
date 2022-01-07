@@ -4,6 +4,14 @@ body {
     align-items: center;
     background-color: #064663;
     color: #ecb365;
+
+    margin-top: 25px;
+    margin-bottom: 25px;
+    left: 50px;
+    top: 50px;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
 }
 
 li {
