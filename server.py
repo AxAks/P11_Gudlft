@@ -28,7 +28,7 @@ def index():
     """
     Displays to the website homepage
     """
-    return render_template('index.html', clubs=clubs) # clubs : tests
+    return render_template('index.html', clubs=clubs)
 
 
 @app.route('/show_summary', methods=['POST'])

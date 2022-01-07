@@ -14,40 +14,26 @@
             <input type="email" name="email" id=""/>
             <button type="submit">Enter</button>
         </form>
-        <p>Public points table by club</p> <!-- Test ! -->
-        <ul>
-        {% for club in clubs %}
-            <li>
-                {{ club.name }}: {{ club.points }} points
-            </li>
-        {% endfor %}
-    </ul>
 
-    <table> <!--faire un tableau et le remplir en JS-->
+    <table class="points_table">
         <thead>
+            <tr>
+                <th>Public points table by club</th>
+            </tr>
             <tr>
                 <th>Club</th>
                 <th>Points</th>
             </tr>
         </thead>
-
         <tbody>
+        {% for club in clubs %}
             <tr>
-                <td>club 1</td>
-                <td>1 points</td>
+                <td>{{ club.name }}</td>
+                <td>{{ club.points }} points</td>
             </tr>
-            <tr>
-                <td>club 2</td>
-                <td>2 points</td>
-            </tr>
-            <tr>
-                <td>club 3</td>
-                <td>3 points</td>
-            </tr>
+        {% endfor %}
         </tbody>
     </table>
-
     {% endblock %}
-
 </body>
 </html>
