@@ -22,12 +22,16 @@ Extraire chaque tests dans un fichier nommé séparé, au fur et a mesure
 
 def test_index(client):
     """
-
+    checks that the route for index returns a success status code
+    and displays the needed elements in template:
+    - page title
+    - points table
     """
     response = client.get('/')
     assert response.status_code == 200
     response_decode = response.data.decode()
     assert 'GUDLFT Registration Portal!' in response_decode
+    assert '13 points' in response_decode
 
 
 def test_show_summary(client):
@@ -319,13 +323,6 @@ def test_places_nok_points_nok_competition_date_nok_places_below_limit_nok_shoul
     places_required_is_below_limit = False
     assert check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
-
-
-def test_display_points():
-    """
-
-    """
-    assert True is False
 
 
 def test_logout(client):

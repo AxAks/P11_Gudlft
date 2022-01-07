@@ -1,7 +1,25 @@
 body {
-    background-color: #aaaaaa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #064663;
+    color: #ecb365;
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    color: #dfe0dd;
 }
 
 .points_table {
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+}
 
+.in_red {
+    color: red;
 }
