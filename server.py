@@ -71,7 +71,7 @@ def purchase_places():
     """
     competition_name = extract_competition_name(request)
     club_name = extract_club_name(request)
-    places_required_as_int = extract_required_places(request)
+    places_required_as_int = extract_required_places(request.form)
 
     competition = get_competition_by_name(competition_name, competitions)
     club = get_club_by_name(club_name, clubs)
