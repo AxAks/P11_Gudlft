@@ -1,6 +1,7 @@
 """
 lib for info extraction from requests
 """
+from typing import Dict
 
 
 def extract_club_email(request):
@@ -24,9 +25,9 @@ def extract_club_name(request):
     return request.form['club']
 
 
-def extract_required_places(request):
+def extract_required_places(form: Dict):
     """
     Enables to get from the request the requested amount places to purchase for a competition
     While purchasing
     """
-    return int(request.form['places'])
+    return int(form['places'])

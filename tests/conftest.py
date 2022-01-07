@@ -2,16 +2,55 @@
 Tests Conf File for pytest
 """
 import pytest
-from flask import Flask
-
-import utils
+import server
 
 
-@pytest.fixture  # simulation de client pour les requests, à revoir ...
-def client():
-    tested_app = Flask(__name__)
-    test_db = 'tests/db_for_tests.json'
-    with tested_app.test_client() as client:
-        with tested_app.app_context():
-            utils.load(test_db)
+@pytest.fixture
+def app():
+    tested_app = server.app
+    with tested_app.app_context():
+        yield tested_app
+
+
+@pytest.fixture
+def client(app):
+    with app.test_client() as client:
         yield client
+
+
+@pytest.fixture
+def test_club():
+    """
+    Returns a lambda club for tests purpose
+    """
+    clubs = [
+        {
+            "name": "Test Club",
+            "email": "test@club.com",
+            "points": "16"
+        },
+    ]
+    return clubs
+
+
+@pytest.fixture
+def test_competition():
+    """
+    Returns a lambda competition for tests purpose
+    """
+    competitions = [
+        {
+            "name": "Test Competition",
+            "date": "2022-03-22 10:00:00",
+            "number_of_places": "20"
+        },
+    ]
+    return competitions
+
+
+@pytest.fixture
+def test_required_places():
+    """
+    Returns a lambda amount of required places for tests purpose
+    """
+    return '6'

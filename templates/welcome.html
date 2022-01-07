@@ -1,12 +1,10 @@
 {% extends 'layouts/base.html' %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary</title>
+    {% block title %} Summary | GUDLFT Registration {% endblock %}
 </head>
 <body>
-    {% block title %} Welcome, {{club['email']}}  {% endblock %}
+    {% block header %} Welcome, {{club['email']}}  {% endblock %}
     {% include 'layouts/_nav.html' %}
     {% block content %}
         Points availables: {{club['points']}}

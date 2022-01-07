@@ -2,61 +2,52 @@
 Tests file for researches in database
 """
 from lib_database.lib_database import get_club_by_email, get_club_by_name
+from tests.conftest import test_club, test_competition
 from utils import load
 
 
-def test_load_clubs():
+def test_load_clubs(test_club):
     """
     Checks that the list of clubs can be loaded from a json database file
     """
-    list_of_clubs = load('tests/db_for_tests.json')['clubs']  #   test pas tres pertinent, à revoir
-    assert list_of_clubs is not None
+    assert len(test_club) == 1
 
 
-def test_load_competitions(client):  #  test pas tres pertinent, à revoir
+def test_load_competitions(test_competition):
     """
     Checks that the list of competitions can be loaded from a json database file
     """
-    competitions = load('tests/db_for_tests.json')['competitions']
-    assert competitions is not None
+    assert len(test_competition) == 1
 
 
-def test_a_registered_email_should_return_a_club():
+def test_a_registered_email_should_return_a_club(test_club):
     """
     Checks that a registered email is found
     """
-    email = "john@simplylift.co"
-    assert get_club_by_email(email) is not None
+    email = "test@club.com"
+    assert isinstance(get_club_by_email(email, test_club), dict)
 
 
-def test_an_unregistered_email_should_return_none():
+def test_an_unregistered_email_should_return_none(test_club):
     """
     Checks that an unregistered email cannot be found
     """
+    clubs = [club for club in test_club]
     email = 'unregistered_user@testclub.com'
-    assert get_club_by_email(email) is None
+    assert get_club_by_email(email, clubs) is None
 
 
-def test_a_malformed_email_address_should_not_be_accepted():  # ??
-    """
-
-    """
-    assert True is False
-    email = 'malformed_address@testclub.co'
-    pass
-
-
-def test_a_registered_club_name_should_return_the_matching_club():
+def test_a_registered_club_name_should_return_the_matching_club(test_club):
     """
     Checks that a registered club name returns the club
     """
-    club_name = "Iron Temple"
-    assert get_club_by_name(club_name) is not None
+    club_name = "Test Club"
+    assert isinstance(get_club_by_name(club_name, test_club), dict)
 
 
-def test_an_unregistered_club_name_should_return_none():
+def test_an_unregistered_club_name_should_return_none(test_club):
     """
     Checks that an unregistered club name cannot be found
     """
     club_name = 'I am not a Club'
-    assert get_club_by_email(club_name) is None
+    assert get_club_by_email(club_name, test_club) is None

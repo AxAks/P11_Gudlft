@@ -1,15 +1,28 @@
-# gudlift-registration
+# P11_Gudlift
+# Study project
 
+# (note pour plus tard, lancer les tests, à affiner:  
+# python -m pytest -v $(ls tests/unit_tests/*.py)
+# python -m pytest -v tests/unit_tests/unittests_launcher.py)
 1. Why
 
+This project is a fork of the original Gudlift application
+available at : https://github.com/OpenClassrooms-Student-Center/Python_Testing
 
-    This is a proof of concept (POC) project to show a light-weight version of our competition booking platform. The aim is the keep things as light as possible, and use feedback from the users to iterate.
 
+
+(continuer la redaction...)
+
+
+
+
+
+This is a proof of concept (POC) project to show a light-weight version of our competition booking platform. The aim is the keep things as light as possible, and use feedback from the users to iterate.
 2. Getting Started
 
     This project uses the following technologies:
 
-    * Python v3.x+
+    * Python v3.9+
 
     * [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 
