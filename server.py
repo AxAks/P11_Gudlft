@@ -49,7 +49,6 @@ def show_summary():
         return render_template('welcome.html', club=club, competitions=competitions)
 
 
-
 @app.route('/book/<competition_name>/<club_name>')
 def book(competition_name, club_name):
     """
