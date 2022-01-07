@@ -114,15 +114,6 @@ def purchase_places():
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
-# TODO: Add route for points display (no need to be logged, on the homepage)
-@app.route('/display_points', methods=['GET'])
-def display_points():
-    """
-    Displays a page with showing points for all registered clubs
-    """
-    return render_template('clubs_points.html', clubs=clubs)
-
-
 @app.route('/logout')
 def logout():
     """
