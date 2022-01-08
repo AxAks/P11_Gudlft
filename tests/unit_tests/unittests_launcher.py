@@ -20,18 +20,31 @@ Extraire chaque tests dans un fichier nommé séparé, au fur et a mesure
 """
 
 
-def test_index(client):
+def test_index_with_registered_clubs(client, clubs=test_club):
     """
     checks that the route for index returns a success status code
     and displays the needed elements in template:
     - page title
-    - points table
+    - points table for clubs
     """
     response = client.get('/')
     assert response.status_code == 200
     response_decode = response.data.decode()
     assert 'GUDLFT Registration Portal!' in response_decode
-    assert '13 points' in response_decode
+    assert 'Test Club' in response_decode
+    assert '- 16' in response_decode
+
+
+def test_index_with_no_clubs_registered(client, clubs=None):
+    """
+    checks that the route for index returns a success status code
+    and displays that there is no club to display:
+    """
+    response = client.get('/')
+    assert response.status_code == 200
+    response_decode = response.data.decode()
+    assert 'GUDLFT Registration Portal!' in response_decode
+    assert 'No clubs to display' in response_decode
 
 
 def test_show_summary(client):

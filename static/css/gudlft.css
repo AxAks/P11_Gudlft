@@ -2,6 +2,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     background-color: #064663;
     color: #ecb365;
 
@@ -22,10 +23,41 @@ a {
     color: #dfe0dd;
 }
 
-.points_table {
+table {
     display: flex;
     flex-direction: column;
-    align-items: space-between;
+}
+
+table>thead {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+table>thead>tr {
+    display: flex;
+    justify-content: space-between;
+}
+
+table>thead>tr>th {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+table>tbody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+table>tbody>tr {
+    display: flex;
+    justify-content: space-between;
+    }
+
+table>tbody>tr>td  {
+    display: flex;
+    justify-content: center;
 }
 
 .in_red {
