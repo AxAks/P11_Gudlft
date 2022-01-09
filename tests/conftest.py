@@ -34,6 +34,25 @@ def test_club():
 
 
 @pytest.fixture
+def test_empty_clubs_list():
+    """
+    Returns an empty list for registered clubs for tests purpose
+    """
+    clubs = []
+    return clubs
+
+
+@pytest.fixture
+def mocker_test_club(mocker, test_club):
+    mocker.patch.object(server, 'clubs', test_club)
+
+
+@pytest.fixture
+def mocker_test_empty_clubs_list(mocker, test_empty_clubs_list):
+    mocker.patch.object(server, 'clubs', test_empty_clubs_list)
+
+
+@pytest.fixture
 def test_competition():
     """
     Returns a lambda competition for tests purpose

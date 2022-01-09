@@ -23,7 +23,7 @@ app = config.create_app()
 
 
 @app.route('/')
-def index(clubs=clubs):
+def index():
     """
     Displays to the website homepage
     """

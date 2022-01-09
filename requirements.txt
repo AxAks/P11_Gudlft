@@ -1,5 +1,6 @@
 Flask==2.0.2
 pytest==6.2.5
 flask-pytest==0.0.5
+pytest-mock==3.6.1
 coverage==6.2
 locust==2.5.1
