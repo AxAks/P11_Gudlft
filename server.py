@@ -3,10 +3,10 @@ Main File
 containing flask routing functions
 """
 
-from flask import Flask
-
 from datetime import datetime
-from config import db_path, gudlft_database, competitions, clubs
+
+import config
+from config import db_path, database, competitions, clubs
 from utils import save
 
 from flask import render_template, request, redirect, flash, url_for
@@ -19,12 +19,11 @@ from lib_database.lib_database import get_club_by_email, get_competition_by_name
     update_club_points_for_db, update_competition_places_for_db
 
 
-app = Flask(__name__)
-app.secret_key = 'something_special'
+app = config.create_app()
 
 
 @app.route('/')
-def index():
+def index(clubs=clubs):
     """
     Displays to the website homepage
     """
@@ -106,9 +105,9 @@ def purchase_places():
         club['points'] = total_points_as_int - places_required_as_int
         competition['number_of_places'] = total_places_as_int - places_required_as_int
 
-        update_club_points_for_db(club, gudlft_database)
-        update_competition_places_for_db(competition, gudlft_database)
-        save(gudlft_database, db_path)
+        update_club_points_for_db(club, database)
+        update_competition_places_for_db(competition, database)
+        save(database, db_path)
         flash('Great-booking complete!')
 
     return render_template('welcome.html', club=club, competitions=competitions)

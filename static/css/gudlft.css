@@ -14,9 +14,10 @@ body {
     border: 1px solid #888;
     border-radius: 10px;
 }
-
-li {
-    list-style-type: none;
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 main {
@@ -25,23 +26,17 @@ main {
     align-items: center;
 }
 
-section {
+ul>li {
     display: flex;
     flex-direction: column;
     align-items: center;
+    list-style-type: none;
 }
-
 
 p {
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-ul>li {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 a {

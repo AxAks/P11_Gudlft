@@ -31,13 +31,13 @@ def get_competition_by_name(competition_name: str, competitions: List[Dict]) -> 
             return competition
 
 
-def update_competition_places_for_db(competition, gudlft_database):
-    for competition_in_db in gudlft_database['competitions']:
+def update_competition_places_for_db(competition, database):
+    for competition_in_db in database['competitions']:
         if competition_in_db['name'] == competition['name']:
             competition_in_db['number_of_places'] = str(competition['number_of_places'])
 
 
-def update_club_points_for_db(club, gudlft_database):
-    for club_in_db in gudlft_database['clubs']:
+def update_club_points_for_db(club, database):
+    for club_in_db in database['clubs']:
         if club_in_db['name'] == club['name']:
             club_in_db['points'] = str(club['points'])
