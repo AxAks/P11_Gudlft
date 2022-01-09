@@ -35,10 +35,10 @@ def test_index_with_registered_clubs(client, test_club, mocker_test_club):
     assert '- 16' in response_decode
 
 
-def test_index_with_no_clubs_registered(client, test_empty_clubs_list, mocker_test_empty_clubs_list):
+def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_empty_clubs_list):
     """
     checks that the route for index returns a success status code
-    and displays that there is no club to display:
+    and displays that there is no club to display when clubs list in database is empty
     """
     response = client.get('/')
     assert response.status_code == 200
@@ -47,14 +47,28 @@ def test_index_with_no_clubs_registered(client, test_empty_clubs_list, mocker_te
     assert 'No clubs to display' in response_decode
 
 
-def test_show_summary(client):
+def test_show_summary_with_registered_competitions(client, test_competition, mocker_test_competition):
     """
-
+    checks that the route for show summary returns a success status code
+    and displays the list of registered competitions from database
     """
     response = client.post('/show_summary', data={'email': 'john@simplylift.co'})
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, john@simplylift.co' in response_decode
+    assert 'Test Competition' in response_decode
+
+
+def test_show_summary_with_no_registered_competitions(client, test_empty_list, mocker_test_empty_competitions_list):
+    """
+    checks that the route for show summary returns a success status code
+    and displays that there is no competition to display when competitions list in database is empty
+    """
+    response = client.post('/show_summary', data={'email': 'john@simplylift.co'})
+    response_decode = response.data.decode()
+    assert response.status_code == 200
+    assert 'Welcome, john@simplylift.co' in response_decode
+    assert 'No competitions to display' in response_decode
 
 
 def test_book(client):

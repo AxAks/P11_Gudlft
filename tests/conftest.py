@@ -34,12 +34,11 @@ def test_club():
 
 
 @pytest.fixture
-def test_empty_clubs_list():
+def test_empty_list():
     """
-    Returns an empty list for registered clubs for tests purpose
+    Returns an empty list for registered elements in database for tests purpose
     """
-    clubs = []
-    return clubs
+    return []
 
 
 @pytest.fixture
@@ -48,8 +47,8 @@ def mocker_test_club(mocker, test_club):
 
 
 @pytest.fixture
-def mocker_test_empty_clubs_list(mocker, test_empty_clubs_list):
-    mocker.patch.object(server, 'clubs', test_empty_clubs_list)
+def mocker_test_empty_clubs_list(mocker, test_empty_list):
+    mocker.patch.object(server, 'clubs', test_empty_list)
 
 
 @pytest.fixture
@@ -65,6 +64,16 @@ def test_competition():
         },
     ]
     return competitions
+
+
+@pytest.fixture
+def mocker_test_competition(mocker, test_competition):
+    mocker.patch.object(server, 'competitions', test_competition)
+
+
+@pytest.fixture
+def mocker_test_empty_competitions_list(mocker, test_empty_list):
+    mocker.patch.object(server, 'competitions', test_empty_list)
 
 
 @pytest.fixture
