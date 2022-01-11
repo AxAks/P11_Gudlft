@@ -2,27 +2,18 @@
 Main File
 containing flask routing functions
 """
-
-from datetime import datetime
-
-import config
-from config import db_path
+from config import db_path, app, db
 from utils import save
 
-from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 from flask import render_template, request, redirect, flash, url_for
 
-from lib_general.lib_general import check_competition_places, check_club_points, check_booking_possible, \
+from lib_general.lib_general import check_competition_places, check_club_points, check_booking_possible,\
     check_competition_date, is_email_blank, check_required_places_amount
 from lib_request.lib_request import extract_club_email, extract_competition_name,\
     extract_club_name, extract_required_places
-from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name, \
-    update_club_points_for_db, update_competition_places_for_db
-
-
-app = config.create_app()
-db = SQLAlchemy(app)
-db.create_all()
+from lib_database.lib_database import get_club_by_email, get_all_clubs, get_all_competitions, get_club_by_name, \
+    get_competition_by_name, update_club_points_for_db, update_competition_places_for_db
 
 
 @app.route('/')
@@ -30,6 +21,7 @@ def index():
     """
     Displays to the website homepage
     """
+    clubs = get_all_clubs()
     return render_template('index.html', clubs=clubs)
 
 
@@ -39,6 +31,8 @@ def show_summary():
     Redirects the user to their account summary page if the entered email is correct
     or asks to retry with a valid address
     """
+    clubs = get_all_clubs()
+    competitions = get_all_competitions()
     email = extract_club_email(request)
     if is_email_blank(email):
         flash("Please enter a valid email")
@@ -57,6 +51,8 @@ def book(competition_name, club_name):
     leads the user to the ticket booking page for a given competition
 
     """
+    clubs = get_all_clubs()
+    competitions = get_all_competitions()
     club = get_club_by_name(club_name, clubs)
     competition = get_competition_by_name(competition_name, competitions)
     if club and competition:
@@ -71,6 +67,9 @@ def purchase_places():
     """
     Enables the user to buy tickets for a given competition
     """
+    clubs = get_all_clubs()
+    competitions = get_all_competitions()
+
     competition_name = extract_competition_name(request)
     club_name = extract_club_name(request)
     places_required_as_int = extract_required_places(request.form)

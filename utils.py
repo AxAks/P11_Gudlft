@@ -4,6 +4,8 @@
 import json
 from typing import Dict
 
+from flask_sqlalchemy import SQLAlchemy
+
 
 def load(db_file: str) -> Dict:
     """
@@ -14,7 +16,7 @@ def load(db_file: str) -> Dict:
         return database
 
 
-def save(database: Dict, db_file: str) -> None:
+def save(database: SQLAlchemy, db_file: str) -> None:
     """
     saves all the objects instances of the program database to the database file
     """

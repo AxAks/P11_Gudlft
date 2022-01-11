@@ -1,11 +1,11 @@
 """
 Model file for clubs
 """
-from server import db
+from config import db
 
 
 # ex : {"name": "Simply Lift", "email": "john@simplylift.co", "points": "13"},
-class Club:
+class Club(db.Model):
     """
     Model for club objects
     """

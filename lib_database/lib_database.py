@@ -3,8 +3,19 @@ Lib for functions related to database queries
 """
 from typing import Union, Dict, List
 
+from models.clubs import Club
+from models.competitions import Competition
 
-def get_club_by_email(email: str, clubs: List[Dict]) -> Union[Dict, None]:
+
+def get_all_clubs():
+    return Club.query.all()
+
+
+def get_all_competitions():
+    return Competition.query.all()
+
+
+def get_club_by_email(email: str, clubs: List[Club]) -> Union[Dict, None]:
     """
     Searches a club whose registered contact email matches the email given as parameter
     """
@@ -13,7 +24,7 @@ def get_club_by_email(email: str, clubs: List[Dict]) -> Union[Dict, None]:
             return club
 
 
-def get_club_by_name(name: str, clubs: List[Dict]) -> Union[Dict, None]:
+def get_club_by_name(name: str, clubs: List[Club]) -> Union[Dict, None]:
     """
     Enables to get a club infos from its name
     """
@@ -22,7 +33,7 @@ def get_club_by_name(name: str, clubs: List[Dict]) -> Union[Dict, None]:
             return club
 
 
-def get_competition_by_name(competition_name: str, competitions: List[Dict]) -> Union[Dict, None]:
+def get_competition_by_name(competition_name: str, competitions: List[Competition]) -> Union[Dict, None]:
     """
     Enables to get a competition infos from its name
     """

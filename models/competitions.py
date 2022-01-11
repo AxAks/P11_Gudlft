@@ -1,7 +1,7 @@
 """
 Model file for competitions
 """
-from server import db
+from config import db
 
 
 # ex : {"name": "Spring Festival", "date": "2020-03-27 10:00:00", "number_of_places": "25"}
