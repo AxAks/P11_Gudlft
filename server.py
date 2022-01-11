@@ -6,9 +6,10 @@ containing flask routing functions
 from datetime import datetime
 
 import config
-from config import db_path, database, competitions, clubs
+from config import db_path
 from utils import save
 
+from flask_sqlalchemy import SQLAlchemy
 from flask import render_template, request, redirect, flash, url_for
 
 from lib_general.lib_general import check_competition_places, check_club_points, check_booking_possible, \
@@ -20,6 +21,8 @@ from lib_database.lib_database import get_club_by_email, get_competition_by_name
 
 
 app = config.create_app()
+db = SQLAlchemy(app)
+db.create_all()
 
 
 @app.route('/')
@@ -105,9 +108,9 @@ def purchase_places():
         club['points'] = total_points_as_int - places_required_as_int
         competition['number_of_places'] = total_places_as_int - places_required_as_int
 
-        update_club_points_for_db(club, database)
-        update_competition_places_for_db(competition, database)
-        save(database, db_path)
+        update_club_points_for_db(club, db)
+        update_competition_places_for_db(competition, db)
+        save(db, db_path)
         flash('Great-booking complete!')
 
     return render_template('welcome.html', club=club, competitions=competitions)
