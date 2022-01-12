@@ -20,7 +20,7 @@ def get_club_by_email(email: str, clubs: List[Club]) -> Union[Dict, None]:
     Searches a club whose registered contact email matches the email given as parameter
     """
     for club in clubs:
-        if email == club['email']:
+        if email == club.email:
             return club
 
 
@@ -29,7 +29,7 @@ def get_club_by_name(name: str, clubs: List[Club]) -> Union[Dict, None]:
     Enables to get a club infos from its name
     """
     for club in clubs:
-        if name == club['name']:
+        if name == club.name:
             return club
 
 

@@ -3,6 +3,7 @@ Tests Conf File for pytest
 """
 import pytest
 import server
+from models.clubs import Club
 
 
 @pytest.fixture
@@ -24,11 +25,7 @@ def test_club():
     Returns a lambda club for tests purpose
     """
     clubs = [
-        {
-            "name": "Test Club",
-            "email": "test@club.com",
-            "points": "16"
-        },
+        Club(name="Test Club", email="test@club.com", points=16)
     ]
     return clubs
 
