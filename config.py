@@ -3,7 +3,9 @@ Config file for app settings and environment variables
 """
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
+# à retirer modifs à faire dans d'autres fichiers
 db_path = 'database/gudlft_db.sqlite3'
 
 
@@ -17,4 +19,6 @@ def create_app():
 
 app = create_app()
 db = SQLAlchemy(app)
+from models.clubs import Club
+from models.competitions import Competition
 db.create_all()
