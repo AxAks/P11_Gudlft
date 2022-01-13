@@ -3,10 +3,6 @@ Config file for app settings and environment variables
 """
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-
-# à retirer modifs à faire dans d'autres fichiers
-db_path = 'database/gudlft_db.sqlite3'
 
 
 def create_app():

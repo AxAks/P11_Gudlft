@@ -1,9 +1,12 @@
 """
 Tests Conf File for pytest
 """
+from datetime import datetime
+
 import pytest
 import server
 from models.clubs import Club
+from models.competitions import Competition
 
 
 @pytest.fixture
@@ -20,7 +23,7 @@ def client(app):
 
 
 @pytest.fixture
-def test_club():
+def test_club_as_list():
     """
     Returns a lambda club for tests purpose
     """
@@ -28,6 +31,15 @@ def test_club():
         Club(name="Test Club", email="test@club.com", points=16)
     ]
     return clubs
+
+
+@pytest.fixture
+def test_club_as_obj():
+    """
+    Returns a lambda club for tests purpose
+    """
+    club = Club(name="Test Club", email="test@club.com", points=16)
+    return club
 
 
 @pytest.fixture
@@ -39,8 +51,24 @@ def test_empty_list():
 
 
 @pytest.fixture
-def mocker_test_club(mocker, test_club):
-    mocker.patch.object(server, 'clubs', test_club)
+def test_new_club_points():
+    """
+    Returns an empty list for registered elements in database for tests purpose
+    """
+    return 5
+
+
+@pytest.fixture
+def test_new_competition_places():
+    """
+    Returns an empty list for registered elements in database for tests purpose
+    """
+    return 6
+
+
+@pytest.fixture
+def mocker_test_club_as_list(mocker, test_club_as_list):
+    mocker.patch.object(server, 'clubs', test_club_as_list)
 
 
 @pytest.fixture
@@ -49,23 +77,29 @@ def mocker_test_empty_clubs_list(mocker, test_empty_list):
 
 
 @pytest.fixture
-def test_competition():
+def test_competition_as_list():
     """
     Returns a lambda competition for tests purpose
     """
     competitions = [
-        {
-            "name": "Test Competition",
-            "date": "2022-03-22 10:00:00",
-            "number_of_places": "20"
-        },
+        Competition(name="Test Competition",
+                    date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20)
     ]
     return competitions
 
 
 @pytest.fixture
-def mocker_test_competition(mocker, test_competition):
-    mocker.patch.object(server, 'competitions', test_competition)
+def test_competition_as_obj():
+    """
+    Returns a lambda competition for tests purpose
+    """
+    competition = Competition(name="Test Competition",
+                              date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20)
+    return competition
+
+@pytest.fixture
+def mocker_test_competition_as_list(mocker, test_competition_as_list):
+    mocker.patch.object(server, 'competitions', test_competition_as_list)
 
 
 @pytest.fixture

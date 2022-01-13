@@ -20,7 +20,7 @@ Extraire chaque tests dans un fichier nommé séparé, au fur et a mesure
 """
 
 
-def test_index_with_registered_clubs(client, test_club, mocker_test_club):
+def test_index_with_registered_clubs(client, test_club_as_list, mocker_test_club_as_list):
     """
     checks that the route for index returns a success status code
     and displays the needed elements in template:
@@ -47,7 +47,7 @@ def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_emp
     assert 'No clubs to display' in response_decode
 
 
-def test_show_summary_with_registered_competitions(client, test_competition, mocker_test_competition):
+def test_show_summary_with_registered_competitions(client, test_competition_as_list, mocker_test_competition_as_list):
     """
     checks that the route for show summary returns a success status code
     and displays the list of registered competitions from database

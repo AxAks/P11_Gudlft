@@ -11,10 +11,12 @@ competition1 = Competition(name="Spring Festival",
                            date=datetime.strptime("2020-03-27 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=25)
 competition2 = Competition(name="Fall Classic",
                            date=datetime.strptime("2020-10-22 13:30:00", '%Y-%m-%d %H:%M:%S'), number_of_places=13)
-
+competition3 = Competition(name="Be The Greatest",
+                           date=datetime.strptime("2022-09-12 11:30:00", '%Y-%m-%d %H:%M:%S'), number_of_places=15)
 # db.session.add(club1)
 # db.session.add(club2)
 # db.session.add(club3)
 # db.session.add(competition1)
 # db.session.add(competition2)
+# db.session.add(competition3)
 # db.session.commit()
