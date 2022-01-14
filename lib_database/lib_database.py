@@ -16,31 +16,25 @@ def get_all_competitions() -> List[Competition]:
     return Competition.query.all()
 
 
-def get_club_by_email(email: str, clubs: List[Club]) -> Union[Club, None]:
+def get_club_by_email(email: str) -> Union[Club, None]:
     """
     Searches a club whose registered contact email matches the email given as parameter
     """
-    for club in clubs:
-        if email == club.email:
-            return club
+    return Club.query.filter_by(email=email).first()
 
 
-def get_club_by_name(name: str, clubs: List[Club]) -> Union[Club, None]:
+def get_club_by_name(name: str) -> Union[Club, None]:
     """
     Enables to get a club infos from its name
     """
-    for club in clubs:
-        if name == club.name:
-            return club
+    return Club.query.filter_by(name=name).first()
 
 
-def get_competition_by_name(competition_name: str, competitions: List[Competition]) -> Union[Competition, None]:
+def get_competition_by_name(name: str) -> Union[Competition, None]:
     """
     Enables to get a competition infos from its name
     """
-    for competition in competitions:
-        if competition_name == competition.name:
-            return competition
+    return Competition.query.filter_by(name=name).first()
 
 
 def update_competition_places(competition: Competition, new_number_of_places) -> Competition: # rediger un test

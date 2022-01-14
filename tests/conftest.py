@@ -4,7 +4,9 @@ Tests Conf File for pytest
 from datetime import datetime
 
 import pytest
+
 import server
+from lib_database import lib_database
 from models.clubs import Club
 from models.competitions import Competition
 
@@ -20,6 +22,19 @@ def app():
 def client(app):
     with app.test_client() as client:
         yield client
+
+
+@pytest.fixture
+def test_db_club():
+    return Club(
+        name="Test Club",
+        email="test@club.com",
+        points=16,
+    )
+
+@pytest.fixture
+def mocker_test_db_club(mocker, test_db_club):
+    mocker.patch.object(server, 'club_in_db', test_db_club)
 
 
 @pytest.fixture

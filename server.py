@@ -14,15 +14,12 @@ from lib_database.lib_database import get_club_by_email, get_all_clubs, get_all_
     get_competition_by_name, update_club_points, update_competition_places
 
 
-clubs = get_all_clubs()
-competitions = get_all_competitions()
-
-
 @app.route('/')
 def index():
     """
     Displays to the website homepage
     """
+    clubs = get_all_clubs()
     return render_template('index.html', clubs=clubs)
 
 
@@ -32,11 +29,13 @@ def show_summary():
     Redirects the user to their account summary page if the entered email is correct
     or asks to retry with a valid address
     """
+    competitions = get_all_competitions()
+
     email = extract_club_email(request)
     if is_email_blank(email):
         flash("Please enter a valid email")
         return redirect(url_for('index'))
-    club = get_club_by_email(email, clubs)
+    club = get_club_by_email(email)
     if not club:
         flash("The entered email could not be found, please enter a registered email")
         return redirect(url_for('index'))
@@ -50,8 +49,10 @@ def book(competition_name, club_name):
     leads the user to the ticket booking page for a given competition
 
     """
-    club = get_club_by_name(club_name, clubs)
-    competition = get_competition_by_name(competition_name, competitions)
+    competitions = get_all_competitions()
+
+    club = get_club_by_name(club_name)
+    competition = get_competition_by_name(competition_name)
     if club and competition:
         return render_template('booking.html', club=club, competition=competition)
     else:
@@ -64,12 +65,14 @@ def purchase_places():
     """
     Enables the user to buy tickets for a given competition
     """
+    competitions = get_all_competitions()
+
     competition_name = extract_competition_name(request)
     club_name = extract_club_name(request)
     places_required = extract_required_places(request.form)
 
-    competition = get_competition_by_name(competition_name, competitions)
-    club = get_club_by_name(club_name, clubs)
+    competition = get_competition_by_name(competition_name)
+    club = get_club_by_name(club_name)
 
     competition_date = competition.date
     total_places = competition.number_of_places

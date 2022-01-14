@@ -16,10 +16,5 @@ class Club(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     points = db.Column(db.Integer)
 
-    def __init__(self, name, email, points):
-        self.name = name
-        self.email = email
-        self.points = points
-
     def __repr__(self):
         return f'{self.name}'

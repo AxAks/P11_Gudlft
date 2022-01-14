@@ -16,10 +16,5 @@ class Competition(db.Model):
     date = db.Column(db.DateTime, nullable=False)
     number_of_places = db.Column(db.Integer)
 
-    def __init__(self, name, date, number_of_places):
-        self.name = name
-        self.date = date
-        self.number_of_places = number_of_places
-
     def __repr__(self):
         return f'{self.name}: {self.date}'
