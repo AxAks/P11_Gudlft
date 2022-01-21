@@ -2,9 +2,11 @@
 Main File
 containing flask routing functions
 """
-from config import app
 
 from flask import render_template, request, redirect, flash, url_for
+
+
+from config import app, db
 
 from lib_general.lib_general import check_competition_places, check_club_points, check_booking_possible,\
     check_competition_date, is_email_blank, check_required_places_amount

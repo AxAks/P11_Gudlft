@@ -2,24 +2,33 @@
 Tests Conf File for pytest
 """
 from datetime import datetime
-
+from flask_sqlalchemy import SQLAlchemy
 import pytest
 
 import server
+from config import create_app
 from models.clubs import Club
 from models.competitions import Competition
 
 
 @pytest.fixture
-def app():
-    tested_app = server.app
+def tested_app():
+    tested_app = create_app(test=True)
     with tested_app.app_context():
         yield tested_app
 
+@pytest.fixture
+def test_database(tested_app):
+    app = tested_app
+    db = SQLAlchemy(app)
+    from models.clubs import Club
+    from models.competitions import Competition
+    db.create_all()
+
 
 @pytest.fixture
-def client(app):
-    with app.test_client() as client:
+def client(tested_app):
+    with tested_app.test_client() as client:
         yield client
 
 
