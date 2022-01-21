@@ -20,12 +20,12 @@ def test_load_competitions(test_competition_as_list): # test à réécrire
     assert len(test_competition_as_list) == 1
 
 
-def test_a_registered_email_should_return_a_club(test_club_as_list):
+def test_a_registered_email_should_return_a_club(test_club_as_obj):
     """
     Checks that a registered email is found
     """
     email = "test@club.com"
-    assert isinstance(get_club_by_email(email), Club)
+    assert get_club_by_email(email) == test_club_as_obj  # ca retourne False car ca tape dans la vraie base où le club n'existe pas
 
 
 def test_an_unregistered_email_should_return_none(test_club_as_list):
@@ -53,11 +53,11 @@ def test_an_unregistered_club_name_should_return_none(test_club_as_list):
     assert get_club_by_email(club_name) is None
 
 
-def test_update_competition_places(test_competition_as_obj, test_new_competition_places):  # test à écrire
+def test_update_competition_places(test_competition_as_obj, test_new_competition_places):
     updated_competition = update_competition_places(test_competition_as_obj, test_new_competition_places)
     assert updated_competition.number_of_places >= 0
 
 
-def test_update_club_points(test_db_club, test_new_club_points, mocker_test_db_club, ):  # test à écrire
-    updated_club = update_club_points(test_db_club, test_new_club_points)
-    assert updated_club.number_of_places >= 0
+def test_update_club_points(test_club_as_obj, test_new_club_points):
+    updated_club = update_club_points(test_club_as_obj, test_new_club_points)
+    assert updated_club.points >= 0

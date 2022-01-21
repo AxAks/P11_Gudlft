@@ -39,15 +39,11 @@ def get_competition_by_name(name: str) -> Union[Competition, None]:
 
 def update_competition_places(competition: Competition, new_number_of_places) -> Competition: # rediger un test
     competition.number_of_places = new_number_of_places
-    competition_in_db = Competition.query.filter_by(id=competition.id).first()
-    competition_in_db.number_of_places = new_number_of_places
     db.session.commit()
     return competition
 
 
 def update_club_points(club: Club, new_points) -> Club:  # rediger un test
     club.points = new_points
-    club_in_db = Competition.query.filter_by(id=club.id).first()
-    club_in_db.points = new_points
     db.session.commit()
     return club

@@ -6,7 +6,6 @@ from datetime import datetime
 import pytest
 
 import server
-from lib_database import lib_database
 from models.clubs import Club
 from models.competitions import Competition
 
@@ -25,27 +24,11 @@ def client(app):
 
 
 @pytest.fixture
-def test_db_club():
-    return Club(
-        name="Test Club",
-        email="test@club.com",
-        points=16,
-    )
-
-@pytest.fixture
-def mocker_test_db_club(mocker, test_db_club):
-    mocker.patch.object(server, 'club_in_db', test_db_club)
-
-
-@pytest.fixture
 def test_club_as_list():
     """
     Returns a lambda club for tests purpose
     """
-    clubs = [
-        Club(name="Test Club", email="test@club.com", points=16)
-    ]
-    return clubs
+    return [Club(name="Test Club", email="test@club.com", points=16)]
 
 
 @pytest.fixture
@@ -53,8 +36,7 @@ def test_club_as_obj():
     """
     Returns a lambda club for tests purpose
     """
-    club = Club(name="Test Club", email="test@club.com", points=16)
-    return club
+    return Club(name="Test Club", email="test@club.com", points=16)
 
 
 @pytest.fixture
@@ -96,11 +78,8 @@ def test_competition_as_list():
     """
     Returns a lambda competition for tests purpose
     """
-    competitions = [
-        Competition(name="Test Competition",
-                    date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20)
-    ]
-    return competitions
+    return [Competition(name="Test Competition",
+                        date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20)]
 
 
 @pytest.fixture
@@ -108,9 +87,9 @@ def test_competition_as_obj():
     """
     Returns a lambda competition for tests purpose
     """
-    competition = Competition(name="Test Competition",
-                              date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20)
-    return competition
+    return Competition(name="Test Competition",
+                       date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20)
+
 
 @pytest.fixture
 def mocker_test_competition_as_list(mocker, test_competition_as_list):
