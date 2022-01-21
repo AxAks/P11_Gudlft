@@ -16,6 +16,7 @@ from lib_database.lib_database import get_club_by_email, get_all_clubs, get_all_
     get_competition_by_name, update_club_points, update_competition_places
 
 
+
 @app.route('/')
 def index():
     """

@@ -1,5 +1,5 @@
 """
-Tests file for researches in database
+Tests file for researches in databases
 """
 from lib_database.lib_database import get_club_by_email, get_club_by_name, update_competition_places, \
     update_club_points
@@ -8,19 +8,19 @@ from models.clubs import Club
 
 def test_load_clubs(test_club_as_list): # test à réécrire
     """
-    Checks that the list of clubs can be loaded from a json database file
+    Checks that the list of clubs can be loaded from a json databases file
     """
     assert len(test_club_as_list) == 1
 
 
 def test_load_competitions(test_competition_as_list): # test à réécrire
     """
-    Checks that the list of competitions can be loaded from a json database file
+    Checks that the list of competitions can be loaded from a json databases file
     """
     assert len(test_competition_as_list) == 1
 
 
-def test_a_registered_email_should_return_a_club(test_club_as_obj):
+def test_a_registered_email_should_return_a_club(test_database, test_club_as_obj):
     """
     Checks that a registered email is found
     """
@@ -28,11 +28,10 @@ def test_a_registered_email_should_return_a_club(test_club_as_obj):
     assert get_club_by_email(email) == test_club_as_obj  # ca retourne False car ca tape dans la vraie base où le club n'existe pas
 
 
-def test_an_unregistered_email_should_return_none(test_club_as_list):
+def test_an_unregistered_email_should_return_none(test_database):
     """
     Checks that an unregistered email cannot be found
     """
-    clubs = [club for club in test_club_as_list]
     email = 'unregistered_user@testclub.com'
     assert get_club_by_email(email) is None
 
@@ -45,7 +44,7 @@ def test_a_registered_club_name_should_return_the_matching_club():
     assert isinstance(get_club_by_name(club_name), Club)
 
 
-def test_an_unregistered_club_name_should_return_none(test_club_as_list):
+def test_an_unregistered_club_name_should_return_none(test_database):
     """
     Checks that an unregistered club name cannot be found
     """

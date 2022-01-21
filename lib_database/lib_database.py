@@ -1,5 +1,5 @@
 """
-Lib for functions related to database queries
+Lib for functions related to databases queries
 """
 from typing import Union, List
 

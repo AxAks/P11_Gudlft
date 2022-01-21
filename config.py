@@ -7,11 +7,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 def create_app(test=False):
     app = Flask(__name__)
-    app.secret_key = 'something_special'
-    if test==True:
-        app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///database/gudlft_db.sqlite3'
+    if test:
+        database_path = 'sqlite:///databases/test_db.sqlite3'
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///database/gudlft_db.sqlite3'
+        database_path = 'sqlite:///databases/gudlft_db.sqlite3'
+    app.secret_key = 'something_special'
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_path
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return app
 
@@ -21,4 +22,4 @@ db = SQLAlchemy(app)
 from models.clubs import Club
 from models.competitions import Competition
 db.create_all()
-
+db.session.commit()

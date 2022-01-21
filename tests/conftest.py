@@ -17,13 +17,20 @@ def tested_app():
     with tested_app.app_context():
         yield tested_app
 
+
 @pytest.fixture
-def test_database(tested_app):
-    app = tested_app
-    db = SQLAlchemy(app)
+def test_database(tested_app, test_club_as_obj, test_competition_as_obj):
+    db = SQLAlchemy(tested_app)
     from models.clubs import Club
     from models.competitions import Competition
     db.create_all()
+    db.session.commit()
+
+    db.session.add(Club(name="Test Club", email="test@club.com", points=16))
+    db.session.add(Competition(name="Test Competition",
+                               date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20))
+    db.session.commit()
+    yield test_database
 
 
 @pytest.fixture
@@ -51,7 +58,7 @@ def test_club_as_obj():
 @pytest.fixture
 def test_empty_list():
     """
-    Returns an empty list for registered elements in database for tests purpose
+    Returns an empty list for registered elements in databases for tests purpose
     """
     return []
 
@@ -59,7 +66,7 @@ def test_empty_list():
 @pytest.fixture
 def test_new_club_points():
     """
-    Returns an empty list for registered elements in database for tests purpose
+    Returns an empty list for registered elements in databases for tests purpose
     """
     return 5
 
@@ -67,7 +74,7 @@ def test_new_club_points():
 @pytest.fixture
 def test_new_competition_places():
     """
-    Returns an empty list for registered elements in database for tests purpose
+    Returns an empty list for registered elements in databases for tests purpose
     """
     return 6
 

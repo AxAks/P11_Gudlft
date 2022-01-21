@@ -38,7 +38,7 @@ def test_index_with_registered_clubs(client, test_club_as_list, mocker_test_club
 def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_empty_clubs_list):
     """
     checks that the route for index returns a success status code
-    and displays that there is no club to display when clubs list in database is empty
+    and displays that there is no club to display when clubs list in databases is empty
     """
     response = client.get('/')
     assert response.status_code == 200
@@ -50,7 +50,7 @@ def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_emp
 def test_show_summary_with_registered_competitions(client, test_competition_as_list, mocker_test_competition_as_list):
     """
     checks that the route for show summary returns a success status code
-    and displays the list of registered competitions from database
+    and displays the list of registered competitions from databases
     """
     response = client.post('/show_summary', data={'email': 'john@simplylift.co'})
     response_decode = response.data.decode()
@@ -62,7 +62,7 @@ def test_show_summary_with_registered_competitions(client, test_competition_as_l
 def test_show_summary_with_no_registered_competitions(client, test_empty_list, mocker_test_empty_competitions_list):
     """
     checks that the route for show summary returns a success status code
-    and displays that there is no competition to display when competitions list in database is empty
+    and displays that there is no competition to display when competitions list in databases is empty
     """
     response = client.post('/show_summary', data={'email': 'john@simplylift.co'})
     response_decode = response.data.decode()
