@@ -6,11 +6,9 @@ TDD approach :
 2 ✅  Green : write the source code that makes the test pass.
 3 🛠  Refactor : refactor the source code to improve it.
 """
-import pytest
 from datetime import datetime
 
-from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible, \
-    check_competition_date, is_email_blank, check_required_places_amount
+from lib_general import lib_general
 
 from .unittest_database import *  #  à modifier
 from .unittest_requests import *  #  à modifier
@@ -96,37 +94,37 @@ def test_purchase_places(client):
 def test_enough_places_in_competition_should_return_true():
     places_required_as_int = 6
     total_places_in_competition_as_int = 25
-    assert check_competition_places(places_required_as_int, total_places_in_competition_as_int) is True
+    assert lib_general.check_competition_places(places_required_as_int, total_places_in_competition_as_int) is True
 
 
 def test_not_enough_places_in_competition_should_return_false():
     places_required_as_int = 26
     total_places_in_competition_as_int = 25
-    assert check_competition_places(places_required_as_int, total_places_in_competition_as_int) is False
+    assert lib_general.check_competition_places(places_required_as_int, total_places_in_competition_as_int) is False
 
 
 def test_enough_points_for_club_should_return_true():
     places_required_as_int = 13
     total_club_points_as_int = 13
-    assert check_club_points(places_required_as_int, total_club_points_as_int) is True
+    assert lib_general.check_club_points(places_required_as_int, total_club_points_as_int) is True
 
 
 def test_not_enough_points_for_club_should_return_false():
     places_required_as_int = 14
     total_club_points_as_int = 13
-    assert check_club_points(places_required_as_int, total_club_points_as_int) is False
+    assert lib_general.check_club_points(places_required_as_int, total_club_points_as_int) is False
 
 
 def test_competition_date_in_the_future_should_return_true():
     now = datetime.strptime("2022-01-02 09:00:00", "%Y-%m-%d %H:%M:%S")
     competition_date = datetime.strptime("2022-03-12 10:00:00", "%Y-%m-%d %H:%M:%S")
-    assert check_competition_date(competition_date, now) is True
+    assert lib_general.check_competition_date(competition_date, now) is True
 
 
 def test_competition_date_in_the_past_should_return_false():
     now = datetime.strptime("2022-01-02 09:00:00", "%Y-%m-%d %H:%M:%S")
     competition_date = datetime.strptime("2022-01-01 10:00:00", "%Y-%m-%d %H:%M:%S")
-    assert check_competition_date(competition_date, now) is False
+    assert lib_general.check_competition_date(competition_date, now) is False
 
 
 def test_places_required_below_limit_should_return_true():
@@ -135,7 +133,7 @@ def test_places_required_below_limit_should_return_true():
     """
     places_required_as_int = 12
     limit = 12
-    assert check_required_places_amount(places_required_as_int, limit) is True
+    assert lib_general.check_required_places_amount(places_required_as_int, limit) is True
 
 
 def test_places_required_above_limit_should_return_false():
@@ -144,7 +142,7 @@ def test_places_required_above_limit_should_return_false():
     """
     places_required_as_int = 13
     limit = 12
-    assert check_required_places_amount(places_required_as_int, limit) is False
+    assert lib_general.check_required_places_amount(places_required_as_int, limit) is False
 
 
 def test_places_ok_points_ok_competition_date_ok_places_below_limit_ok_should_return_true():
@@ -155,7 +153,7 @@ def test_places_ok_points_ok_competition_date_ok_places_below_limit_ok_should_re
     has_enough_points = True
     competition_is_in_the_future = True
     places_required_is_below_limit = True
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is True
 
 
@@ -167,7 +165,7 @@ def test_places_ok_points_ok_competition_date_nok_places_below_limit_ok_should_r
     has_enough_points = True
     competition_is_in_the_future = False
     places_required_is_below_limit = True
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -179,7 +177,7 @@ def test_places_ok_points_nok_competition_date_ok_places_below_limit_ok_should_r
     has_enough_points = False
     competition_is_in_the_future = True
     places_required_is_below_limit = True
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -191,7 +189,7 @@ def test_places_nok_points_ok_competition_date_ok_places_below_limit_ok_should_r
     has_enough_points = True
     competition_is_in_the_future = True
     places_required_is_below_limit = True
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -205,7 +203,7 @@ def test_places_nok_points_nok_competition_date_ok_places_below_limit_ok_should_
     has_enough_points = False
     competition_is_in_the_future = True
     places_required_is_below_limit = True
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -219,7 +217,7 @@ def test_places_nok_points_ok_competition_date_nok_places_below_limit_ok_should_
     has_enough_points = True
     competition_is_in_the_future = False
     places_required_is_below_limit = True
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -233,7 +231,7 @@ def test_places_ok_points_nok_competition_date_nok_places_below_limit_ok_should_
     has_enough_points = False
     competition_is_in_the_future = False
     places_required_is_below_limit = True
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -245,7 +243,7 @@ def test_places_nok_points_nok_competition_date_nok_places_below_limit_ok_should
     has_enough_points = False
     competition_is_in_the_future = False
     places_required_is_below_limit = True
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -258,7 +256,7 @@ def test_places_ok_points_ok_competition_date_ok_places_below_limit_nok_should_r
     has_enough_points = True
     competition_is_in_the_future = True
     places_required_is_below_limit = False
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -272,7 +270,7 @@ def test_places_ok_points_ok_competition_date_nok_places_below_limit_nok_should_
     has_enough_points = True
     competition_is_in_the_future = False
     places_required_is_below_limit = False
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -286,7 +284,7 @@ def test_places_ok_points_nok_competition_date_ok_places_below_limit_nok_should_
     has_enough_points = False
     competition_is_in_the_future = True
     places_required_is_below_limit = False
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -300,7 +298,7 @@ def test_places_nok_points_ok_competition_date_ok_places_below_limit_nok_should_
     has_enough_points = True
     competition_is_in_the_future = True
     places_required_is_below_limit = False
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -312,7 +310,7 @@ def test_places_nok_points_nok_competition_date_ok_places_below_limit_nok_should
     has_enough_points = False
     competition_is_in_the_future = True
     places_required_is_below_limit = False
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -324,7 +322,7 @@ def test_places_nok_points_ok_competition_date_nok_places_below_limit_nok_should
     has_enough_points = True
     competition_is_in_the_future = False
     places_required_is_below_limit = False
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -336,7 +334,7 @@ def test_places_ok_points_nok_competition_date_nok_places_below_limit_nok_should
     has_enough_points = False
     competition_is_in_the_future = False
     places_required_is_below_limit = False
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
@@ -348,7 +346,7 @@ def test_places_nok_points_nok_competition_date_nok_places_below_limit_nok_shoul
     has_enough_points = False
     competition_is_in_the_future = False
     places_required_is_below_limit = False
-    assert check_booking_possible(has_enough_places, has_enough_points,
+    assert lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 

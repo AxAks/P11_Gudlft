@@ -1,12 +1,11 @@
 """
 Tests Conf File for pytest
 """
-from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy
 import pytest
+from datetime import datetime
 
 import server
-from config import create_app
+from config import create_app, setup_db
 from models.clubs import Club
 from models.competitions import Competition
 
@@ -19,17 +18,8 @@ def tested_app():
 
 
 @pytest.fixture
-def test_database(tested_app, test_club_as_obj, test_competition_as_obj):
-    db = SQLAlchemy(tested_app)
-    from models.clubs import Club
-    from models.competitions import Competition
-    db.create_all()
-    db.session.commit()
-
-    db.session.add(Club(name="Test Club", email="test@club.com", points=16))
-    db.session.add(Competition(name="Test Competition",
-                               date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20))
-    db.session.commit()
+def test_database(tested_app):
+    test_database = setup_db(test=True)
     yield test_database
 
 
@@ -44,7 +34,7 @@ def test_club_as_list():
     """
     Returns a lambda club for tests purpose
     """
-    return [Club(name="Test Club", email="test@club.com", points=16)]
+    return [Club(id=1, name="Test Club", email="test@club.com", points=16)]
 
 
 @pytest.fixture
@@ -52,7 +42,7 @@ def test_club_as_obj():
     """
     Returns a lambda club for tests purpose
     """
-    return Club(name="Test Club", email="test@club.com", points=16)
+    return Club(id=1, name="Test Club", email="test@club.com", points=16)
 
 
 @pytest.fixture
@@ -94,7 +84,7 @@ def test_competition_as_list():
     """
     Returns a lambda competition for tests purpose
     """
-    return [Competition(name="Test Competition",
+    return [Competition(id=1, name="Test Competition",
                         date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20)]
 
 
@@ -103,7 +93,7 @@ def test_competition_as_obj():
     """
     Returns a lambda competition for tests purpose
     """
-    return Competition(name="Test Competition",
+    return Competition(id=1, name="Test Competition",
                        date=datetime.strptime("2022-03-22 10:00:00", '%Y-%m-%d %H:%M:%S'), number_of_places=20)
 
 

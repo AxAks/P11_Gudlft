@@ -1,7 +1,7 @@
 """
 Model file for clubs
 """
-from config import db
+from database import db
 
 
 # ex : {"name": "Simply Lift", "email": "john@simplylift.co", "points": "13"},

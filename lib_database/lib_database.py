@@ -3,9 +3,9 @@ Lib for functions related to databases queries
 """
 from typing import Union, List
 
+from database import db
 from models.clubs import Club
 from models.competitions import Competition
-from config import db
 
 
 def get_all_clubs() -> List[Club]:

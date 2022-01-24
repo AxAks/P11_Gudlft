@@ -5,16 +5,13 @@ containing flask routing functions
 
 from flask import render_template, request, redirect, flash, url_for
 
+from config import create_app
 
-from config import app, db
+from lib_general import lib_general
+from lib_request import lib_request
+from lib_database import lib_database
 
-from lib_general.lib_general import check_competition_places, check_club_points, check_booking_possible,\
-    check_competition_date, is_email_blank, check_required_places_amount
-from lib_request.lib_request import extract_club_email, extract_competition_name,\
-    extract_club_name, extract_required_places
-from lib_database.lib_database import get_club_by_email, get_all_clubs, get_all_competitions, get_club_by_name,\
-    get_competition_by_name, update_club_points, update_competition_places
-
+app = create_app()
 
 
 @app.route('/')
@@ -22,7 +19,7 @@ def index():
     """
     Displays to the website homepage
     """
-    clubs = get_all_clubs()
+    clubs = lib_database.get_all_clubs()
     return render_template('index.html', clubs=clubs)
 
 
@@ -32,13 +29,13 @@ def show_summary():
     Redirects the user to their account summary page if the entered email is correct
     or asks to retry with a valid address
     """
-    competitions = get_all_competitions()
+    competitions = lib_database.get_all_competitions()
 
-    email = extract_club_email(request)
-    if is_email_blank(email):
+    email = lib_request.extract_club_email(request)
+    if lib_general.is_email_blank(email):
         flash("Please enter a valid email")
         return redirect(url_for('index'))
-    club = get_club_by_email(email)
+    club = lib_database.get_club_by_email(email)
     if not club:
         flash("The entered email could not be found, please enter a registered email")
         return redirect(url_for('index'))
@@ -52,10 +49,10 @@ def book(competition_name, club_name):
     leads the user to the ticket booking page for a given competition
 
     """
-    competitions = get_all_competitions()
+    competitions = lib_database.get_all_competitions()
 
-    club = get_club_by_name(club_name)
-    competition = get_competition_by_name(competition_name)
+    club = lib_database.get_club_by_name(club_name)
+    competition = lib_database.get_competition_by_name(competition_name)
     if club and competition:
         return render_template('booking.html', club=club, competition=competition)
     else:
@@ -68,25 +65,25 @@ def purchase_places():
     """
     Enables the user to buy tickets for a given competition
     """
-    competitions = get_all_competitions()
+    competitions = lib_database.get_all_competitions()
 
-    competition_name = extract_competition_name(request)
-    club_name = extract_club_name(request)
-    places_required = extract_required_places(request.form)
+    competition_name = lib_request.extract_competition_name(request)
+    club_name = lib_request.extract_club_name(request)
+    places_required = lib_request.extract_required_places(request.form)
 
-    competition = get_competition_by_name(competition_name)
-    club = get_club_by_name(club_name)
+    competition = lib_database.get_competition_by_name(competition_name)
+    club = lib_database.get_club_by_name(club_name)
 
     competition_date = competition.date
     total_places = competition.number_of_places
     total_points = club.points
 
-    has_enough_places = check_competition_places(places_required, total_places)
-    has_enough_points = check_club_points(places_required, total_points)
-    competition_is_in_the_future = check_competition_date(competition_date)
-    places_required_is_below_limit = check_required_places_amount(places_required)
+    has_enough_places = lib_general.check_competition_places(places_required, total_places)
+    has_enough_points = lib_general.check_club_points(places_required, total_points)
+    competition_is_in_the_future = lib_general.check_competition_date(competition_date)
+    places_required_is_below_limit = lib_general.check_required_places_amount(places_required)
 
-    booking_is_possible = check_booking_possible(has_enough_places, has_enough_points,
+    booking_is_possible = lib_general.check_booking_possible(has_enough_places, has_enough_points,
                                                  competition_is_in_the_future, places_required_is_below_limit)
 
     if not places_required_is_below_limit:
@@ -105,8 +102,8 @@ def purchase_places():
         new_points = total_points - places_required
         new_number_of_places = total_places - places_required
 
-        update_club_points(club, new_points)
-        update_competition_places(competition, new_number_of_places)
+        lib_database.update_club_points(club, new_points)
+        lib_database.update_competition_places(competition, new_number_of_places)
         flash('Great-booking complete!')
 
     return render_template('welcome.html', club=club, competitions=competitions)
