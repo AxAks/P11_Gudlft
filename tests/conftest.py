@@ -13,14 +13,14 @@ def app():
 
 
 @pytest.fixture
-def client(app):
+def client(app, test_database):
     with app.test_client() as client:
         yield client
 
 
 @pytest.fixture
 def test_database():
-    test_database = {
+    yield {
         "clubs": [
             {
                 "name": "Test Club",
@@ -30,18 +30,17 @@ def test_database():
         ],
         "competitions": [
             {
-                "name": "Test Competition",
+                "name": "Test Past Competition",
+                "date": "2020-03-22 10:00:00",
+                "number_of_places": "18"
+            },
+            {
+                "name": "Test Future Competition",
                 "date": "2022-03-22 10:00:00",
                 "number_of_places": "20"
             },
         ]
     }
-    return test_database
-
-
-@pytest.fixture
-def mocker_test_database(mocker, test_database):
-    mocker.patch.object(server, 'database', test_database)
 
 
 @pytest.fixture
@@ -57,14 +56,58 @@ def test_club_as_list():
     """
     Returns a lambda club as list for tests purpose
     """
-    clubs = [
+    return [
         {
             "name": "Test Club",
             "email": "test@club.com",
             "points": "16"
         },
     ]
-    return clubs
+
+
+@pytest.fixture
+def test_club():
+    return {
+        "name": "Test Club",
+        "email": "test@club.com",
+        "points": "16"
+    }
+
+
+@pytest.fixture
+def test_competition_as_list():
+    """
+    Returns a lambda competition for tests purpose
+    """
+    return [
+        {
+            "name": "Test Competition",
+            "date": "2022-03-22 10:00:00",
+            "number_of_places": "20"
+        },
+    ]
+
+
+@pytest.fixture
+def test_competition():
+    return {
+        "name": "Test Competition",
+        "date": "2022-03-22 10:00:00",
+        "number_of_places": "20"
+    }
+
+
+@pytest.fixture
+def test_required_places():
+    """
+    Returns a lambda amount of required places for tests purpose
+    """
+    return '6'
+
+
+@pytest.fixture
+def mocker_test_database(mocker, test_database):
+    mocker.patch.object(server, 'database', test_database)
 
 
 @pytest.fixture
@@ -78,35 +121,6 @@ def mocker_test_empty_clubs_list(mocker, test_empty_list):
 
 
 @pytest.fixture
-def test_club():
-    return {
-        "name": "Test Club",
-        "email": "test@club.com",
-        "points": "16"
-    }
-
-
-@pytest.fixture
-def mocker_test_club(mocker, test_club):
-    mocker.patch.object(server, 'clubs', test_club)
-
-
-@pytest.fixture
-def test_competition_as_list():
-    """
-    Returns a lambda competition for tests purpose
-    """
-    competitions = [
-        {
-            "name": "Test Competition",
-            "date": "2022-03-22 10:00:00",
-            "number_of_places": "20"
-        },
-    ]
-    return competitions
-
-
-@pytest.fixture
 def mocker_test_competition_as_list(mocker, test_competition_as_list):
     mocker.patch.object(server, 'competitions', test_competition_as_list)
 
@@ -114,25 +128,3 @@ def mocker_test_competition_as_list(mocker, test_competition_as_list):
 @pytest.fixture
 def mocker_test_empty_competitions_list(mocker, test_empty_list):
     mocker.patch.object(server, 'competitions', test_empty_list)
-
-
-@pytest.fixture
-def test_competition():
-    return {
-        "name": "Test Competition",
-        "date": "2022-03-22 10:00:00",
-        "number_of_places": "20"
-    }
-
-
-@pytest.fixture
-def mocker_test_competition(mocker, test_competition):
-    mocker.patch.object(server, 'competitions', test_competition)
-
-
-@pytest.fixture
-def test_required_places():
-    """
-    Returns a lambda amount of required places for tests purpose
-    """
-    return '6'

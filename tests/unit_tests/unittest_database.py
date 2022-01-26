@@ -2,8 +2,6 @@
 Tests file for researches in database
 """
 from lib_database.lib_database import get_club_by_email, get_club_by_name
-from tests.conftest import test_club, test_competition
-from utils import load
 
 
 def test_load_clubs(test_club_as_list):

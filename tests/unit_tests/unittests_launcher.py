@@ -46,32 +46,31 @@ def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_emp
     assert 'No clubs to display' in response_decode
 
 
-def test_show_summary_with_registered_competitions(client, test_competition_as_list, mocker_test_competition_as_list):
+def test_show_summary_with_registered_competitions(client, test_club, mocker_test_competition_as_list):
     """
     checks that the route for show summary returns a success status code
     and displays the list of registered competitions from database
     """
-    response = client.post('/show_summary', data={'email': 'john@simplylift.co'})
+    response = client.post('/show_summary', data={'email': test_club['email']})
     response_decode = response.data.decode()
     assert response.status_code == 200
-    assert 'Welcome, john@simplylift.co' in response_decode
+    assert 'Welcome, test@club.com' in response_decode
     assert 'Test Competition' in response_decode
 
 
-def test_show_summary_with_no_registered_competitions(client, test_empty_list, mocker_test_empty_competitions_list):
+def test_show_summary_with_no_registered_competitions(client, test_club, mocker_test_empty_competitions_list):
     """
     checks that the route for show summary returns a success status code
     and displays that there is no competition to display when competitions list in database is empty
     """
-    response = client.post('/show_summary', data={'email': 'john@simplylift.co'})
+    response = client.post('/show_summary', data={'email':  test_club['email']})
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, john@simplylift.co' in response_decode
     assert 'No competitions to display' in response_decode
 
 
-def test_book(client, test_competition, test_club, mocker_test_database,
-              mocker_test_club_as_list):
+def test_book(client, test_competition, test_club, test_database):
     """
 
     """
