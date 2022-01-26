@@ -6,7 +6,6 @@ TDD approach :
 2 ✅  Green : write the source code that makes the test pass.
 3 🛠  Refactor : refactor the source code to improve it.
 """
-import pytest
 from datetime import datetime
 
 from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible, \
@@ -20,7 +19,7 @@ Extraire chaque tests dans un fichier nommé séparé, au fur et a mesure
 """
 
 
-def test_index_with_registered_clubs(client, test_club, mocker_test_club):
+def test_index_with_registered_clubs(client, test_club_as_list, mocker_test_club_as_list):
     """
     checks that the route for index returns a success status code
     and displays the needed elements in template:
@@ -47,7 +46,7 @@ def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_emp
     assert 'No clubs to display' in response_decode
 
 
-def test_show_summary_with_registered_competitions(client, test_competition, mocker_test_competition):
+def test_show_summary_with_registered_competitions(client, test_competition_as_list, mocker_test_competition_as_list):
     """
     checks that the route for show summary returns a success status code
     and displays the list of registered competitions from database
@@ -71,26 +70,30 @@ def test_show_summary_with_no_registered_competitions(client, test_empty_list, m
     assert 'No competitions to display' in response_decode
 
 
-def test_book(client):
+def test_book(client, test_competition, test_club, mocker_test_database,
+              mocker_test_club_as_list):
     """
 
     """
     response = client.get('/book/<competition_name>/<club_name>',
-                          data={'competition_name': 'Spring Festival', 'club_name': 'Iron Temple'})
+                          data={'competition_name': test_competition['name'],
+                                'club_name': test_club['name']})
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Places' in response_decode
 
 
-def test_purchase_places(client):
+def test_purchase_places(client, test_competition, test_competition_as_list,
+                         test_club, test_club_as_list, mocker_test_competition_as_list):
     """
     TDD : When a place for a competition is bought, the number of points is deduced
     """
     response = client.post('/purchase_places',
-                           data={'competition': 'Fall Classic', 'club': 'Iron Temple', 'places': '2'})
+                           data={'competition_name': test_competition['name'],
+                                 'club_name': test_club['name']})
     response_decode = response.data.decode()
     assert response.status_code == 200
-    assert 'Welcome, admin@irontemple.com' in response_decode
+    assert 'Welcome, test@club.com' in response_decode
 
 
 def test_enough_places_in_competition_should_return_true():

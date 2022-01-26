@@ -56,8 +56,15 @@ def book(competition_name, club_name):
     """
     club = get_club_by_name(club_name, clubs)
     competition = get_competition_by_name(competition_name, competitions)
+    competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
+    competition_is_in_the_future = check_competition_date(competition_date)
+
     if club and competition:
-        return render_template('booking.html', club=club, competition=competition)
+        if competition_is_in_the_future:
+            return render_template('booking.html', club=club, competition=competition)
+        else:
+            flash('You cannot purchase places for this competition. The competition is over!')
+            return render_template('welcome.html', club=club, competitions=competitions)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
@@ -75,8 +82,7 @@ def purchase_places():
     competition = get_competition_by_name(competition_name, competitions)
     club = get_club_by_name(club_name, clubs)
 
-    competition_date_as_str = competition['date']
-    competition_date = datetime.strptime(competition_date_as_str, '%Y-%m-%d %H:%M:%S')
+    competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
 
     total_places_as_int = int(competition['number_of_places'])
     total_points_as_int = int(club['points'])
@@ -98,9 +104,6 @@ def purchase_places():
     if not has_enough_points:
         flash('You cannot purchase this amount of places. You do not have enough points!')
 
-    if not competition_is_in_the_future:
-        flash('You cannot purchase places for this competition. The competition is over!')
-
     if booking_is_possible:
         club['points'] = total_points_as_int - places_required_as_int
         competition['number_of_places'] = total_places_as_int - places_required_as_int
@@ -108,7 +111,7 @@ def purchase_places():
         update_club_points_for_db(club, database)
         update_competition_places_for_db(competition, database)
         save(database, db_path)
-        flash('Great-booking complete!')
+        flash(f'Great-booking complete! : {places_required_as_int} places for {competition_name}')
 
     return render_template('welcome.html', club=club, competitions=competitions)
 
