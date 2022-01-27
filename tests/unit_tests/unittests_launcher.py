@@ -46,7 +46,8 @@ def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_emp
     assert 'No clubs to display' in response_decode
 
 
-def test_show_summary_with_registered_competitions(client, test_club, mocker_test_competition_as_list):
+def test_show_summary_with_registered_competitions(client, test_club, mocker_test_club_as_list,
+                                                   mocker_test_competitions_as_list):
     """
     checks that the route for show summary returns a success status code
     and displays the list of registered competitions from database
@@ -55,10 +56,11 @@ def test_show_summary_with_registered_competitions(client, test_club, mocker_tes
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
-    assert 'Test Competition' in response_decode
+    assert 'Test Future Competition' in response_decode
 
 
-def test_show_summary_with_no_registered_competitions(client, test_club, mocker_test_empty_competitions_list):
+def test_show_summary_with_no_registered_competitions(client, test_club, mocker_test_club_as_list,
+                                                      mocker_test_empty_competitions_list):
     """
     checks that the route for show summary returns a success status code
     and displays that there is no competition to display when competitions list in database is empty
@@ -66,33 +68,38 @@ def test_show_summary_with_no_registered_competitions(client, test_club, mocker_
     response = client.post('/show_summary', data={'email':  test_club['email']})
     response_decode = response.data.decode()
     assert response.status_code == 200
-    assert 'Welcome, john@simplylift.co' in response_decode
+    assert 'Welcome, test@club.com' in response_decode
     assert 'No competitions to display' in response_decode
 
 
-def test_book(client, test_competition, test_club, test_database):
+def test_book(client, test_future_competition, test_club, mocker_test_club_as_list, mocker_test_competitions_as_list):
     """
 
     """
-    response = client.get('/book/<competition_name>/<club_name>',
-                          data={'competition_name': test_competition['name'],
-                                'club_name': test_club['name']})
+    competition_name = test_future_competition['name']
+    club_name = test_club['name']
+    response = client.get(f'/book/{competition_name}/{club_name}')
     response_decode = response.data.decode()
     assert response.status_code == 200
-    assert 'Places' in response_decode
+    assert 'places' in response_decode
 
 
-def test_purchase_places(client, test_competition, test_competition_as_list,
-                         test_club, test_club_as_list, mocker_test_competition_as_list):
+def test_purchase_places(client, test_future_competition,
+                         mocker_test_competitions_as_list, mocker_test_club_as_list, mocker_test_db_path,
+                         test_club, test_required_places, mocker_test_database):
     """
     TDD : When a place for a competition is bought, the number of points is deduced
     """
     response = client.post('/purchase_places',
-                           data={'competition_name': test_competition['name'],
-                                 'club_name': test_club['name']})
+                           data={'competition_name': test_future_competition['name'],
+                                 'club_name': test_club['name'],
+                                 'places': test_required_places})
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
+    assert f"Great-booking complete! :"\
+           f" {test_required_places} places for {test_future_competition['name']}"\
+           in response_decode
 
 
 def test_enough_places_in_competition_should_return_true():

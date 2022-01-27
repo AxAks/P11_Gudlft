@@ -1,0 +1,21 @@
+{
+      "clubs": [
+          {
+              "name": "Test Club",
+              "email": "test@club.com",
+              "points": "16"
+          }
+      ],
+      "competitions": [
+          {
+              "name": "Test Past Competition",
+              "date": "2020-03-22 10:00:00",
+              "number_of_places": "18"
+          },
+          {
+              "name": "Test Future Competition",
+              "date": "2022-03-22 10:00:00",
+              "number_of_places": "20"
+          }
+      ]
+  }

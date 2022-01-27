@@ -6,7 +6,6 @@ containing flask routing functions
 from datetime import datetime
 
 import config
-from config import db_path, database, competitions, clubs
 from utils import save
 
 from flask import render_template, request, redirect, flash, url_for
@@ -20,6 +19,10 @@ from lib_database.lib_database import get_club_by_email, get_competition_by_name
 
 
 app = config.create_app()
+db_path = config.declare_db_path()
+database = config.setup_db()
+clubs = database['clubs']
+competitions = database['competitions']
 
 
 @app.route('/')
@@ -52,8 +55,8 @@ def show_summary():
 def book(competition_name, club_name):
     """
     leads the user to the ticket booking page for a given competition
-
     """
+
     club = get_club_by_name(club_name, clubs)
     competition = get_competition_by_name(competition_name, competitions)
     competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
@@ -75,8 +78,8 @@ def purchase_places():
     """
     Enables the user to buy tickets for a given competition
     """
-    competition_name = extract_competition_name(request)
-    club_name = extract_club_name(request)
+    competition_name = extract_competition_name(request)   # mettre sous la forme request.form et ecrire le test ?
+    club_name = extract_club_name(request)  # mettre sous la forme request.form et ecrire le test ?
     places_required_as_int = extract_required_places(request.form)
 
     competition = get_competition_by_name(competition_name, competitions)

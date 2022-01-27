@@ -11,18 +11,18 @@ def test_load_clubs(test_club_as_list):
     assert len(test_club_as_list) == 1
 
 
-def test_load_competitions(test_competition_as_list):
+def test_load_competitions(test_competitions_as_list):
     """
     Checks that the list of competitions can be loaded from a json database file
     """
-    assert len(test_competition_as_list) == 1
+    assert len(test_competitions_as_list) == 2
 
 
 def test_a_registered_email_should_return_a_club(test_club_as_list, test_club):
     """
     Checks that a registered email is found
     """
-    email = "test@club.com"
+    email = test_club['email']
     assert get_club_by_email(email, test_club_as_list) == test_club
 
 
@@ -39,7 +39,7 @@ def test_a_registered_club_name_should_return_the_matching_club(test_club_as_lis
     """
     Checks that a registered club name returns the club
     """
-    club_name = "Test Club"
+    club_name = test_club['name']
     assert get_club_by_name(club_name, test_club_as_list) == test_club
 
 

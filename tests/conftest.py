@@ -13,22 +13,21 @@ def app():
 
 
 @pytest.fixture
-def client(app, test_database):
+def client(app):
     with app.test_client() as client:
         yield client
 
 
 @pytest.fixture
 def test_database():
-    yield {
-        "clubs": [
-            {
-                "name": "Test Club",
-                "email": "test@club.com",
-                "points": "16"
-            },
-        ],
-        "competitions": [
+    return {'clubs': [
+        {
+            "name": "Test Club",
+            "email": "test@club.com",
+            "points": "16"
+        }
+    ],
+        'competitions': [
             {
                 "name": "Test Past Competition",
                 "date": "2020-03-22 10:00:00",
@@ -38,9 +37,14 @@ def test_database():
                 "name": "Test Future Competition",
                 "date": "2022-03-22 10:00:00",
                 "number_of_places": "20"
-            },
+            }
         ]
     }
+
+
+@pytest.fixture
+def test_db_path():
+    return 'test_db.json'
 
 
 @pytest.fixture
@@ -75,23 +79,28 @@ def test_club():
 
 
 @pytest.fixture
-def test_competition_as_list():
+def test_competitions_as_list():
     """
     Returns a lambda competition for tests purpose
     """
     return [
         {
-            "name": "Test Competition",
+            "name": "Test Past Competition",
+            "date": "2020-03-22 10:00:00",
+            "number_of_places": "18"
+        },
+        {
+            "name": "Test Future Competition",
             "date": "2022-03-22 10:00:00",
             "number_of_places": "20"
-        },
+        }
     ]
 
 
 @pytest.fixture
-def test_competition():
+def test_future_competition():
     return {
-        "name": "Test Competition",
+        "name": "Test Future Competition",
         "date": "2022-03-22 10:00:00",
         "number_of_places": "20"
     }
@@ -111,6 +120,11 @@ def mocker_test_database(mocker, test_database):
 
 
 @pytest.fixture
+def mocker_test_db_path(mocker, test_db_path):
+    mocker.patch.object(server, 'db_path', test_db_path)
+
+
+@pytest.fixture
 def mocker_test_club_as_list(mocker, test_club_as_list):
     mocker.patch.object(server, 'clubs', test_club_as_list)
 
@@ -121,8 +135,8 @@ def mocker_test_empty_clubs_list(mocker, test_empty_list):
 
 
 @pytest.fixture
-def mocker_test_competition_as_list(mocker, test_competition_as_list):
-    mocker.patch.object(server, 'competitions', test_competition_as_list)
+def mocker_test_competitions_as_list(mocker, test_competitions_as_list):
+    mocker.patch.object(server, 'competitions', test_competitions_as_list)
 
 
 @pytest.fixture
