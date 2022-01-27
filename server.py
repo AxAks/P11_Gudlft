@@ -120,7 +120,7 @@ def purchase_places():
         flash('You cannot purchase this amount of places. You do not have enough points!')
 
     if booking_is_possible:
-        club['points'] = total_points_as_int - places_required_as_int
+        club['points'] = total_points_as_int - 3 * places_required_as_int
         competition['number_of_places'] = total_places_as_int - places_required_as_int
 
         update_club_points_for_db(club, database)
