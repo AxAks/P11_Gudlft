@@ -120,3 +120,15 @@ def test_a_converted_club_points_should_raise_value_error_if_negative():
     club_points = '0'
     with pytest.raises(ValueError):
         assert convert_club_points_to_int(club_points)
+
+
+def test_update_competition_places_for_db(test_club, test_database):
+    assert True is False
+
+
+def test_update_club_points_for_db(test_club, test_database):
+    assert True is False
+
+
+def test_save_database(test_database, test_db_path):
+    assert True is False
