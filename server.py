@@ -15,8 +15,8 @@ from lib_general.lib_general import check_competition_places, check_club_points,
 from lib_request.lib_request import extract_club_email, extract_competition_name,\
     extract_club_name, extract_required_places
 from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name, \
-    update_club_points_for_db, update_competition_places_for_db
-
+    update_club_points_for_db, update_competition_places_for_db, convert_competition_places_to_int, \
+    convert_club_points_to_int
 
 app = config.create_app()
 db_path = config.declare_db_path()
@@ -39,7 +39,7 @@ def show_summary():
     Redirects the user to their account summary page if the entered email is correct
     or asks to retry with a valid address
     """
-    email = extract_club_email(request)
+    email = extract_club_email(request.form)
     if is_email_blank(email):
         flash("Please enter a valid email")
         return redirect(url_for('index'))
@@ -78,17 +78,29 @@ def purchase_places():
     """
     Enables the user to buy tickets for a given competition
     """
-    competition_name = extract_competition_name(request)   # mettre sous la forme request.form et ecrire le test ?
-    club_name = extract_club_name(request)  # mettre sous la forme request.form et ecrire le test ?
-    places_required_as_int = extract_required_places(request.form)
-
-    competition = get_competition_by_name(competition_name, competitions)
+    club_name = extract_club_name(request.form)
     club = get_club_by_name(club_name, clubs)
 
+    competition_name = extract_competition_name(request.form)
+    competition = get_competition_by_name(competition_name, competitions)
     competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
 
-    total_places_as_int = int(competition['number_of_places'])
-    total_points_as_int = int(club['points'])
+    try:
+        places_required_as_int = extract_required_places(request.form)
+    except ValueError:
+        flash('Please provide a positive number of places')
+        return render_template('welcome.html', club=club, competitions=competitions)
+
+    try:
+        total_places_as_int = convert_competition_places_to_int(competition['number_of_places'])
+    except ValueError:
+        flash('The amount of places for a competition must be a number')
+        return render_template('welcome.html', club=club, competitions=competitions)
+    try:
+        total_points_as_int = convert_club_points_to_int(club['points'])
+    except ValueError:
+        flash('The amount of places for a competition must be a number')
+        return render_template('welcome.html', club=club, competitions=competitions)
 
     has_enough_places = check_competition_places(places_required_as_int, total_places_as_int)
     has_enough_points = check_club_points(places_required_as_int, total_points_as_int)

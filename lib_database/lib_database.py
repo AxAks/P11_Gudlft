@@ -31,6 +31,24 @@ def get_competition_by_name(competition_name: str, competitions: List[Dict]) -> 
             return competition
 
 
+def convert_competition_places_to_int(places: str) -> int:
+    competition_places = int(places)
+
+    if competition_places <= 0:
+        raise ValueError()
+
+    return competition_places
+
+
+def convert_club_points_to_int(points: str) -> int:
+    club_points = int(points)
+
+    if club_points <= 0:
+        raise ValueError()
+
+    return club_points
+
+
 def update_competition_places_for_db(competition, database):
     for competition_in_db in database['competitions']:
         if competition_in_db['name'] == competition['name']:

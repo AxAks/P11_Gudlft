@@ -11,95 +11,19 @@ from datetime import datetime
 from lib_general.lib_general import check_club_points, check_competition_places, check_booking_possible, \
     check_competition_date, is_email_blank, check_required_places_amount
 
-from .unittest_database import *  #  à modifier
-from .unittest_requests import *  #  à modifier
-
 """
 Extraire chaque tests dans un fichier nommé séparé, au fur et a mesure
 """
 
 
-def test_index_with_registered_clubs(client, test_club_as_list, mocker_test_club_as_list):
-    """
-    checks that the route for index returns a success status code
-    and displays the needed elements in template:
-    - page title
-    - points table for clubs
-    """
-    response = client.get('/')
-    assert response.status_code == 200
-    response_decode = response.data.decode()
-    assert 'GUDLFT Registration Portal!' in response_decode
-    assert 'Test Club' in response_decode
-    assert '- 16' in response_decode
+def test_a_blank_email_should_return_true():
+    email = ""
+    return is_email_blank(email) == ""
 
 
-def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_empty_clubs_list):
-    """
-    checks that the route for index returns a success status code
-    and displays that there is no club to display when clubs list in database is empty
-    """
-    response = client.get('/')
-    assert response.status_code == 200
-    response_decode = response.data.decode()
-    assert 'GUDLFT Registration Portal!' in response_decode
-    assert 'No clubs to display' in response_decode
-
-
-def test_show_summary_with_registered_competitions(client, test_club, mocker_test_club_as_list,
-                                                   mocker_test_competitions_as_list):
-    """
-    checks that the route for show summary returns a success status code
-    and displays the list of registered competitions from database
-    """
-    response = client.post('/show_summary', data={'email': test_club['email']})
-    response_decode = response.data.decode()
-    assert response.status_code == 200
-    assert 'Welcome, test@club.com' in response_decode
-    assert 'Test Future Competition' in response_decode
-
-
-def test_show_summary_with_no_registered_competitions(client, test_club, mocker_test_club_as_list,
-                                                      mocker_test_empty_competitions_list):
-    """
-    checks that the route for show summary returns a success status code
-    and displays that there is no competition to display when competitions list in database is empty
-    """
-    response = client.post('/show_summary', data={'email':  test_club['email']})
-    response_decode = response.data.decode()
-    assert response.status_code == 200
-    assert 'Welcome, test@club.com' in response_decode
-    assert 'No competitions to display' in response_decode
-
-
-def test_book(client, test_future_competition, test_club, mocker_test_club_as_list, mocker_test_competitions_as_list):
-    """
-
-    """
-    competition_name = test_future_competition['name']
-    club_name = test_club['name']
-    response = client.get(f'/book/{competition_name}/{club_name}')
-    response_decode = response.data.decode()
-    assert response.status_code == 200
-    assert 'places' in response_decode
-
-
-def test_purchase_places(client, test_future_competition,
-                         mocker_test_competitions_as_list, mocker_test_club_as_list, mocker_test_db_path,
-                         test_club, test_required_places, mocker_test_database):
-    """
-    TDD : When a place for a competition is bought, the number of points is deduced
-    """
-    response = client.post('/purchase_places',
-                           data={'competition_name': test_future_competition['name'],
-                                 'club_name': test_club['name'],
-                                 'places': test_required_places})
-    response_decode = response.data.decode()
-    assert response.status_code == 200
-    assert 'Welcome, test@club.com' in response_decode
-    assert f"Great-booking complete! :"\
-           f" {test_required_places} places for {test_future_competition['name']}"\
-           in response_decode
+def test_a_blank_email_should_return_false(test_club):
+    email = test_club['email']
+    return is_email_blank(email) == ""
 
 
 def test_enough_places_in_competition_should_return_true():
@@ -359,14 +283,3 @@ def test_places_nok_points_nok_competition_date_nok_places_below_limit_nok_shoul
     places_required_is_below_limit = False
     assert check_booking_possible(has_enough_places, has_enough_points,
                                   competition_is_in_the_future, places_required_is_below_limit) is False
-
-
-def test_logout(client):
-    """
-
-    """
-    response = client.get('/logout')
-    response_decode = response.data.decode()
-
-    assert response.status_code == 302
-    assert 'redirected automatically to target URL: <a href="/">/</a>' in response_decode
