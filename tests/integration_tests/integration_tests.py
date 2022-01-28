@@ -1,4 +1,6 @@
-import pytest
+"""
+File for integration tests
+"""
 
 
 def test_index_with_registered_clubs(client, test_club_as_list, mocker_test_club_as_list):
@@ -13,7 +15,7 @@ def test_index_with_registered_clubs(client, test_club_as_list, mocker_test_club
     response_decode = response.data.decode()
     assert 'GUDLFT Registration Portal!' in response_decode
     assert 'Test Club' in response_decode
-    assert '- 16' in response_decode
+    assert '- 18' in response_decode
 
 
 def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_empty_clubs_list):
@@ -69,7 +71,7 @@ def test_book(client, test_future_competition, test_club, mocker_test_club_as_li
 
 def test_purchase_places(client, test_future_competition,
                          mocker_test_competitions_as_list, mocker_test_club_as_list, mocker_test_db_path,
-                         test_club, test_required_places, mocker_test_database):
+                         test_club, test_required_places_2, mocker_test_database):
     """
     Integration test for purchase places nominal case.
     checks that the whole function purchase_places works
@@ -77,19 +79,17 @@ def test_purchase_places(client, test_future_competition,
     response = client.post('/purchase_places',
                            data={'competition_name': test_future_competition['name'],
                                  'club_name': test_club['name'],
-                                 'places': test_required_places})
+                                 'places': test_required_places_2})
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
-    assert f"Great-booking complete! :" \
-           f" {test_required_places} places for {test_future_competition['name']}" \
-           in response_decode
+    assert f"Great-booking complete: {test_required_places_2} place(s) for {test_future_competition['name']} !" in response_decode
 
 
-def test_purchase_places_number_places_not_ok(client, test_future_competition,
-                                              mocker_test_competitions_as_list, mocker_test_club_as_list,
-                                              mocker_test_db_path,
-                                              test_club, test_required_places, mocker_test_database):
+def test_purchase_places_no_number_places_provided(client, test_future_competition,
+                                                   mocker_test_competitions_as_list, mocker_test_club_as_list,
+                                                   mocker_test_db_path,
+                                                   test_club, mocker_test_database):
     """
     Integration test for purchase places error case.
     checks that the whole function purchase_places works
@@ -102,6 +102,26 @@ def test_purchase_places_number_places_not_ok(client, test_future_competition,
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
     assert 'Please provide a positive number of places' in response_decode
+
+
+def test_purchase_places_not_enough_points_available(client, test_future_competition,
+                                                     mocker_test_competitions_as_list, mocker_test_club_as_list,
+                                                     mocker_test_db_path, mocker_test_needed_amount_of_points,
+                                                     test_club, test_required_places_6, mocker_test_database):
+    """
+    Integration test for purchase places error case.
+    checks that the whole function purchase_places works
+    """
+    response = client.post('/purchase_places',
+                           data={'competition_name': test_future_competition['name'],
+                                 'club_name': test_club['name'],
+                                 'places': test_required_places_6})
+    response_decode = response.data.decode()
+    assert response.status_code == 200
+    assert 'Welcome, test@club.com' in response_decode
+    assert f'You do not have enough points to purchase this amount of places.' \
+           f' You need {mocker_test_needed_amount_of_points}' \
+           f' points to book {test_required_places_6} places !' in response_decode
 
 
 def test_logout(client):

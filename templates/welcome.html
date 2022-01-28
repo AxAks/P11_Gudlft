@@ -6,7 +6,9 @@
     {% block header %} Welcome, {{club['email']}} {% endblock %}
     {% include 'layouts/_nav.html' %}
     {% block content %}
-        <p>Your available points: {{club['points']}}</p>
+        <p>
+            Your available points: {{club['points']}} (1 place: 3 points)
+        </p>
         <h3>Competitions:</h3>
         <ul>
             {% if competitions %}

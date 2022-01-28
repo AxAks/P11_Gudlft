@@ -41,6 +41,9 @@ def convert_competition_places_to_int(places: str) -> int:
 
 
 def convert_club_points_to_int(points: str) -> int:
+    """
+    Can  raise ValueError
+    """
     club_points = int(points)
 
     if club_points <= 0:
@@ -49,17 +52,33 @@ def convert_club_points_to_int(points: str) -> int:
     return club_points
 
 
-def update_competition_places_for_db(competition, database) -> Union[str, None]:
+def update_and_get_competition_places_for_db(competition, database) -> Union[str, None]:
     for competition_in_db in database['competitions']:
         if competition_in_db['name'] == competition['name']:
             competition_in_db['number_of_places'] = str(competition['number_of_places'])
             return competition_in_db['number_of_places']
 
 
-def update_club_points_for_db(club, database) -> Union[str, None]:
+def update_and_get_club_points_for_db(club, database) -> Union[str, None]:
     for club_in_db in database['clubs']:
         if club_in_db['name'] == club['name']:
             club_in_db['points'] = str(club['points'])
             return club_in_db['points']
 
 
+def book_places(club: Dict, competition: Dict,
+                places_required_as_int: int, total_places_as_int: int,
+                needed_amount_of_points: int, total_points_as_int: int) -> tuple[dict, dict]:
+
+    updated_club_points = total_points_as_int - needed_amount_of_points
+    club['points'] = str(updated_club_points)
+    updated_competition_places = total_places_as_int - places_required_as_int
+    competition['number_of_places'] = str(updated_competition_places)
+    return club, competition
+
+
+def calculate_required_points(places_required_as_int):
+    """
+    Calculates the ratio points/place
+    """
+    return 3 * int(places_required_as_int)

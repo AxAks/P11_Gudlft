@@ -3,7 +3,7 @@ Tests file for researches in database
 """
 import pytest
 from lib_database.lib_database import get_club_by_email, get_club_by_name, get_competition_by_name, \
-    convert_competition_places_to_int, convert_club_points_to_int
+    convert_competition_places_to_int, convert_club_points_to_int, book_places
 
 
 def test_load_clubs(test_club_as_list):
@@ -120,3 +120,24 @@ def test_a_converted_club_points_should_raise_value_error_if_negative():
     club_points = '0'
     with pytest.raises(ValueError):
         assert convert_club_points_to_int(club_points)
+
+
+def test_book_places(test_club, test_future_competition, test_required_places_6):
+    """
+    cas nominal
+    """
+    total_places_as_int = 18
+    needed_amount_of_points = 18
+    total_points_as_int = 20
+    updated_club, updated_competition = book_places(test_club, test_future_competition,
+                                                    test_required_places_6, total_places_as_int,
+                                                    needed_amount_of_points,total_points_as_int)
+    assert updated_club['points'] == 0
+    assert updated_competition['places'] == 14
+
+
+def test_book_places_error(test_club, test_future_competition, test_required_places_6):
+    """
+    cas d'erreur 1 a faire
+    """
+    return True is False

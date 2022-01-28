@@ -24,7 +24,7 @@ def test_database():
         {
             "name": "Test Club",
             "email": "test@club.com",
-            "points": "16"
+            "points": "18"
         }
     ],
         'competitions': [
@@ -64,7 +64,7 @@ def test_club_as_list():
         {
             "name": "Test Club",
             "email": "test@club.com",
-            "points": "16"
+            "points": "18"
         },
     ]
 
@@ -74,7 +74,7 @@ def test_club():
     return {
         "name": "Test Club",
         "email": "test@club.com",
-        "points": "16"
+        "points": "18"
     }
 
 
@@ -107,11 +107,32 @@ def test_future_competition():
 
 
 @pytest.fixture
-def test_required_places():
+def test_required_places_6():
     """
     Returns a lambda amount of required places for tests purpose
     """
     return '6'
+
+
+@pytest.fixture
+def test_required_places_2():
+    """
+    Returns a lambda amount of required places for tests purpose
+    """
+    return '2'
+
+
+@pytest.fixture
+def test_needed_amount_of_points():
+    """
+    Returns a lambda amount of required places for tests purpose
+    """
+    return '18'
+
+
+@pytest.fixture
+def mocker_test_needed_amount_of_points(mocker, test_needed_amount_of_points):
+    mocker.patch.object(server, 'database', test_needed_amount_of_points)
 
 
 @pytest.fixture

@@ -29,10 +29,11 @@ def extract_required_places(form: Dict) -> int:
     """
     Enables to get from the request the requested amount places to purchase for a competition
     While purchasing
+    can raise a ValueError
     """
     places_as_int = int(form['places'])
 
     if places_as_int < 1:
-        raise ValueError()
+        raise ValueError('Please provide a positive number of places')
 
     return places_as_int

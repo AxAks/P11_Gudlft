@@ -26,19 +26,19 @@ def check_competition_places(places_required_as_int, total_places_as_int):
     return total_places_as_int - places_required_as_int >= 0
 
 
-def check_club_points(places_required_as_int, total_points_as_int):
+def check_club_points(needed_amount_of_points, total_points_as_int):
     """
     Compares the requested amount of places for a competition
     with the number of points the club has
     """
-    return total_points_as_int - places_required_as_int >= 0
+    return total_points_as_int - needed_amount_of_points >= 0
 
 
 def check_required_places_amount(places_required_as_int, limit=12):
     """
     Checks if the amount of places desired is below the max limit allowed
     """
-    return places_required_as_int <= limit
+    return limit - places_required_as_int >= 0
 
 
 def check_booking_possible(has_enough_places, has_enough_points,
