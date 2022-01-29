@@ -2,6 +2,8 @@
 Tests Conf File for pytest
 """
 import pytest
+
+import utils
 import server
 
 
@@ -44,7 +46,7 @@ def test_database():
 
 @pytest.fixture
 def test_db_path():
-    return 'test_db.json'
+    return 'tests/test_db.json'
 
 
 @pytest.fixture

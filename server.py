@@ -10,13 +10,12 @@ from utils import save
 
 from flask import render_template, request, redirect, flash, url_for
 
-from lib_general.lib_general import check_competition_places, check_club_points, check_booking_possible, \
-    check_competition_date, is_email_blank, check_required_places_amount
-from lib_request.lib_request import extract_club_email, extract_competition_name,\
-    extract_club_name, extract_required_places
-from lib_database.lib_database import get_club_by_email, get_competition_by_name, get_club_by_name, \
-    update_and_get_club_points_for_db, update_and_get_competition_places_for_db, convert_competition_places_to_int, \
-    convert_club_points_to_int, book_places, calculate_required_points
+from libs.lib_commons import check_competition_date, get_club_by_name, get_competition_by_name
+from libs.lib_purchase_places import extract_club_name, extract_competition_name, extract_required_places, \
+    convert_competition_places_to_int, convert_club_points_to_int, check_competition_places, calculate_required_points, \
+    check_club_points, check_required_places_amount, check_booking_possible, book_places, \
+    update_and_get_competition_places_for_db, update_and_get_club_points_for_db
+from libs.lib_show_summary import extract_club_email, is_email_blank, get_club_by_email
 
 app = config.create_app()
 db_path = config.declare_db_path()
@@ -126,7 +125,7 @@ def purchase_places():
                                         places_required_as_int, total_places_as_int,
                                         needed_amount_of_points, total_points_as_int)
 
-        update_and_get_club_points_for_db(club, database)
+        update_and_get_club_points_for_db(club, database) # test return value = '0'
         update_and_get_competition_places_for_db(competition, database)
         save(database, db_path)
         flash(f'Great-booking complete: {places_required_as_int} place(s) for {competition_name} !')
