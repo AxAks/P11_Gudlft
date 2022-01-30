@@ -102,21 +102,11 @@ def book_places(club: Dict, competition: Dict,
     return club, competition
 
 
-def update_and_get_club_points_for_db(club, database) -> Union[str, None]:  # pas de test de rédigé !
-    for club_in_db in database['clubs']:
-        if club_in_db['name'] == club['name']:
+def update_and_get_obj_attribute_for_db(database, category, obj, attribute) -> Union[str, None]:  # pas de test de rédigé !
+    for obj_in_db in database[category]:
+        if obj_in_db['name'] == obj['name']:
             try:
-                club_in_db['points'] = str(club['points'])
+                obj_in_db[attribute] = str(obj[attribute])
             except Exception as e:
                 raise Exception(e)
-            return club_in_db['points']
-
-
-def update_and_get_competition_places_for_db(competition, database) -> Union[str, None]:   # pas de test de rédigé !
-    for competition_in_db in database['competitions']:
-        if competition_in_db['name'] == competition['name']:
-            try:
-                competition_in_db['number_of_places'] = str(competition['number_of_places'])
-            except Exception as e:
-                raise Exception(e)
-            return competition_in_db['number_of_places']
+            return obj_in_db[attribute]

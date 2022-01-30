@@ -2,8 +2,12 @@
 # Study project
 
 # (note pour plus tard, lancer les tests, à affiner:  
-# python -m pytest -v $(ls tests/unit_tests/*.py)
-# python -m pytest -v tests/unit_tests/unittests_launcher.py)
+# python -m pytest -v $(ls tests/*.py)
+# python -m pytest -v tests/unit_tests/tests_launcher.py)
+## avec coverage : 
+# coverage run -m pytest -v tests/tests_launcher.py (unitaires et integration)
+# coverage run -m pytest -v $(ls tests/*.py)
+
 1. Why
 
 This project is a fork of the original Gudlift application

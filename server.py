@@ -14,7 +14,7 @@ from libs.lib_commons import check_competition_date, get_club_by_name, get_compe
 from libs.lib_purchase_places import extract_club_name, extract_competition_name, extract_required_places, \
     convert_competition_places_to_int, convert_club_points_to_int, check_competition_places, calculate_required_points, \
     check_club_points, check_required_places_amount, check_booking_possible, book_places, \
-    update_and_get_competition_places_for_db, update_and_get_club_points_for_db
+    update_and_get_obj_attribute_for_db
 from libs.lib_show_summary import extract_club_email, is_email_blank, get_club_by_email
 
 app = config.create_app()
@@ -121,12 +121,13 @@ def purchase_places():
               f' You need {needed_amount_of_points} points to book {places_required_as_int} places !')
 
     if booking_is_possible:
-        club, competition = book_places(club, competition, #test ne passe pas ... un int se transforme en str à un moment (total_places_as_int ou places_required_as_int
+        club, competition = book_places(club, competition,
                                         places_required_as_int, total_places_as_int,
                                         needed_amount_of_points, total_points_as_int)
-
-        update_and_get_club_points_for_db(club, database) # test return value = '0'
-        update_and_get_competition_places_for_db(competition, database)
+        update_and_get_obj_attribute_for_db(database, 'clubs', club, 'points')
+        update_and_get_obj_attribute_for_db(database, 'competitions', competition, 'number_of_places')
+        # update_and_get_club_points_for_db(club, database)
+        # update_and_get_competition_places_for_db(competition, database)
         save(database, db_path)
         flash(f'Great-booking complete: {places_required_as_int} place(s) for {competition_name} !')
 

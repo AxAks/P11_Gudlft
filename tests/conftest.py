@@ -117,6 +117,14 @@ def test_required_places_6():
 
 
 @pytest.fixture
+def test_required_places_6_as_int():
+    """
+    Returns a lambda amount of required places for tests purpose
+    """
+    return 6
+
+
+@pytest.fixture
 def test_required_places_2():
     """
     Returns a lambda amount of required places for tests purpose
