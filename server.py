@@ -126,8 +126,6 @@ def purchase_places():
                                         needed_amount_of_points, total_points_as_int)
         update_and_get_obj_attribute_for_db(database, 'clubs', club, 'points')
         update_and_get_obj_attribute_for_db(database, 'competitions', competition, 'number_of_places')
-        # update_and_get_club_points_for_db(club, database)
-        # update_and_get_competition_places_for_db(competition, database)
         save(database, db_path)
         flash(f'Great-booking complete: {places_required_as_int} place(s) for {competition_name} !')
 
