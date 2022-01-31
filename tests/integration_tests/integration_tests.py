@@ -83,7 +83,8 @@ def test_purchase_places(client, test_future_competition,
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
-    assert f"Great-booking complete: {test_required_places_6} place(s) for {test_future_competition['name']} !" in response_decode
+    assert f"Great-booking complete: {test_required_places_6} place(s) for {test_future_competition['name']} !" \
+           in response_decode
 
 
 def test_purchase_places_no_number_places_provided(client, test_future_competition,
@@ -102,6 +103,30 @@ def test_purchase_places_no_number_places_provided(client, test_future_competiti
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
     assert 'Please provide a positive number of places' in response_decode
+
+
+def test_purchase_places_not_enough_points(client, test_future_competition_not_enough_points,
+                                           mocker_test_competitions_as_list, mocker_test_club_as_list,
+                                           mocker_test_db_path,
+                                           test_club_not_enough_points, test_required_places_9,
+                                           mocker_test_database):
+    """
+    Integration test for purchase places error case,
+    when the club has not enough points for the number of places requested.
+    """
+    response = client.post('/purchase_places',
+                           data={'competition_name': test_future_competition_not_enough_points['name'],
+                                 'club_name': test_club_not_enough_points['name'],
+                                 'places': test_required_places_9})
+    response_decode = response.data.decode()
+    assert response.status_code == 200
+    assert 'Welcome, test@club.com' in response_decode
+    assert f"You do not have enough points to purchase this amount of places." in response_decode
+    assert f" You need " in response_decode
+    assert f" points to book " in response_decode
+    assert "27" in response_decode
+    assert "9" in response_decode
+    assert "places !" in response_decode
 
 
 def test_logout(client):

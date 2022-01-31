@@ -374,15 +374,15 @@ def test_places_nok_points_nok_competition_date_nok_places_below_limit_nok_shoul
                                   competition_is_in_the_future, places_required_is_below_limit) is False
 
 
-def test_book_places(test_club, test_future_competition, test_required_places_6_as_int):
+def test_book_places(test_club, test_future_competition,
+                     test_required_places_6_as_int, test_needed_amount_of_points_18):
     """
-    cas nominal
+    nominal case
     """
     total_places_as_int = int(test_future_competition['number_of_places'])
     total_points_as_int = int(test_club['points'])
-    needed_amount_of_points = 18
     updated_club, updated_competition = book_places(test_club, test_future_competition,
                                                     test_required_places_6_as_int, total_places_as_int,
-                                                    needed_amount_of_points, total_points_as_int)
+                                                    test_needed_amount_of_points_18, total_points_as_int)
     assert updated_club['points'] == "0"
     assert updated_competition['number_of_places'] == "14"

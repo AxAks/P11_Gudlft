@@ -23,7 +23,7 @@ def test_load_competitions(test_competitions_as_list):
     """
     Checks that the list of competitions can be loaded from a json database file
     """
-    assert len(test_competitions_as_list) == 2
+    assert len(test_competitions_as_list) == 3
 
 
 def test_a_registered_club_name_should_return_the_matching_club(test_club_as_list, test_club):

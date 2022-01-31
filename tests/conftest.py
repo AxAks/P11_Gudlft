@@ -3,7 +3,6 @@ Tests Conf File for pytest
 """
 import pytest
 
-import utils
 import server
 
 
@@ -27,6 +26,11 @@ def test_database():
             "name": "Test Club",
             "email": "test@club.com",
             "points": "18"
+        },
+        {
+            "name": "Test Club not enough points",
+            "email": "test@club.com",
+            "points": "18"
         }
     ],
         'competitions': [
@@ -37,6 +41,11 @@ def test_database():
             },
             {
                 "name": "Test Future Competition",
+                "date": "2022-03-22 10:00:00",
+                "number_of_places": "20"
+            },
+            {
+                "name": "Test Future Competition not enough points",
                 "date": "2022-03-22 10:00:00",
                 "number_of_places": "20"
             }
@@ -68,6 +77,11 @@ def test_club_as_list():
             "email": "test@club.com",
             "points": "18"
         },
+        {
+            "name": "Test Club not enough points",
+            "email": "test@club.com",
+            "points": "18"
+        }
     ]
 
 
@@ -75,6 +89,15 @@ def test_club_as_list():
 def test_club():
     return {
         "name": "Test Club",
+        "email": "test@club.com",
+        "points": "18"
+    }
+
+
+@pytest.fixture
+def test_club_not_enough_points():
+    return {
+        "name": "Test Club not enough points",
         "email": "test@club.com",
         "points": "18"
     }
@@ -95,6 +118,11 @@ def test_competitions_as_list():
             "name": "Test Future Competition",
             "date": "2022-03-22 10:00:00",
             "number_of_places": "20"
+        },
+        {
+            "name": "Test Future Competition not enough points",
+            "date": "2022-03-22 10:00:00",
+            "number_of_places": "20"
         }
     ]
 
@@ -109,11 +137,28 @@ def test_future_competition():
 
 
 @pytest.fixture
+def test_future_competition_not_enough_points():
+    return {
+        "name": "Test Future Competition not enough points",
+        "date": "2022-03-22 10:00:00",
+        "number_of_places": "20"
+    }
+
+
+@pytest.fixture
 def test_required_places_6():
     """
     Returns a lambda amount of required places for tests purpose
     """
     return '6'
+
+
+@pytest.fixture
+def test_required_places_9():
+    """
+    Returns a lambda amount of required places for tests purpose
+    """
+    return '9'
 
 
 @pytest.fixture
@@ -125,24 +170,27 @@ def test_required_places_6_as_int():
 
 
 @pytest.fixture
-def test_required_places_2():
+def test_needed_amount_of_points_18():
     """
     Returns a lambda amount of required places for tests purpose
     """
-    return '2'
+    return 18
 
 
 @pytest.fixture
-def test_needed_amount_of_points():
+def test_required_places_9_as_int():
     """
     Returns a lambda amount of required places for tests purpose
     """
-    return '18'
+    return 9
 
 
 @pytest.fixture
-def mocker_test_needed_amount_of_points(mocker, test_needed_amount_of_points):
-    mocker.patch.object(server, 'database', test_needed_amount_of_points)
+def test_needed_amount_of_points_27():
+    """
+    Returns a lambda amount of required places for tests purpose
+    """
+    return 27
 
 
 @pytest.fixture
