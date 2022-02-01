@@ -151,9 +151,9 @@ def test_a_negative_amount_of_places_should_raise_a_value_error():
         extract_requested_places(form)
 
 
-def test_places_required_below_limit_should_return_true(test_bookings_registry, test_club_as_list, test_competitions_as_list,
+def test_places_required_below_limit_should_return_true(test_bookings_registry,
+                                                        test_club_as_list, test_competitions_as_list,
                                                         test_club, test_future_competition,
-                                                        test_required_places_limit_12_as_int,
                                                         test_requested_booking_limit_12):
     """
     Checks that the function returns True when the requested amount of places
@@ -161,10 +161,11 @@ def test_places_required_below_limit_should_return_true(test_bookings_registry, 
     """
     # {test_club['name']: [(test_future_competition['name'], 0) for competition in test_competitions_as_list] for club in test_club_as_list}
 
-    assert check_required_places_amount(test_required_places_limit_12_as_int, test_requested_booking_limit_12) is True
+    assert check_required_places_amount(test_requested_booking_limit_12, test_requested_booking_limit_12) is True
 
 
-def test_places_required_above_limit_should_return_false(test_bookings_registry, test_club_as_list, test_competitions_as_list,
+def test_places_required_above_limit_should_return_false(test_bookings_registry,
+                                                         test_club_as_list, test_competitions_as_list,
                                                          test_club, test_future_competition,
                                                          test_requested_places_13_as_int,
                                                          test_requested_booking_limit_12):
