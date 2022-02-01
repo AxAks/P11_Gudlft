@@ -54,6 +54,15 @@ def test_database():
 
 
 @pytest.fixture
+def test_bookings_registry(test_club_as_list, test_competitions_as_list):
+    return {
+        club['name']: [(competition['name'], 0)
+                       for competition in test_competitions_as_list]
+        for club in test_club_as_list
+    }
+
+
+@pytest.fixture
 def test_db_path():
     return 'tests/test_db.json'
 
@@ -146,7 +155,7 @@ def test_future_competition_not_enough_points():
 
 
 @pytest.fixture
-def test_required_places_6():
+def test_requested_places_6():
     """
     Returns a lambda amount of required places for tests purpose
     """
@@ -154,33 +163,57 @@ def test_required_places_6():
 
 
 @pytest.fixture
-def test_required_places_9():
+def test_requested_places_9():
     """
-    Returns a lambda amount of required places for tests purpose
+    Returns a lambda amount of requested places for tests purpose
     """
     return '9'
 
 
 @pytest.fixture
-def test_required_places_6_as_int():
+def test_requested_places_6_as_int():
     """
-    Returns a lambda amount of required places for tests purpose
+    Returns a lambda amount of requested places for tests purpose
     """
     return 6
 
 
 @pytest.fixture
+def test_requested_places_12_as_int():
+    """
+    Returns a lambda amount of requested places for tests purpose
+    """
+    return 12
+
+
+@pytest.fixture
+def test_requested_places_13_as_int():
+    """
+    Returns a lambda amount of requested places for tests purpose
+    """
+    return 13
+
+
+@pytest.fixture
+def test_requested_booking_limit_12():
+    """
+    Returns a lambda amount of requested places for tests purpose
+    """
+    return 12
+
+
+@pytest.fixture
 def test_needed_amount_of_points_18():
     """
-    Returns a lambda amount of required places for tests purpose
+    Returns a lambda amount of needed points for tests purpose
     """
     return 18
 
 
 @pytest.fixture
-def test_required_places_9_as_int():
+def test_requested_places_9_as_int():
     """
-    Returns a lambda amount of required places for tests purpose
+    Returns a lambda amount of requested places for tests purpose
     """
     return 9
 
@@ -188,7 +221,7 @@ def test_required_places_9_as_int():
 @pytest.fixture
 def test_needed_amount_of_points_27():
     """
-    Returns a lambda amount of required places for tests purpose
+    Returns a lambda amount of needed points for tests purpose
     """
     return 27
 

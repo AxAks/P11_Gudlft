@@ -3,7 +3,7 @@ File for Unit Tests in route purchase_places
 """
 import pytest
 
-from libs.lib_purchase_places import extract_club_name, extract_competition_name, extract_required_places, \
+from libs.lib_purchase_places import extract_club_name, extract_competition_name, extract_requested_places, \
     check_competition_places, check_club_points, check_required_places_amount, check_booking_possible, book_places, \
     convert_competition_places_to_int, convert_club_points_to_int
 
@@ -79,27 +79,27 @@ def test_a_converted_club_points_should_raise_value_error_if_negative():
 
 
 def test_enough_places_in_competition_should_return_true():
-    places_required_as_int = 6
+    places_requested_as_int = 6
     total_places_in_competition_as_int = 25
-    assert check_competition_places(places_required_as_int, total_places_in_competition_as_int) is True
+    assert check_competition_places(places_requested_as_int, total_places_in_competition_as_int) is True
 
 
 def test_not_enough_places_in_competition_should_return_false():
-    places_required_as_int = 26
+    places_requested_as_int = 26
     total_places_in_competition_as_int = 25
-    assert check_competition_places(places_required_as_int, total_places_in_competition_as_int) is False
+    assert check_competition_places(places_requested_as_int, total_places_in_competition_as_int) is False
 
 
 def test_enough_points_for_club_should_return_true():
-    places_required_as_int = 13
+    places_requested_as_int = 13
     total_club_points_as_int = 13
-    assert check_club_points(places_required_as_int, total_club_points_as_int) is True
+    assert check_club_points(places_requested_as_int, total_club_points_as_int) is True
 
 
 def test_not_enough_points_for_club_should_return_false():
-    places_required_as_int = 14
+    places_requested_as_int = 14
     total_club_points_as_int = 13
-    assert check_club_points(places_required_as_int, total_club_points_as_int) is False
+    assert check_club_points(places_requested_as_int, total_club_points_as_int) is False
 
 
 def test_an_entered_club_name_should_return_a_string(test_club):
@@ -128,7 +128,7 @@ def test_an_entered_amount_of_places_should_return_a_int():
     """
     form = {'places': '2'}
     assert 'places' in form.keys()
-    assert isinstance(extract_required_places(form), int)
+    assert isinstance(extract_requested_places(form), int)
 
 
 def test_an_empty_amount_of_places_should_raise_a_value_error():
@@ -138,7 +138,7 @@ def test_an_empty_amount_of_places_should_raise_a_value_error():
     form = {'places': ''}
     assert 'places' in form.keys()
     with pytest.raises(ValueError):
-        extract_required_places(form)
+        extract_requested_places(form)
 
 
 def test_a_negative_amount_of_places_should_raise_a_value_error():
@@ -148,25 +148,32 @@ def test_a_negative_amount_of_places_should_raise_a_value_error():
     form = {'places': '0'}
     assert 'places' in form.keys()
     with pytest.raises(ValueError):
-        extract_required_places(form)
+        extract_requested_places(form)
 
 
-def test_places_required_below_limit_should_return_true():
+def test_places_required_below_limit_should_return_true(test_bookings_registry, test_club_as_list, test_competitions_as_list,
+                                                        test_club, test_future_competition,
+                                                        test_required_places_limit_12_as_int,
+                                                        test_requested_booking_limit_12):
     """
-
+    Checks that the function returns True when the requested amount of places
+    is under the limit of 12 per competition for a club
     """
-    places_required_as_int = 12
-    limit = 12
-    assert check_required_places_amount(places_required_as_int, limit) is True
+    # {test_club['name']: [(test_future_competition['name'], 0) for competition in test_competitions_as_list] for club in test_club_as_list}
+
+    assert check_required_places_amount(test_required_places_limit_12_as_int, test_requested_booking_limit_12) is True
 
 
-def test_places_required_above_limit_should_return_false():
+def test_places_required_above_limit_should_return_false(test_bookings_registry, test_club_as_list, test_competitions_as_list,
+                                                         test_club, test_future_competition,
+                                                         test_requested_places_13_as_int,
+                                                         test_requested_booking_limit_12):
     """
-
+    Checks that the function returns False when the requested amount of places
+    is above the limit of 12 per competition for a club
     """
-    places_required_as_int = 13
-    limit = 12
-    assert check_required_places_amount(places_required_as_int, limit) is False
+    # {test_club['name']: [(test_future_competition['name'], 0) for competition in test_competitions_as_list] for club in test_club_as_list}
+    assert check_required_places_amount(test_requested_places_13_as_int, test_requested_booking_limit_12) is False
 
 
 def test_places_ok_points_ok_competition_date_ok_places_below_limit_ok_should_return_true():
@@ -375,14 +382,14 @@ def test_places_nok_points_nok_competition_date_nok_places_below_limit_nok_shoul
 
 
 def test_book_places(test_club, test_future_competition,
-                     test_required_places_6_as_int, test_needed_amount_of_points_18):
+                     test_requested_places_6_as_int, test_needed_amount_of_points_18):
     """
     nominal case
     """
     total_places_as_int = int(test_future_competition['number_of_places'])
     total_points_as_int = int(test_club['points'])
     updated_club, updated_competition = book_places(test_club, test_future_competition,
-                                                    test_required_places_6_as_int, total_places_as_int,
+                                                    test_requested_places_6_as_int, total_places_as_int,
                                                     test_needed_amount_of_points_18, total_points_as_int)
     assert updated_club['points'] == "0"
     assert updated_competition['number_of_places'] == "14"
