@@ -31,6 +31,11 @@ def test_database():
             "name": "Test Club not enough points",
             "email": "test@club.com",
             "points": "18"
+        },
+        {
+            "name": "Test registered Club",
+            "email": "registered@club.com",
+            "points": "18"
         }
     ],
         'competitions': [
@@ -54,11 +59,23 @@ def test_database():
 
 
 @pytest.fixture
-def test_bookings_registry(test_club_as_list, test_competitions_as_list):
+def test_bookings_registry():
     return {
-        club['name']: [(competition['name'], 0)
-                       for competition in test_competitions_as_list]
-        for club in test_club_as_list
+        "Test Club": [
+            {"Test Past Competition": 0},
+            {"Test Future Competition": 0},
+            {"Test Future Competition not enough points": 0}
+        ],
+        "Test Club not enough points": [
+            {"Test Past Competition": 0},
+            {"Test Future Competition": 0},
+            {"Test Future Competition not enough points": 0}
+        ],
+        "Test registered Club": [
+            {"Test Past Competition": 0},
+            {"Test Future Competition": 6},
+            {"Test Future Competition not enough points": 0}
+        ]
     }
 
 
@@ -90,6 +107,10 @@ def test_club_as_list():
             "name": "Test Club not enough points",
             "email": "test@club.com",
             "points": "18"
+        },         {
+            "name": "Test registered Club",
+            "email": "registered@club.com",
+            "points": "18"
         }
     ]
 
@@ -99,6 +120,24 @@ def test_club():
     return {
         "name": "Test Club",
         "email": "test@club.com",
+        "points": "18"
+    }
+
+
+@pytest.fixture
+def test_registered_club():
+    return {
+        "name": "Test registered Club",
+        "email": "registered@club.com",
+        "points": "18"
+    }
+
+
+@pytest.fixture
+def test_not_registered_club():
+    return {
+        "name": "I do not exist Club",
+        "email": "not_registered@club.com",
         "points": "18"
     }
 
@@ -234,6 +273,11 @@ def mocker_test_database(mocker, test_database):
 @pytest.fixture
 def mocker_test_db_path(mocker, test_db_path):
     mocker.patch.object(server, 'db_path', test_db_path)
+
+
+@pytest.fixture
+def mocker_test_bookings_registry(mocker, test_bookings_registry):
+    mocker.patch.object(server, 'bookings_registry', test_bookings_registry)
 
 
 @pytest.fixture

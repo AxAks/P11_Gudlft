@@ -15,7 +15,8 @@ from libs.lib_purchase_places import extract_club_name, extract_competition_name
     convert_competition_places_to_int, convert_club_points_to_int, check_competition_places, \
     check_club_points, check_required_places_amount, check_booking_possible, book_places, \
     update_and_get_obj_attribute_for_db, calculate_total_desired_places, calculate_required_points, \
-    update_and_get_booked_places_in_registry
+    update_and_get_booked_places_in_registry, spot_club_bookings_field_in_registry, \
+    extract_nb_booked_places_for_competition
 from libs.lib_show_summary import extract_club_email, is_email_blank, get_club_by_email
 
 app = config.create_app()
@@ -103,16 +104,16 @@ def purchase_places():
         flash('The amount of places for a competition must be a number')
         return render_template('welcome.html', club=club, competitions=competitions)
 
-    needed_amount_of_points = calculate_required_points(places_requested_as_int)
-
-    total_desired_nb_places_as_int = calculate_total_desired_places(bookings_registry,
-                                                                    club, competition,
-                                                                    places_requested_as_int)
+    needed_amount_of_points = calculate_required_points(places_requested_as_int)  # pas de tests redigés
+    club_competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry, club, competition)  # pas de test de rédigé !  # en tests -> = None  !!
+    nb_already_booked_places = extract_nb_booked_places_for_competition(club_competition_points_booked_dict, competition)
+    total_desired_nb_places_as_int = calculate_total_desired_places(competition, nb_already_booked_places,
+                                                                    places_requested_as_int) # pas de tests redigés
 
     has_enough_places = check_competition_places(places_requested_as_int, total_places_as_int)
     has_enough_points = check_club_points(needed_amount_of_points, total_points_as_int)
     competition_is_in_the_future = check_competition_date(competition_date)
-    places_required_is_below_limit = check_required_places_amount(total_desired_nb_places_as_int)
+    places_required_is_below_limit = check_required_places_amount(total_desired_nb_places_as_int)   # tests redigé à revoir ?
 
     booking_is_possible = check_booking_possible(has_enough_places, has_enough_points,
                                                  competition_is_in_the_future, places_required_is_below_limit)
@@ -132,7 +133,7 @@ def purchase_places():
         club, competition = book_places(club, competition,
                                         places_requested_as_int, total_places_as_int,
                                         needed_amount_of_points, total_points_as_int)
-        update_and_get_booked_places_in_registry(bookings_registry, club, competition, total_desired_nb_places_as_int)
+        update_and_get_booked_places_in_registry(bookings_registry, club, competition, total_desired_nb_places_as_int)  # pas de test redigés
         update_and_get_obj_attribute_for_db(database, 'clubs', club, 'points')
         update_and_get_obj_attribute_for_db(database, 'competitions', competition, 'number_of_places')
         save(database, db_path)

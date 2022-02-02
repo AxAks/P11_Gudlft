@@ -5,7 +5,8 @@ import pytest
 
 from libs.lib_purchase_places import extract_club_name, extract_competition_name, extract_requested_places, \
     check_competition_places, check_club_points, check_required_places_amount, check_booking_possible, book_places, \
-    convert_competition_places_to_int, convert_club_points_to_int
+    convert_competition_places_to_int, convert_club_points_to_int, spot_club_bookings_field_in_registry, \
+    calculate_total_desired_places
 
 
 def test_an_entered_competition_name_should_return_a_string(test_future_competition):
@@ -120,8 +121,6 @@ def test_an_empty_club_name_should_return_an_empty_string():
     assert extract_club_name(form) == ''
 
 
-
-
 def test_an_entered_amount_of_places_should_return_a_int():
     """
     Checks that the input can be converted into an integer
@@ -149,6 +148,35 @@ def test_a_negative_amount_of_places_should_raise_a_value_error():
     assert 'places' in form.keys()
     with pytest.raises(ValueError):
         extract_requested_places(form)
+
+
+def test_calculate_total_desired_places(test_bookings_registry, test_registered_club,
+                                        test_future_competition, test_requested_places_6_as_int):
+    """
+    Checks that sum of registered places already booked by the club for a competition
+    and the new request of places for the same competition returns the right total of requested places
+    """
+    bookings_dict = {"Test Future Competition": 6}
+    assert calculate_total_desired_places(test_future_competition, test_requested_places_6_as_int) == 12
+
+
+def test_spot_club_bookings_field_in_registry_with_registered_club(test_bookings_registry,
+                                                                   test_registered_club, test_future_competition):
+    """
+    Check that the dict "club name / nb of places " is found in the registry if the club exists
+    """
+    bookings_dict = spot_club_bookings_field_in_registry(test_bookings_registry,
+                                                         test_registered_club, test_future_competition)
+    assert bookings_dict == {'Test Future Competition': 6}
+#
+#
+# def test_spot_club_bookings_field_in_registry_not_registered_club(test_database, mocker_test_bookings_registry,
+#                                                                   test_not_registered_club, test_future_competition):
+#     """
+#     Check that the dict "club name / nb of places " is not found in the registry if the club does not exist
+#     """
+#     assert spot_club_bookings_field_in_registry(mocker_test_bookings_registry,
+#                                                 test_not_registered_club, test_future_competition) is None
 
 
 def test_places_required_below_limit_should_return_true(test_requested_booking_limit_12):

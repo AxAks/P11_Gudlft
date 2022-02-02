@@ -121,7 +121,7 @@ def test_purchase_places_not_enough_points(client, test_future_competition_not_e
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
-    assert 'You cannot purchase this amount of places.'  in response_decode
+    assert 'You cannot purchase this amount of places.' in response_decode
     assert 'You would exceed the purchase limit of 12 places per club for a competition!' in response_decode
     assert f" You need " in response_decode
     assert f" points to book " in response_decode

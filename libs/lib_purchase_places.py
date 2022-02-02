@@ -68,24 +68,23 @@ def calculate_required_points(places_requested_as_int):
     return 3 * int(places_requested_as_int)
 
 
-def spot_club_bookings_field_in_registry(bookings_registry: Dict, 
-                                         club: Dict, competition: Dict) -> Dict:
+def spot_club_bookings_field_in_registry(bookings_registry: Dict, club: Dict, competition: Dict) -> Dict:  # pas de test de rédigé !
     club_already_booked_points_per_competition_recap = {}
-    if club['name'] in bookings_registry:
+    if club['name'] in bookings_registry:   # les tests return False ici
         club_already_booked_points_per_competition_recap = bookings_registry[club['name']]
-    for competition_points_booked_dict in club_already_booked_points_per_competition_recap:
-        if competition['name'] in competition_points_booked_dict:
-            return competition_points_booked_dict
+    for club_competition_points_booked_dict in club_already_booked_points_per_competition_recap:  # du coup vide ici
+        if competition['name'] in club_competition_points_booked_dict:
+            return club_competition_points_booked_dict
 
 
-def calculate_total_desired_places(bookings_registry: Dict,
-                                   club: Dict, competition: Dict,
-                                   places_requested_as_int: int) -> int:
-    competition_points_booked_tuple = spot_club_bookings_field_in_registry(bookings_registry, 
-                                                                           club, competition)
-    nb_already_booked_places = competition_points_booked_tuple[competition['name']]
-    total_desired_nb_places_as_int = nb_already_booked_places + places_requested_as_int
-    return total_desired_nb_places_as_int
+def extract_nb_booked_places_for_competition(club_competition_points_booked_dict, competition):
+    print(club_competition_points_booked_dict)
+    return club_competition_points_booked_dict[competition['name']][1]
+
+
+def calculate_total_desired_places(nb_already_booked_places: int, places_requested_as_int: int) -> int:
+
+    return nb_already_booked_places + places_requested_as_int
 
 
 def update_and_get_booked_places_in_registry(bookings_registry: Dict,
