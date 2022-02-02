@@ -6,7 +6,7 @@ import pytest
 from libs.lib_purchase_places import extract_club_name, extract_competition_name, extract_requested_places, \
     check_competition_places, check_club_points, check_required_places_amount, check_booking_possible, book_places, \
     convert_competition_places_to_int, convert_club_points_to_int, spot_club_bookings_field_in_registry, \
-    calculate_total_desired_places
+    calculate_total_desired_places, extract_nb_booked_places_for_competition
 
 
 def test_an_entered_competition_name_should_return_a_string(test_future_competition):
@@ -22,9 +22,9 @@ def test_an_empty_competition_name_should_return_an_empty_string():
     """
     Checks that the input is a valid string
     """
-    form = {'competition_name': ''}
-    assert 'competition_name' in form.keys()
-    assert extract_competition_name(form) == ''
+    empty_form = {'competition_name': ''}
+    assert 'competition_name' in empty_form.keys()
+    assert extract_competition_name(empty_form) == ''
 
 
 def test_a_converted_competition_places_should_return_a_int(test_future_competition):
@@ -79,28 +79,27 @@ def test_a_converted_club_points_should_raise_value_error_if_negative():
         assert convert_club_points_to_int(club_points)
 
 
-def test_enough_places_in_competition_should_return_true():
-    places_requested_as_int = 6
-    total_places_in_competition_as_int = 25
-    assert check_competition_places(places_requested_as_int, total_places_in_competition_as_int) is True
+def test_enough_points_for_club_should_return_true(test_requested_places_13_as_int,
+                                                   test_total_club_points_13_as_int):
+    assert check_club_points(test_requested_places_13_as_int, test_total_club_points_13_as_int) is True
 
 
-def test_not_enough_places_in_competition_should_return_false():
-    places_requested_as_int = 26
-    total_places_in_competition_as_int = 25
-    assert check_competition_places(places_requested_as_int, total_places_in_competition_as_int) is False
+def test_not_enough_points_for_club_should_return_false(test_requested_places_14_as_int,
+                                                        test_total_club_points_13_as_int):
+    assert check_club_points(test_requested_places_14_as_int, test_total_club_points_13_as_int) is False
 
 
-def test_enough_points_for_club_should_return_true():
-    places_requested_as_int = 13
-    total_club_points_as_int = 13
-    assert check_club_points(places_requested_as_int, total_club_points_as_int) is True
+def test_enough_places_in_competition_should_return_true(test_requested_places_6_as_int,
+                                                         test_total_places_in_competition_25_as_int):
+
+    assert check_competition_places(test_requested_places_6_as_int,
+                                    test_total_places_in_competition_25_as_int) is True
 
 
-def test_not_enough_points_for_club_should_return_false():
-    places_requested_as_int = 14
-    total_club_points_as_int = 13
-    assert check_club_points(places_requested_as_int, total_club_points_as_int) is False
+def test_not_enough_places_in_competition_should_return_false(test_requested_places_26_as_int,
+                                                              test_total_places_in_competition_25_as_int):
+    assert check_competition_places(test_requested_places_26_as_int,
+                                    test_total_places_in_competition_25_as_int) is False
 
 
 def test_an_entered_club_name_should_return_a_string(test_club):
@@ -150,20 +149,29 @@ def test_a_negative_amount_of_places_should_raise_a_value_error():
         extract_requested_places(form)
 
 
-def test_calculate_total_desired_places(test_bookings_registry, test_registered_club,
-                                        test_future_competition, test_requested_places_6_as_int):
+def test_extract_nb_booked_places_for_competition(test_bookings_future_6_places_dict, test_future_competition):
+    """
+    Checks that the number of places already booked by a club for a competition
+    can be extracted from an entry in booking registry
+    """
+    assert extract_nb_booked_places_for_competition(test_bookings_future_6_places_dict,
+                                                    test_future_competition) == 6
+
+
+def test_calculate_total_desired_places(test_nb_already_booked_places_6,
+                                        test_requested_places_6_as_int):
     """
     Checks that sum of registered places already booked by the club for a competition
     and the new request of places for the same competition returns the right total of requested places
     """
-    bookings_dict = {"Test Future Competition": 6}
-    assert calculate_total_desired_places(test_future_competition, test_requested_places_6_as_int) == 12
+    assert calculate_total_desired_places(test_nb_already_booked_places_6,
+                                          test_requested_places_6_as_int) == 12
 
 
 def test_spot_club_bookings_field_in_registry_with_registered_club(test_bookings_registry,
                                                                    test_registered_club, test_future_competition):
     """
-    Check that the dict "club name / nb of places " is found in the registry if the club exists
+    Check that the dict "club name / nb of places" is found in the registry if the club exists
     """
     bookings_dict = spot_club_bookings_field_in_registry(test_bookings_registry,
                                                          test_registered_club, test_future_competition)
