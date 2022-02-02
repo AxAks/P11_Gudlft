@@ -118,7 +118,8 @@ def purchase_places():
                                                  competition_is_in_the_future, places_required_is_below_limit)
 
     if not places_required_is_below_limit:
-        flash('You cannot purchase this amount of places. This is over the purchase limit per club for a competition!')
+        flash('You cannot purchase this amount of places. '
+              'You would exceed the purchase limit of 12 places per club for a competition!')
 
     if not has_enough_places:
         flash('You cannot purchase this amount of places. There are not enough places left!')
