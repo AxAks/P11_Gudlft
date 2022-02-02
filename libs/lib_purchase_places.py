@@ -78,8 +78,7 @@ def spot_club_bookings_field_in_registry(bookings_registry: Dict, club: Dict, co
 
 
 def extract_nb_booked_places_for_competition(club_competition_points_booked_dict, competition):
-    print(club_competition_points_booked_dict)
-    return club_competition_points_booked_dict[competition['name']][1]
+    return club_competition_points_booked_dict[competition['name']]
 
 
 def calculate_total_desired_places(nb_already_booked_places: int, places_requested_as_int: int) -> int:

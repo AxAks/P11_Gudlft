@@ -107,7 +107,7 @@ def purchase_places():
     needed_amount_of_points = calculate_required_points(places_requested_as_int)  # pas de tests redigés
     club_competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry, club, competition)  # pas de test de rédigé !  # en tests -> = None  !!
     nb_already_booked_places = extract_nb_booked_places_for_competition(club_competition_points_booked_dict, competition)
-    total_desired_nb_places_as_int = calculate_total_desired_places(competition, nb_already_booked_places,
+    total_desired_nb_places_as_int = calculate_total_desired_places(nb_already_booked_places,
                                                                     places_requested_as_int) # pas de tests redigés
 
     has_enough_places = check_competition_places(places_requested_as_int, total_places_as_int)
