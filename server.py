@@ -106,8 +106,7 @@ def purchase_places():
 
     needed_amount_of_points = calculate_required_points(places_requested_as_int)
     #en tests, bookings_registry = prend les valeurs de la base de données réélles ! :-(
-    club_competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry,
-                                                                               club, competition)  # tests en cours de redaction !  # en tests -> = None  !!
+    club_competition_points_booked_dict = spot_club_bookings_field_in_registry(club, competition)  # tests en cours de redaction !  # en tests -> = None  !!
     nb_already_booked_places = extract_nb_booked_places_for_competition(club_competition_points_booked_dict,
                                                                         competition)
     total_desired_nb_places_as_int = calculate_total_desired_places(nb_already_booked_places,
@@ -136,7 +135,7 @@ def purchase_places():
         club, competition = book_places(club, competition,
                                         places_requested_as_int, total_places_as_int,
                                         needed_amount_of_points, total_points_as_int)
-        update_and_get_booked_places_in_registry(bookings_registry, club, competition, total_desired_nb_places_as_int)  # pas de test redigés
+        update_and_get_booked_places_in_registry(club, competition, total_desired_nb_places_as_int)  # pas de test redigés
         update_and_get_obj_attribute_for_db(database, 'clubs', club, 'points')
         update_and_get_obj_attribute_for_db(database, 'competitions', competition, 'number_of_places')
         save(database, db_path)

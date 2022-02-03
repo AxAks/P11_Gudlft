@@ -4,6 +4,7 @@ Config file for app settings and environment variables
 from typing import Dict, List
 
 from flask import Flask
+
 from utils import load
 
 
