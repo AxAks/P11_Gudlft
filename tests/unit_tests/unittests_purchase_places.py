@@ -35,48 +35,43 @@ def test_a_converted_competition_places_should_return_a_int(test_future_competit
     assert isinstance(convert_competition_places_to_int(competition_places), int)
 
 
-def test_a_converted_competition_places_should_raise_value_error_if_empty():
+def test_a_converted_competition_places_should_raise_value_error_if_empty(test_competition_places_empty_str):
     """
     Checks that the input can be converted into an integer
     """
-    competition_places = ''
     with pytest.raises(ValueError):
-        assert convert_competition_places_to_int(competition_places)
+        assert convert_competition_places_to_int(test_competition_places_empty_str)
 
 
-def test_a_converted_competition_places_should_raise_value_error_if_negative():
+def test_a_converted_competition_places_should_raise_value_error_if_negative(test_competition_places_0_as_str):
     """
     Checks that the input can be converted into an integer
     """
-    competition_places = '0'
     with pytest.raises(ValueError):
-        assert convert_competition_places_to_int(competition_places)
+        assert convert_competition_places_to_int(test_competition_places_0_as_str)
 
 
-def test_a_converted_club_points_should_return_a_int(test_club):
+def test_a_converted_club_points_should_return_a_int(test_club_points_12_as_str):
     """
     Checks that the input can be converted into an integer
     """
-    club_points = test_club['points']
-    assert isinstance(convert_club_points_to_int(club_points), int)
+    assert isinstance(convert_club_points_to_int(test_club_points_12_as_str), int)
 
 
-def test_a_converted_club_points_should_raise_value_error_if_empty():
+def test_a_converted_club_points_should_raise_value_error_if_empty(test_club_points_empty_str):
     """
     Checks that the input can be converted into an integer
     """
-    club_points = ''
     with pytest.raises(ValueError):
-        assert convert_club_points_to_int(club_points)
+        assert convert_club_points_to_int(test_club_points_empty_str)
 
 
-def test_a_converted_club_points_should_raise_value_error_if_negative():
+def test_a_converted_club_points_should_raise_value_error_if_negative(test_club_points_0_as_str):
     """
     Checks that the input can be converted into an integer
     """
-    club_points = '0'
     with pytest.raises(ValueError):
-        assert convert_club_points_to_int(club_points)
+        assert convert_club_points_to_int(test_club_points_0_as_str)
 
 
 def test_enough_points_for_club_should_return_true(test_requested_places_13_as_int,

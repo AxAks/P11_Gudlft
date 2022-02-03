@@ -222,6 +222,31 @@ def test_future_competition_not_enough_points() -> Dict:
 
 
 @pytest.fixture
+def test_club_points_12_as_str() -> str:
+    return '12'
+
+
+@pytest.fixture
+def test_club_points_0_as_str() -> str:
+    return '0'
+
+
+@pytest.fixture
+def test_club_points_empty_str() -> str:
+    return ''
+
+
+@pytest.fixture
+def test_competition_places_0_as_str() -> str:
+    return '0'
+
+
+@pytest.fixture
+def test_competition_places_empty_str() -> str:
+    return ''
+
+
+@pytest.fixture
 def test_requested_places_6() -> str:
     """
     Returns a lambda amount of required places for tests purpose
