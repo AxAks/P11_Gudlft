@@ -363,6 +363,7 @@ def test_nb_already_booked_places_6() -> int:
     """
     Returns 6 to simulate a extraction of already booked placs from an entry in bookings registry
     """
+    return 6
 
 
 @pytest.fixture

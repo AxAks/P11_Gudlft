@@ -104,11 +104,11 @@ def purchase_places():
         flash('The amount of places for a competition must be a number')
         return render_template('welcome.html', club=club, competitions=competitions)
 
-    needed_amount_of_points = calculate_required_points(places_requested_as_int)  # pas de tests redigés
+    needed_amount_of_points = calculate_required_points(places_requested_as_int)
     club_competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry, club, competition)  # pas de test de rédigé !  # en tests -> = None  !!
     nb_already_booked_places = extract_nb_booked_places_for_competition(club_competition_points_booked_dict, competition)
     total_desired_nb_places_as_int = calculate_total_desired_places(nb_already_booked_places,
-                                                                    places_requested_as_int) # pas de tests redigés
+                                                                    places_requested_as_int)
 
     has_enough_places = check_competition_places(places_requested_as_int, total_places_as_int)
     has_enough_points = check_club_points(needed_amount_of_points, total_points_as_int)

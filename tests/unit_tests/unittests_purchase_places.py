@@ -6,7 +6,7 @@ import pytest
 from libs.lib_purchase_places import extract_club_name, extract_competition_name, extract_requested_places, \
     check_competition_places, check_club_points, check_required_places_amount, check_booking_possible, book_places, \
     convert_competition_places_to_int, convert_club_points_to_int, spot_club_bookings_field_in_registry, \
-    calculate_total_desired_places, extract_nb_booked_places_for_competition
+    calculate_total_desired_places, extract_nb_booked_places_for_competition, calculate_required_points
 
 
 def test_an_entered_competition_name_should_return_a_string(test_future_competition):
@@ -142,6 +142,13 @@ def test_a_negative_amount_of_places_should_raise_a_value_error():
     assert 'places' in form.keys()
     with pytest.raises(ValueError):
         extract_requested_places(form)
+
+
+def test_calculate_required_points(test_nb_already_booked_places_6, test_requested_places_6):
+    """
+
+    """
+    assert calculate_required_points(test_requested_places_6) == 18
 
 
 def test_extract_nb_booked_places_for_competition(test_bookings_future_6_places_dict, test_future_competition):
