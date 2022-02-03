@@ -65,13 +65,14 @@ def calculate_required_points(places_requested_as_int):
     """
     Calculates the ratio points/place
     """
-    return 3 * int(places_requested_as_int)
+    return 3 * places_requested_as_int
 
 
-def spot_club_bookings_field_in_registry(bookings_registry: Dict, club: Dict, competition: Dict) -> Dict:  # pas de test de rédigé !
+def spot_club_bookings_field_in_registry(bookings_registry: Dict, club: Dict, competition: Dict) -> Dict:  # tests en cours de redaction !
     club_already_booked_points_per_competition_recap = {}
-    if club['name'] in bookings_registry:   # les tests return False ici
-        club_already_booked_points_per_competition_recap = bookings_registry[club['name']]
+    for club_name in bookings_registry:
+        if club['name'] == club_name:   # les tests return False ici
+            club_already_booked_points_per_competition_recap = bookings_registry[club['name']]
     for club_competition_points_booked_dict in club_already_booked_points_per_competition_recap:  # du coup vide ici
         if competition['name'] in club_competition_points_booked_dict:
             return club_competition_points_booked_dict
