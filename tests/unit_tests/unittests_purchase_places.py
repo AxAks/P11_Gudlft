@@ -154,14 +154,15 @@ def test_extract_nb_booked_places_for_competition(test_bookings_future_6_places_
                                                     test_future_competition) == 6
 
 
-def test_spot_club_bookings_field_in_registry(test_bookings_registry, test_future_competition,
-                                              test_club):
+def test_spot_club_bookings_field_in_registry_with_registered_club(test_bookings_registry,
+                                                                   test_registered_club, test_future_competition):
     """
     checks that the function returns a "competition/nb_of_points_booked" dict for a club
     when the club and the competition exist in the registry
     """
-    assert spot_club_bookings_field_in_registry(test_club, test_future_competition,
-                                                test=True) == {"Test Future Competition": 6}
+    assert spot_club_bookings_field_in_registry(test_bookings_registry,
+                                                test_registered_club,
+                                                test_future_competition) == {'Test Future Competition': 6}
 
 
 def test_spot_club_bookings_field_club_not_in_registry():
@@ -186,24 +187,6 @@ def test_calculate_total_desired_places():
     and the new request of places for the same competition returns the right total of requested places
     """
     assert calculate_total_desired_places(6, 6) == 12
-
-
-def test_spot_club_bookings_field_in_registry_with_registered_club(mocker_test_bookings_registry,
-                                                                   test_registered_club, test_future_competition):
-    """
-    Check that the dict "club name / nb of places" is found in the registry if the club exists
-    """
-    bookings_dict = spot_club_bookings_field_in_registry(test_registered_club, test_future_competition)
-    assert bookings_dict == {'Test Future Competition': 6}
-#
-#
-# def test_spot_club_bookings_field_in_registry_not_registered_club(test_database, mocker_test_bookings_registry,
-#                                                                   test_not_registered_club, test_future_competition):
-#     """
-#     Check that the dict "club name / nb of places " is not found in the registry if the club does not exist
-#     """
-#     assert spot_club_bookings_field_in_registry(mocker_test_bookings_registry,
-#                                                 test_not_registered_club, test_future_competition) is None
 
 
 def test_places_required_below_limit_should_return_true():
