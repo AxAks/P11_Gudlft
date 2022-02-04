@@ -173,9 +173,10 @@ def test_spot_club_bookings_field_club_not_in_registry(test_bookings_registry,
     checks that the function handles the case when a club is not found in registry
     (raises an exception if the club is not found ?)
     """
-    assert spot_club_bookings_field_in_registry(test_bookings_registry,
-                                                test_not_registered_club,
-                                                test_future_competition) is None
+    with pytest.raises(KeyError):
+        spot_club_bookings_field_in_registry(test_bookings_registry,
+                                             test_not_registered_club,
+                                             test_future_competition)
 
 
 def test_spot_club_bookings_field_competition_not_in_registry(test_bookings_registry,
@@ -185,7 +186,7 @@ def test_spot_club_bookings_field_competition_not_in_registry(test_bookings_regi
     checks that the function handles the case when a club is not found in registry
     (raises an exception if the competition is not found ?)
     """
-    with pytest.raises(TypeError):
+    with pytest.raises(KeyError):
         spot_club_bookings_field_in_registry(test_bookings_registry,
                                              test_registered_club,
                                              test_not_registered_competition)
@@ -204,7 +205,6 @@ def test_places_required_below_limit_should_return_true():
     Checks that the function returns True when the requested amount of places
     is under the limit of 12 per competition for a club
     """
-
     assert check_required_places_amount(12, 12) is True
 
 

@@ -5,7 +5,6 @@ import pytest
 from typing import Dict, List
 
 import server
-from libs import lib_purchase_places
 
 
 @pytest.fixture
