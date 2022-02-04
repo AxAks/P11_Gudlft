@@ -75,20 +75,19 @@ def spot_club_bookings_field_in_registry(bookings_registry, club: Dict, competit
     can raise a keyError if club does not exist in registry
     can raise TypeError if competition does not exist in registry
     """
-    club_already_booked_points_per_competition_recap = {}
+    club_already_booked_places_per_competition_recap = {}
     found_competition_places_booked_dict = {}
 
     for club_name in bookings_registry:
         if club['name'] == club_name:
-            club_already_booked_points_per_competition_recap[club['name']] = bookings_registry[club['name']]
-    if len(club_already_booked_points_per_competition_recap) == 0:
+            club_already_booked_places_per_competition_recap[club['name']] = bookings_registry[club['name']]
+    if len(club_already_booked_places_per_competition_recap) == 0:
         raise KeyError(f"Error: the club:{club['name']} could not be found")
 
-    for competition_points_key in club_already_booked_points_per_competition_recap:
-        if competition['name'] == competition_points_key:
-            found_competition_places_booked_dict[club['name']] = competition['name']
-            found_competition_places_booked_dict[club['name']][competition['name']] = \
-                club_already_booked_points_per_competition_recap[0][competition['name']]
+    for already_booked_places in club_already_booked_places_per_competition_recap[club['name']]:
+        extracted_competition_name = list(already_booked_places)[0]
+        if competition['name'] == extracted_competition_name:
+            found_competition_places_booked_dict = already_booked_places
     if len(found_competition_places_booked_dict) == 0:
         raise KeyError(f"Error: the competition: {competition['name']} could not be found")
 
