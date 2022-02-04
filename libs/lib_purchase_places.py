@@ -85,7 +85,7 @@ def spot_club_bookings_field_in_registry(bookings_registry, club: Dict, competit
         raise KeyError(f"Error: the club:{club['name']} could not be found")
 
     for competition_points_key in club_already_booked_points_per_competition_recap:
-        if competition['name'] == competition_points_key:  # on recupere ici un test past competition qui devrait pas etre là !!!
+        if competition['name'] == competition_points_key:
             found_competition_places_booked_dict[club['name']] = competition['name']
             found_competition_places_booked_dict[club['name']][competition['name']] = \
                 club_already_booked_points_per_competition_recap[0][competition['name']]
