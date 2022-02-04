@@ -154,8 +154,9 @@ def test_extract_nb_booked_places_for_competition(test_bookings_future_6_places_
                                                     test_future_competition) == 6
 
 
-def test_spot_club_bookings_field_in_registry_with_registered_club(test_bookings_registry,
-                                                                   test_registered_club, test_future_competition):
+def test_spot_club_bookings_field_in_registry_with_registered_club_and_competition(test_bookings_registry,
+                                                                                   test_registered_club,
+                                                                                   test_future_competition):
     """
     checks that the function returns a "competition/nb_of_points_booked" dict for a club
     when the club and the competition exist in the registry
@@ -165,20 +166,29 @@ def test_spot_club_bookings_field_in_registry_with_registered_club(test_bookings
                                                 test_future_competition) == {'Test Future Competition': 6}
 
 
-def test_spot_club_bookings_field_club_not_in_registry():
+def test_spot_club_bookings_field_club_not_in_registry(test_bookings_registry,
+                                                       test_not_registered_club,
+                                                       test_future_competition):
     """
     checks that the function handles the case when a club is not found in registry
     (raises an exception if the club is not found ?)
     """
-    assert True is False
+    assert spot_club_bookings_field_in_registry(test_bookings_registry,
+                                                test_not_registered_club,
+                                                test_future_competition) is None
 
 
-def test_spot_club_bookings_field_competition_not_in_registry():
+def test_spot_club_bookings_field_competition_not_in_registry(test_bookings_registry,
+                                                              test_registered_club,
+                                                              test_not_registered_competition):
     """
     checks that the function handles the case when a club is not found in registry
     (raises an exception if the competition is not found ?)
     """
-    assert True is False
+    with pytest.raises(TypeError):
+        spot_club_bookings_field_in_registry(test_bookings_registry,
+                                             test_registered_club,
+                                             test_not_registered_competition)
 
 
 def test_calculate_total_desired_places():

@@ -70,12 +70,13 @@ def calculate_required_points(places_requested_as_int):
     return 3 * places_requested_as_int
 
 
-def spot_club_bookings_field_in_registry(bookings_registry, club: Dict, competition: Dict) -> Dict:
+def spot_club_bookings_field_in_registry(bookings_registry, club: Dict, competition: Dict) ->Dict: # redaction test en cours ! voir raise TypeError gestion exceptions ou if/else
     club_already_booked_points_per_competition_recap = {}
     for club_name in bookings_registry:
         if club['name'] == club_name:
             club_already_booked_points_per_competition_recap = bookings_registry[club['name']]
     for club_competition_points_booked_dict in club_already_booked_points_per_competition_recap:
+        competition['name'] = 'I am not registered Competition'
         if competition['name'] in club_competition_points_booked_dict:
             return club_competition_points_booked_dict
 

@@ -163,6 +163,15 @@ def test_not_registered_club() -> Dict:
 
 
 @pytest.fixture
+def test_not_registered_competition():
+    return {
+            "name": "I am not registered Competition",
+            "date": "2020-03-22 10:00:00",
+            "number_of_places": "18"
+        }
+
+
+@pytest.fixture
 def test_club_not_enough_points() -> Dict:
     """
 
