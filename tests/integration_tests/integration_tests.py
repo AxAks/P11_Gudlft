@@ -71,7 +71,7 @@ def test_book(client, test_future_competition, test_club, mocker_test_club_as_li
 
 def test_purchase_places(client, test_future_competition,
                          mocker_test_competitions_as_list, mocker_test_club_as_list, mocker_test_db_path,
-                         test_club, mocker_test_database):
+                         test_club, mocker_test_database, mocker_test_bookings_registry):
     """
     Integration test for purchase places nominal case.
     checks that the whole function purchase_places works
@@ -117,7 +117,7 @@ def test_purchase_places_not_enough_points(client, test_future_competition_not_e
     response = client.post('/purchase_places',
                            data={'competition_name': test_future_competition_not_enough_points['name'],
                                  'club_name': test_club_not_enough_points['name'],
-                                 'places': "9"})
+                                 'places': "9"})  # pb au niveau des places, comment on prend en compte que le club à deja x places
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
@@ -128,6 +128,23 @@ def test_purchase_places_not_enough_points(client, test_future_competition_not_e
     assert "27" in response_decode
     assert "9" in response_decode
     assert "places !" in response_decode
+
+
+def test_purchase_places_limitation_per_club_competition(client, test_future_competition,
+                                           mocker_test_competitions_as_list, mocker_test_club_as_list,
+                                           mocker_test_db_path,
+                                           test_club,
+                                           mocker_test_database):
+    """
+    Integration test for purchase places error case,
+    when the club has not enough points for the number of places requested.
+    """
+    response = client.post('/purchase_places',
+                           data={'competition_name': test_future_competition['name'],
+                                 'club_name': test_club['name'],
+                                 'places': "9"}) # pb au niveau des places, comment on prend en compte
+                                                # que le club à deja x places
+    assert True is False
 
 
 def test_logout(client):

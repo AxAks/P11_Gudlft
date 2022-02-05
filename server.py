@@ -119,7 +119,7 @@ def purchase_places():
     has_enough_places = check_competition_places(places_requested_as_int, total_places_as_int)
     has_enough_points = check_club_points(needed_amount_of_points, total_points_as_int)
     competition_is_in_the_future = check_competition_date(competition_date)
-    places_required_is_below_limit = check_required_places_amount(total_desired_nb_places_as_int)   # tests redigé à revoir ?
+    places_required_is_below_limit = check_required_places_amount(total_desired_nb_places_as_int)
 
     booking_is_possible = check_booking_possible(has_enough_places, has_enough_points,
                                                  competition_is_in_the_future, places_required_is_below_limit)
