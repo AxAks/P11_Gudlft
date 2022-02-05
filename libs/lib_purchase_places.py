@@ -1,7 +1,7 @@
 """
 Lib for functions related to the purchase_places route
 """
-from typing import Dict, Union
+from typing import Dict, Union, List
 
 import server
 
@@ -70,10 +70,12 @@ def calculate_required_points(places_requested_as_int):
     return 3 * places_requested_as_int
 
 
-def spot_club_bookings_field_in_registry(bookings_registry, club: Dict, competition: Dict) ->Dict: # redaction test en cours ! voir raise TypeError gestion exceptions ou if/else
+def spot_club_bookings_field_in_registry(bookings_registry: Dict[str, List[Dict[str, int]]],
+                                         club: Dict,
+                                         competition: Dict) -> Dict:
     """
-    can raise a keyError if club does not exist in registry
-    can raise TypeError if competition does not exist in registry
+    extracts the record of already booked places to a competition for a given club from the registry
+    can raise a keyError if club or competition does not exist in registry
     """
     club_already_booked_places_per_competition_recap = {}
     found_competition_places_booked_dict = {}
@@ -81,6 +83,7 @@ def spot_club_bookings_field_in_registry(bookings_registry, club: Dict, competit
     for club_name in bookings_registry:
         if club['name'] == club_name:
             club_already_booked_places_per_competition_recap[club['name']] = bookings_registry[club['name']]
+            break
     if len(club_already_booked_places_per_competition_recap) == 0:
         raise KeyError(f"Error: the club:{club['name']} could not be found")
 
@@ -88,6 +91,7 @@ def spot_club_bookings_field_in_registry(bookings_registry, club: Dict, competit
         extracted_competition_name = list(already_booked_places)[0]
         if competition['name'] == extracted_competition_name:
             found_competition_places_booked_dict = already_booked_places
+            break
     if len(found_competition_places_booked_dict) == 0:
         raise KeyError(f"Error: the competition: {competition['name']} could not be found")
 
@@ -103,9 +107,10 @@ def calculate_total_desired_places(nb_already_booked_places: int, places_request
     return nb_already_booked_places + places_requested_as_int
 
 
-def update_and_get_booked_places_in_registry(club: Dict, competition: Dict,
+def update_and_get_booked_places_in_registry(bookings_registry: Dict[str, List[Dict[str, int]]],
+                                             club: Dict, competition: Dict,
                                              total_desired_nb_places_as_int) -> Dict:  # pas de test de rédigé !
-    competition_points_booked_dict = spot_club_bookings_field_in_registry(club, competition)
+    competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry, club, competition)
     competition_points_booked_dict[competition['name']] = total_desired_nb_places_as_int
     return competition_points_booked_dict
         

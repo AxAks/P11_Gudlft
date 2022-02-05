@@ -24,7 +24,7 @@ def setup_db() -> Dict[str, List]:
     return database
 
 
-def setup_registry(clubs: List, competitions: List) -> Dict:
+def setup_registry(clubs: List, competitions: List) -> Dict[str, List[Dict[str, int]]]:
     """
     initiates the purchased places per club for all competitions to 0.
     Places purchased by a club for a competition will be added to the registry

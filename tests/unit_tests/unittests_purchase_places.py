@@ -1,12 +1,15 @@
 """
 File for Unit Tests in route purchase_places
 """
+from typing import Dict, List
+
 import pytest
 
 from libs.lib_purchase_places import extract_club_name, extract_competition_name, extract_requested_places, \
     check_competition_places, check_club_points, check_required_places_amount, check_booking_possible, book_places, \
     convert_competition_places_to_int, convert_club_points_to_int, spot_club_bookings_field_in_registry, \
-    calculate_total_desired_places, extract_nb_booked_places_for_competition, calculate_required_points
+    calculate_total_desired_places, extract_nb_booked_places_for_competition, calculate_required_points, \
+    update_and_get_booked_places_in_registry
 
 
 def test_an_entered_competition_name_should_return_a_string(test_future_competition):
@@ -198,6 +201,17 @@ def test_calculate_total_desired_places():
     and the new request of places for the same competition returns the right total of requested places
     """
     assert calculate_total_desired_places(6, 6) == 12
+
+
+def test_update_and_get_booked_places_in_registry(test_bookings_registry: Dict[str, List[Dict[str, int]]],
+                                                  test_club: Dict,
+                                                  test_future_competition: Dict):
+    """
+    assert update_and_get_booked_places_in_registry(
+    """
+    assert update_and_get_booked_places_in_registry(test_bookings_registry,
+                                                    test_club,
+                                                    test_future_competition, 12) == {'Test Future Competition': 12}
 
 
 def test_places_required_below_limit_should_return_true():
