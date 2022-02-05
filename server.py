@@ -139,7 +139,8 @@ def purchase_places():
         club, competition = book_places(club, competition,
                                         places_requested_as_int, total_places_as_int,
                                         needed_amount_of_points, total_points_as_int)
-        update_and_get_booked_places_in_registry(club, competition, total_desired_nb_places_as_int)  # pas de test redigés
+        update_and_get_booked_places_in_registry(bookings_registry, club, competition,
+                                                 total_desired_nb_places_as_int)
         update_and_get_obj_attribute_for_db(database, 'clubs', club, 'points')
         update_and_get_obj_attribute_for_db(database, 'competitions', competition, 'number_of_places')
         save(database, db_path)

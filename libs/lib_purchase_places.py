@@ -109,7 +109,7 @@ def calculate_total_desired_places(nb_already_booked_places: int, places_request
 
 def update_and_get_booked_places_in_registry(bookings_registry: Dict[str, List[Dict[str, int]]],
                                              club: Dict, competition: Dict,
-                                             total_desired_nb_places_as_int) -> Dict:  # pas de test de rédigé !
+                                             total_desired_nb_places_as_int) -> Dict:
     competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry, club, competition)
     competition_points_booked_dict[competition['name']] = total_desired_nb_places_as_int
     return competition_points_booked_dict
