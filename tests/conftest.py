@@ -37,6 +37,11 @@ def test_database() -> Dict[str, List[Dict]]:
             "points": "18"
         },
         {
+            "name": "Test Club Already Book Some Places",
+            "email": "ihavesomeplaces@club.com",
+            "points": "18"
+        },
+        {
             "name": "Test registered Club",
             "email": "registered@club.com",
             "points": "18"
@@ -78,6 +83,11 @@ def test_bookings_registry() -> Dict[str, List[Dict]]:
             {"Test Future Competition": 0},
             {"Test Future Competition not enough points": 0}
         ],
+        "Test Club Already Book Some Places": [
+            {"Test Past Competition": 0},
+            {"Test Future Competition": 11},
+            {"Test Future Competition not enough points": 0}
+            ],
         "Test registered Club": [
             {"Test Past Competition": 0},
             {"Test Future Competition": 6},
@@ -117,7 +127,13 @@ def test_club_as_list() -> List[Dict]:
             "name": "Test Club not enough points",
             "email": "test@club.com",
             "points": "18"
-        }, {
+        },
+        {
+            "name": "Test Club Already Book Some Places",
+            "email": "ihavesomeplaces@club.com",
+            "points": "18"
+        },
+        {
             "name": "Test registered Club",
             "email": "registered@club.com",
             "points": "18"
@@ -145,6 +161,18 @@ def test_registered_club() -> Dict:
     return {
         "name": "Test registered Club",
         "email": "registered@club.com",
+        "points": "18"
+    }
+
+
+@pytest.fixture
+def test_club_already_book_some_places() -> Dict:
+    """
+
+    """
+    return {
+        "name": "Test Club Already Book Some Places",
+        "email": "ihavesomeplaces@club.com",
         "points": "18"
     }
 

@@ -126,17 +126,17 @@ def test_purchase_places_not_enough_points(client, test_future_competition_not_e
 
 
 def test_purchase_places_limitation_per_club_competition(client, test_future_competition,
-                                           mocker_test_competitions_as_list, mocker_test_club_as_list,
-                                           mocker_test_db_path,
-                                           test_club,
-                                           mocker_test_database):
+                                                         test_club_already_book_some_places,
+                                                         mocker_test_competitions_as_list, mocker_test_club_as_list,
+                                                         mocker_test_db_path,
+                                                         mocker_test_database):
     """
     Integration test for purchase places error case,
     when the club has not enough points for the number of places requested.
     """
     response = client.post('/purchase_places',
                            data={'competition_name': test_future_competition['name'],
-                                 'club_name': test_club['name'],
+                                 'club_name': test_club_already_book_some_places['name'],
                                  'places': "9"})
 
 
