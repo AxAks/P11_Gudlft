@@ -50,7 +50,8 @@ def show_summary():
         flash("The entered email could not be found, please enter a registered email")
         return redirect(url_for('index'))
     else:
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions,
+                               already_booked=bookings_registry[club['name']])
 
 
 @app.route('/book/<competition_name>/<club_name>')
@@ -69,10 +70,12 @@ def book(competition_name, club_name):
             return render_template('booking.html', club=club, competition=competition)
         else:
             flash('You cannot purchase places for this competition. The competition is over!')
-            return render_template('welcome.html', club=club, competitions=competitions)
+            return render_template('welcome.html', club=club, competitions=competitions,
+                               already_booked=bookings_registry[club['name']])
     else:
         flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions,
+                               already_booked=bookings_registry[club['name']])
 
 
 @app.route('/purchase_places', methods=['POST'])
@@ -91,25 +94,30 @@ def purchase_places():
         places_requested_as_int = extract_requested_places(request.form)
     except ValueError:
         flash('Please provide a positive number of places')
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions,
+                               already_booked=bookings_registry[club['name']])
 
     try:
         total_places_as_int = convert_competition_places_to_int(competition['number_of_places'])
     except ValueError:
         flash('The amount of places for a competition must be a number')
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions,
+                               already_booked=bookings_registry[club['name']])
     try:
         total_points_as_int = convert_club_points_to_int(club['points'])
     except ValueError:
         flash('The amount of places for a competition must be a number')
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions,
+                               already_booked=bookings_registry[club['name']])
 
     needed_amount_of_points = calculate_required_points(places_requested_as_int)
     try:
-        club_competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry, club, competition)
+        club_competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry,
+                                                                                   club, competition)
     except KeyError as e:
         flash(str(e))
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions,
+                               already_booked=bookings_registry[club['name']])
 
     nb_already_booked_places = extract_nb_booked_places_for_competition(club_competition_points_booked_dict,
                                                                         competition)
@@ -146,7 +154,8 @@ def purchase_places():
         save(database, db_path)
         flash(f'Great-booking complete: {places_requested_as_int} place(s) for {competition_name} !')
 
-    return render_template('welcome.html', club=club, competitions=competitions)
+    return render_template('welcome.html', club=club, competitions=competitions,
+                           already_booked=bookings_registry[club['name']])
 
 
 @app.route('/logout')

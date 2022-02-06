@@ -15,7 +15,7 @@ def test_index_with_registered_clubs(client, test_club_as_list, mocker_test_club
     response_decode = response.data.decode()
     assert 'GUDLFT Registration Portal!' in response_decode
     assert 'Test Club' in response_decode
-    assert '- 18' in response_decode
+    assert '- 18 -' in response_decode
 
 
 def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_empty_clubs_list):
@@ -117,7 +117,7 @@ def test_purchase_places_not_enough_points(client, test_future_competition_not_e
     response = client.post('/purchase_places',
                            data={'competition_name': test_future_competition_not_enough_points['name'],
                                  'club_name': test_club_not_enough_points['name'],
-                                 'places': "9"})  # comment passer dans la DB de test !
+                                 'places': "9"})
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
