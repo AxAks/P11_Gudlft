@@ -106,10 +106,10 @@ def test_purchase_places_no_number_places_provided(client, test_future_competiti
 
 
 def test_purchase_places_not_enough_points(client, test_future_competition_not_enough_points,
+                                           test_club_not_enough_points,
                                            mocker_test_competitions_as_list, mocker_test_club_as_list,
                                            mocker_test_db_path,
-                                           test_club_not_enough_points,
-                                           mocker_test_database):
+                                           mocker_test_database, mocker_test_bookings_registry):
     """
     Integration test for purchase places error case,
     when the club has not enough points for the number of places requested.
@@ -117,17 +117,12 @@ def test_purchase_places_not_enough_points(client, test_future_competition_not_e
     response = client.post('/purchase_places',
                            data={'competition_name': test_future_competition_not_enough_points['name'],
                                  'club_name': test_club_not_enough_points['name'],
-                                 'places': "9"})  # pb au niveau des places, comment on prend en compte que le club à deja x places
+                                 'places': "9"})  # comment passer dans la DB de test !
     response_decode = response.data.decode()
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
-    assert 'You cannot purchase this amount of places.' in response_decode
-    assert 'You would exceed the purchase limit of 12 places per club for a competition!' in response_decode
-    assert f" You need " in response_decode
-    assert f" points to book " in response_decode
-    assert "27" in response_decode
-    assert "9" in response_decode
-    assert "places !" in response_decode
+    assert 'You do not have enough points to purchase this amount of places.' in response_decode
+    assert 'You need 27 points to book 9 places !' in response_decode
 
 
 def test_purchase_places_limitation_per_club_competition(client, test_future_competition,
@@ -142,9 +137,7 @@ def test_purchase_places_limitation_per_club_competition(client, test_future_com
     response = client.post('/purchase_places',
                            data={'competition_name': test_future_competition['name'],
                                  'club_name': test_club['name'],
-                                 'places': "9"}) # pb au niveau des places, comment on prend en compte
-                                                # que le club à deja x places
-    assert True is False
+                                 'places': "9"})
 
 
 def test_logout(client):
