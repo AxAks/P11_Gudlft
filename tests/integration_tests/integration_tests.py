@@ -44,6 +44,20 @@ def test_show_summary_with_registered_competitions(client, test_club, mocker_tes
     assert 'You have booked' in response_decode
 
 
+def test_show_summary_blank_email(client, mocker_test_club_as_list,
+                                  mocker_test_competitions_as_list, mocker_test_bookings_registry):
+    """
+    checks that the route for show summary returns a success status code
+    and displays the list of registered competitions from database
+    """
+    response = client.post('/show_summary', data={'email': ''}, follow_redirects=True)
+    response_decode = response.data.decode()
+    assert response.status_code == 200
+    assert 'Welcome to the GUDLFT Registration Portal!' in response_decode
+    assert 'Please enter a valid email' in response_decode
+    assert 'Public points table by club' in response_decode
+
+
 def test_show_summary_with_no_registered_competitions(client, test_club, mocker_test_club_as_list,
                                                       mocker_test_empty_competitions_list,
                                                       mocker_test_bookings_registry):
@@ -147,8 +161,8 @@ def test_logout(client):
     Integration test for logout nominal case.
     checks that the whole logout function works
     """
-    response = client.get('/logout')
+    response = client.get('/logout', follow_redirects=True)
     response_decode = response.data.decode()
 
-    assert response.status_code == 302
-    assert 'redirected automatically to target URL: <a href="/">/</a>' in response_decode
+    assert response.status_code == 200
+    assert 'Welcome to the GUDLFT Registration Portal!' in response_decode
