@@ -11,7 +11,9 @@ class TestUser(HttpUser):
         Sets all the website routes to be tested within locust
         """
         self.client.get("/")
-        self.client.post("/show_summary", 'test@club.com')
-        #self.client.get("/book/<competition_name>/<club_name>", )
-        #self.client.post("/purchase_places", )
+        self.client.post("/show_summary", {"email": "test@club.com"})
+        self.client.get("/book/Test Future Competition/Test Club", )
+        self.client.post("/purchase_places", {"club_name": "Test Club",
+                                              "competition_name": "Test Future Competition",
+                                              "places": "9"})
         self.client.get("/logout")
