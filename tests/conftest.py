@@ -164,6 +164,7 @@ def test_club_to_be_saved() -> Dict:
         "points": "18"
     }
 
+
 @pytest.fixture
 def test_registered_club() -> Dict:
     """
@@ -255,6 +256,7 @@ def test_future_competition() -> Dict:
         "date": "2022-03-22 10:00:00",
         "number_of_places": "20"
     }
+
 
 @pytest.fixture
 def test_future_competition_to_be_saved() -> Dict:

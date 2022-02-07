@@ -71,7 +71,7 @@ def book(competition_name, club_name):
         else:
             flash('You cannot purchase places for this competition. The competition is over!')
             return render_template('welcome.html', club=club, competitions=competitions,
-                               already_booked=bookings_registry[club['name']])
+                                   already_booked=bookings_registry[club['name']])
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions,

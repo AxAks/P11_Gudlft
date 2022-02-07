@@ -145,7 +145,8 @@ def test_purchase_places_limitation_per_club_competition(client, test_future_com
                                                          test_club_already_book_some_places,
                                                          mocker_test_competitions_as_list, mocker_test_club_as_list,
                                                          mocker_test_db_path,
-                                                         mocker_test_database):
+                                                         mocker_test_bookings_registry,
+                                                         test_bookings_registry):
     """
     Integration test for purchase places error case,
     when the club has not enough points for the number of places requested.
@@ -154,6 +155,13 @@ def test_purchase_places_limitation_per_club_competition(client, test_future_com
                            data={'competition_name': test_future_competition['name'],
                                  'club_name': test_club_already_book_some_places['name'],
                                  'places': "9"})
+
+    response_decode = response.data.decode()
+
+    assert response.status_code == 200
+    assert 'You cannot purchase this amount of places. ' \
+           'You would exceed the purchase limit of 12 places per club for a competition!' in response_decode
+    assert 'You have booked: <span class="bold">11</span> place(s)' in response_decode
 
 
 def test_logout(client):

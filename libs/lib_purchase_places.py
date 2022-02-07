@@ -3,8 +3,6 @@ Lib for functions related to the purchase_places route
 """
 from typing import Dict, Union, List
 
-import server
-
 
 def extract_club_name(form: Dict) -> str:
     """
@@ -113,7 +111,7 @@ def update_and_get_booked_places_in_registry(bookings_registry: Dict[str, List[D
     competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry, club, competition)
     competition_points_booked_dict[competition['name']] = total_desired_nb_places_as_int
     return competition_points_booked_dict
-        
+
 
 def check_club_points(needed_amount_of_points, total_points_as_int):
     """
