@@ -31,7 +31,7 @@ def test_index_with_no_clubs_registered(client, test_empty_list, mocker_test_emp
 
 
 def test_show_summary_with_registered_competitions(client, test_club, mocker_test_club_as_list,
-                                                   mocker_test_competitions_as_list):
+                                                   mocker_test_competitions_as_list, mocker_test_bookings_registry):
     """
     checks that the route for show summary returns a success status code
     and displays the list of registered competitions from database
@@ -41,10 +41,12 @@ def test_show_summary_with_registered_competitions(client, test_club, mocker_tes
     assert response.status_code == 200
     assert 'Welcome, test@club.com' in response_decode
     assert 'Test Future Competition' in response_decode
+    assert 'You have booked' in response_decode
 
 
 def test_show_summary_with_no_registered_competitions(client, test_club, mocker_test_club_as_list,
-                                                      mocker_test_empty_competitions_list):
+                                                      mocker_test_empty_competitions_list,
+                                                      mocker_test_bookings_registry):
     """
     checks that the route for show summary returns a success status code
     and displays that there is no competition to display when competitions list in database is empty
@@ -90,7 +92,7 @@ def test_purchase_places(client, test_future_competition,
 def test_purchase_places_no_number_places_provided(client, test_future_competition,
                                                    mocker_test_competitions_as_list, mocker_test_club_as_list,
                                                    mocker_test_db_path,
-                                                   test_club, mocker_test_database):
+                                                   test_club, mocker_test_bookings_registry):
     """
     Integration test for purchase places error case.
     checks that the whole function purchase_places works

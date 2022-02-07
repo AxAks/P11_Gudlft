@@ -9,7 +9,8 @@
     {% block content %}
         <p>Remaining places: {{competition['number_of_places']}}</p>
         <p>
-            Your available points: {{club['points']}} (1 place: 3 points)
+            <div>Your available points: {{club['points']}}</div>
+            <div>(1 place: 3 points)</div>
         </p>
         <form action="/purchase_places" method="post">
             <input type="hidden" name="club_name" value="{{club['name']}}">

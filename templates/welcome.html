@@ -26,7 +26,7 @@
                     {% for item in already_booked %}
                         {% if comp['name'] in item.keys() %}
                             <div>
-                                You have booked: <span class="bold">{{ item[comp['name']] }}</span>
+                                You have booked: <span class="bold">{{ item[comp['name']] }}</span> place(s)
                             </div>
                         {% endif %}
                     {% endfor %}
