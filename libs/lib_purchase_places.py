@@ -149,7 +149,7 @@ def book_places(club: Dict, competition: Dict,
     return club, competition
 
 
-def update_and_get_obj_attribute_for_db(database, category, obj, attribute) -> Union[str, None]:  # pas de test de rédigé !
+def update_and_get_obj_attribute_for_db(database, category, obj, attribute) -> Union[str, None]:
     for obj_in_db in database[category]:
         if obj_in_db['name'] == obj['name']:
             try:
