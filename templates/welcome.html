@@ -21,7 +21,7 @@
                     <div class="bold">{{ comp['name'] }}</div>
                         <div>({{ comp['date'] }})</div>
                         <div>
-                            Number of Places:<span class="bold">{{ comp['number_of_places'] }}</span>
+                            Number of Places: <span class="bold">{{ comp['number_of_places'] }}</span>
                         </div>
                     {% for item in already_booked %}
                         {% if comp['name'] in item.keys() %}
