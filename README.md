@@ -7,8 +7,7 @@
 2. [Prerequisites (for developers)](#prerequisites)
 3. [Installation](#installation)
 4. [Execution](#execution)
-5. [Usage](#usage)
-6. [Generation of a code review report (for developers)](#generation_of_a_code_review_report)
+5. [Testing](#testing)
 ***
 
 # 1. Presentation <a name="presentation"></a>
@@ -61,49 +60,69 @@ $ pip install -r requirements.txt
 ***
 
 
-#4. Execution <a name="execution"></a>
-_activate the environment:_    
-$ source 'venv_name'/bin/activate
-
-_launch the app:_
-- At the Project root level: 
-('venv_name') $ export set FLASK_APP=server 
--> sets the environment variable
-('venv_name') $ python -m flask run
--> run the program
-
-
-
-Flask requires that you set an environmental variable to the python file. However you do that, you'll want to set
-      the file to be <code>server.py</code>.
-      Check [here](https://flask.palletsprojects.com/en/1.1.x/quickstart/#a-minimal-application) for more details
-
-    You should now be ready to test the application. In the directory, type either <code>flask run</code> or <code>
-      python -m flask run</code>. The app should respond with an address you should be able to go to using your browser.
-
-Current Setup
-
-   The app is powered by [JSON files](https://www.tutorialspoint.com/json/json_quick_guide.htm). This is to get around
-   having a DB until we actually need one. The main ones are:
-
-    competitions.json - list of competitions
-    clubs.json - list of clubs with relevant information. You can look here to see what email addresses the app will
-      accept for login.
-
-Testing
-
-      You are free to use whatever testing framework you like-the main thing is that you can show what tests you are using.
-
-      We also like to show how well we're testing, so there's a module called
-   [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) you should add to your project.
-   coverage run -m pytest -v tests/tests_launcher.py (unitaires et integration)
-      
-   [pytest](https://docs.pytest.org/en/7.0.x/)
-   python -m pytest -v tests/unit_tests/tests_launcher.py)
-   
-
-   
-      [locust](http://docs.locust.io/en/stable/)
-      locust -f locustfile.py --master
-      locust -f locustfile.py --worker
- 
+#4. Execution <a name="execution"></a>    
+_activate the environment:_       
+$ source 'venv_name'/bin/activate    
+    
+_launch the app:_    
+(terminal)    
+- At the Project root level:     
+('venv_name') $ export set FLASK_APP=server     
+-> sets the environment variable    
+('venv_name') $ python -m flask run    
+-> run the program: then reachable at http://localhost:5000     
+     
+The app is powered by [JSON files](https://www.tutorialspoint.com/json/json_quick_guide.htm). This is to get around    
+having a DB until we actually need one. The main ones are:    
+- the JSON DB file database.json     
+    
+# 5. Testing <a name="testing"></a>    
+(virtual environment must be activated !)    
+    
+_Unit and integration Tests_    
+The tests can be run with pytest    
+The main testing environment (code and sample data) is located in the folder "tests"     
+It contains:    
+- The unit tests    
+- The integration tests    
+    
+A "test_launcher" file is available to launch both series of tests at once  
+using the following command:    
+->   python -m pytest -v tests/tests_launcher.py    
+or  
+-> python -m pytest -v [testfile1_path] [testfile2_path] [...]  
+    
+or separately:  
+->   python -m pytest -v tests/integration_tests/integration_tests.py   
+->   python -m pytest -v tests/unit_tests/*     
+(unit test are separated in different modules sorted by route)  
+More info about pytest at :[pytest](https://docs.pytest.org/en/7.0.x/)  
+    
+    
+We also like to show how well we're testing, so the project contains a module called:   
+   [coverage](https://coverage.readthedocs.io/en/coverage-5.1/)    
+Basic run oif tests with coverage rate, use the following command:   
+coverage run -m pytest -v tests/tests_launcher.py (unit tests and integration tests at once)    
+    
+You can also generate a HTML report using the command:  
+-> coverage html    
+    
+     
+Performance test are run under the module locust ( integrated in the project with locustfile.py as config file)    
+      [locust](http://docs.locust.io/en/stable/)    
+    
+Basic run of locust    
+-> locust -f locustfile.py    
+    
+Basic run of locust from within the project with two threads    
+This enables to save CPU usage if needed.    
+Using two differents terminals:    
+-> locust -f locustfile.py --master (to set the master thread)       
+-> locust -f locustfile.py --worker (to set the workers)     
+            
+The performance tests are then reachable at : http://localhost:8089/       
+(The app server must be launched)      
+You can set the user's peak and the spawn rate you wish     
+Enter the address of the app : http://localhost:5000    
+And Launch    
+-> the tests calls all routes and evaluates the performance.
