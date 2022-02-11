@@ -40,7 +40,7 @@ def test_a_blank_email_should_return_false(test_club):
 
 def test_a_registered_email_should_return_a_club(test_club_as_list, test_club):
     """
-    Checks that a registered email is found
+    Checks that a registered email is found if existing
     """
     email = test_club['email']
     assert get_club_by_email(email, test_club_as_list) == test_club
