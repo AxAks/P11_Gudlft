@@ -33,6 +33,10 @@ def extract_requested_places(form: Dict) -> int:
 
 
 def convert_competition_places_to_int(places: str) -> int:
+    """
+    Converts a string-formated number of places from the request to an integer
+    Can raise Value Error
+    """
     competition_places = int(places)
 
     if competition_places <= 0:
@@ -43,7 +47,8 @@ def convert_competition_places_to_int(places: str) -> int:
 
 def convert_club_points_to_int(points: str) -> int:
     """
-    Can  raise ValueError
+    Converts a string-formated number of points from the request to an integer
+    Can raise Value Error
     """
     club_points = int(points)
 
@@ -96,24 +101,34 @@ def spot_club_bookings_field_in_registry(bookings_registry: Dict[str, List[Dict[
     return found_competition_places_booked_dict
 
 
-def extract_nb_booked_places_for_competition(club_competition_points_booked_dict, competition):
+def extract_nb_booked_places_for_competition(club_competition_points_booked_dict: Dict, competition: Dict) -> int:
+    """
+    Returns the amount of places already booked by a club in previous requests
+    from the corresponding registry entry
+    """
     return club_competition_points_booked_dict[competition['name']]
 
 
 def calculate_total_desired_places(nb_already_booked_places: int, places_requested_as_int: int) -> int:
-
+    """
+    Calculates the sum of requested places to a competition for a club.
+    It takes into account the previous purchase orders.
+    """
     return nb_already_booked_places + places_requested_as_int
 
 
 def update_and_get_booked_places_in_registry(bookings_registry: Dict[str, List[Dict[str, int]]],
                                              club: Dict, competition: Dict,
                                              total_desired_nb_places_as_int) -> Dict:
+    """
+    Inserts the new number of booked places for a couple club/competition into the registry
+    """
     competition_points_booked_dict = spot_club_bookings_field_in_registry(bookings_registry, club, competition)
     competition_points_booked_dict[competition['name']] = total_desired_nb_places_as_int
     return competition_points_booked_dict
 
 
-def check_club_points(needed_amount_of_points, total_points_as_int):
+def check_club_points(needed_amount_of_points: int, total_points_as_int: int) -> bool:
     """
     Compares the requested amount of places for a competition
     with the number of points the club has
@@ -121,15 +136,15 @@ def check_club_points(needed_amount_of_points, total_points_as_int):
     return total_points_as_int - needed_amount_of_points >= 0
 
 
-def check_required_places_amount(total_desired_nb_places_as_int, limit=12):
+def check_required_places_amount(total_desired_nb_places_as_int: int, limit: int = 12) -> bool:
     """
     Checks if the total amount of places desired is below the max limit allowed
     """
     return limit - total_desired_nb_places_as_int >= 0
 
 
-def check_booking_possible(has_enough_places, has_enough_points,
-                           competition_is_in_the_future, places_required_is_below_limit):
+def check_booking_possible(has_enough_places: bool, has_enough_points: bool,
+                           competition_is_in_the_future: bool, places_required_is_below_limit: bool) -> bool:
     """
     Checks if the booking of a competition made by a club is possible
     """
@@ -139,6 +154,10 @@ def check_booking_possible(has_enough_places, has_enough_points,
 def book_places(club: Dict, competition: Dict,
                 places_requested_as_int: int, total_places_as_int: int,
                 needed_amount_of_points: int, total_points_as_int: int) -> tuple[dict, dict]:
+    """
+    Updates the competition object with the remaining number of places
+    and the club object with the remaining number of points
+    """
 
     updated_club_points = total_points_as_int - needed_amount_of_points
     club['points'] = str(updated_club_points)
@@ -148,6 +167,9 @@ def book_places(club: Dict, competition: Dict,
 
 
 def update_and_get_obj_attribute_for_db(database, category, obj, attribute) -> Union[str, None]:
+    """
+    prepares the competition and club the objects to be updated in DB
+    """
     for obj_in_db in database[category]:
         if obj_in_db['name'] == obj['name']:
             try:

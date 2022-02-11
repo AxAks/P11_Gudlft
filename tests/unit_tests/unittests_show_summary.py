@@ -23,13 +23,19 @@ def test_an_empty_club_email_should_return_an_empty_string():
 
 
 def test_a_blank_email_should_return_true():
+    """
+    Checks that A empty text field returns True
+    """
     email = ""
-    return is_email_blank(email) == ""
+    assert is_email_blank(email) is True
 
 
 def test_a_blank_email_should_return_false(test_club):
+    """
+    Checks that a fulfilled text field returns False
+    """
     email = test_club['email']
-    return is_email_blank(email) == ""
+    assert is_email_blank(email) is False
 
 
 def test_a_registered_email_should_return_a_club(test_club_as_list, test_club):

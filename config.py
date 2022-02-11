@@ -9,16 +9,25 @@ from utils import load
 
 
 def create_app():
+    """
+    Create the Flask app used by the program
+    """
     app = Flask(__name__)
     app.secret_key = 'something_special'
     return app
 
 
 def declare_db_path() -> str:
+    """
+    Set the path of the JSon DB file
+    """
     return 'database.json'
 
 
 def setup_db() -> Dict[str, List]:
+    """
+    Initiates the DB from the Json file located at the DB path
+    """
     db_path = declare_db_path()
     database = load(db_path)
     return database

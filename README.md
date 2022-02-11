@@ -101,7 +101,7 @@ More info about pytest at :[pytest](https://docs.pytest.org/en/7.0.x/)
     
 We also like to show how well we're testing, so the project contains a module called:   
    [coverage](https://coverage.readthedocs.io/en/coverage-5.1/)    
-Basic run oif tests with coverage rate, use the following command:   
+Basic tests run with coverage rate, use the following command:   
 coverage run -m pytest -v tests/tests_launcher.py (unit tests and integration tests at once)    
     
 You can also generate a HTML report using the command:  

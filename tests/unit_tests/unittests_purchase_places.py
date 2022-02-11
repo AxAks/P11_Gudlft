@@ -437,7 +437,7 @@ def test_places_nok_points_nok_competition_date_nok_places_below_limit_nok_shoul
 
 def test_book_places(test_club, test_future_competition):
     """
-    nominal case
+    The updated object should have the new value as attribute
     """
     total_places_as_int = int(test_future_competition['number_of_places'])
     total_points_as_int = int(test_club['points'])

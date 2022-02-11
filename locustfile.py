@@ -1,8 +1,6 @@
 from locust import HttpUser, task
 
 
-
-
 class TestUser(HttpUser):
     """
     TestUser inherits from HttpUser to test the app performances with Locust

@@ -5,7 +5,7 @@ import json
 from typing import Dict
 
 
-def load(db_path: str) -> Dict:  # pas de test de rédigé !
+def load(db_path: str) -> Dict:
     """
     Loads all the objects instances from the database file needed by the program at once
     """
@@ -14,7 +14,7 @@ def load(db_path: str) -> Dict:  # pas de test de rédigé !
         return database
 
 
-def save(database: Dict, db_path: str) -> None:  # pas de test de rédigé !
+def save(database: Dict, db_path: str) -> None:
     """
     saves all the objects instances of the program database to the database file
     """
