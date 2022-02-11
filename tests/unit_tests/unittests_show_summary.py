@@ -6,7 +6,7 @@ from libs.lib_show_summary import extract_club_email, is_email_blank, get_club_b
 
 def test_an_entered_club_email_should_return_a_string(test_club):
     """
-    Checks that the input is a valid string
+    Checks that an fulfilled email field input returns a valid string
     """
     form = {'email': test_club['email']}
     assert 'email' in form.keys()
@@ -15,7 +15,7 @@ def test_an_entered_club_email_should_return_a_string(test_club):
 
 def test_an_empty_club_email_should_return_an_empty_string():
     """
-    Checks that the input is a valid string
+    Checks that an empty email field in the request returns an empty string
     """
     form = {'email': ''}
     assert 'email' in form.keys()
