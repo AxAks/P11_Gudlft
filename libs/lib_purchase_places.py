@@ -1,7 +1,7 @@
 """
 Lib for functions related to the purchase_places route
 """
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Tuple
 
 
 def extract_club_name(form: Dict) -> str:
@@ -153,7 +153,7 @@ def check_booking_possible(has_enough_places: bool, has_enough_points: bool,
 
 def book_places(club: Dict, competition: Dict,
                 places_requested_as_int: int, total_places_as_int: int,
-                needed_amount_of_points: int, total_points_as_int: int) -> tuple[dict, dict]:
+                needed_amount_of_points: int, total_points_as_int: int) -> Tuple[dict, dict]:
     """
     Updates the competition object with the remaining number of places
     and the club object with the remaining number of points
